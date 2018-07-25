@@ -1,0 +1,158 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.7</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\Debug\SIMON_GAME.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>SIMON_GAME.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>SIMON_GAME.map</FILE>
+  <FILE>SIMON_GAME.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <init1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>134</LINE></init1>
+  <Timer1OverflowInterrupt><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>311</LINE></Timer1OverflowInterrupt>
+  <Timer0OverflowInterrupt><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>305</LINE></Timer0OverflowInterrupt>
+  <INITIALIZATION><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc</FILE><LINE>6</LINE></INITIALIZATION>
+  <SCREEN_PRINT_LOOP><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>9</LINE></SCREEN_PRINT_LOOP>
+  <PrintScreenLoop><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>12</LINE></PrintScreenLoop>
+  <ScreenLoop><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>21</LINE></ScreenLoop>
+  <Loop_on_columns><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>28</LINE></Loop_on_columns>
+  <Col_on_or_off><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>31</LINE></Col_on_or_off>
+  <Row_on_or_off><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>44</LINE></Row_on_or_off>
+  <pause><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>77</LINE></pause>
+  <pause1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>62</LINE></pause1>
+  <loop_pause1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>64</LINE></loop_pause1>
+  <loop_pause2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>67</LINE></loop_pause2>
+  <loop_pause3><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc</FILE><LINE>70</LINE></loop_pause3>
+  <FIND_SCORES><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>15</LINE></FIND_SCORES>
+  <except1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>68</LINE></except1>
+  <decaade><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>25</LINE></decaade>
+  <numbers><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>31</LINE></numbers>
+  <loopnb><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>35</LINE></loopnb>
+  <notthis><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>39</LINE></notthis>
+  <best1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>44</LINE></best1>
+  <except2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>73</LINE></except2>
+  <decaade2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>49</LINE></decaade2>
+  <numbers2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>55</LINE></numbers2>
+  <loopnb2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>59</LINE></loopnb2>
+  <notthis2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc</FILE><LINE>63</LINE></notthis2>
+  <RANDOM_NUM><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc</FILE><LINE>8</LINE></RANDOM_NUM>
+  <SEE_SEQ><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>6</LINE></SEE_SEQ>
+  <show_seq><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>8</LINE></show_seq>
+  <next1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>15</LINE></next1>
+  <First_quart><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>26</LINE></First_quart>
+  <next2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>20</LINE></next2>
+  <Second_quart><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>30</LINE></Second_quart>
+  <Fourth_quart><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>38</LINE></Fourth_quart>
+  <Third_quart><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>34</LINE></Third_quart>
+  <FIRST_PART><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>80</LINE></FIRST_PART>
+  <cont><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>42</LINE></cont>
+  <SECOND_PART><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>92</LINE></SECOND_PART>
+  <THIRD_PART><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>106</LINE></THIRD_PART>
+  <FOURTH_PART><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>120</LINE></FOURTH_PART>
+  <Delay><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>57</LINE></Delay>
+  <TURN_OFF><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>132</LINE></TURN_OFF>
+  <continue_seq><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>63</LINE></continue_seq>
+  <stop_seq><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc</FILE><LINE>67</LINE></stop_seq>
+  <REDO_SEQ><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>6</LINE></REDO_SEQ>
+  <waiting><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>11</LINE></waiting>
+  <not_ending><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>19</LINE></not_ending>
+  <error><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>118</LINE></error>
+  <C4Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>30</LINE></C4Pressed>
+  <C3Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>33</LINE></C3Pressed>
+  <C2Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>36</LINE></C2Pressed>
+  <C1Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>39</LINE></C1Pressed>
+  <BT7Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>67</LINE></BT7Pressed>
+  <BT4Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>75</LINE></BT4Pressed>
+  <BT1Pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>83</LINE></BT1Pressed>
+  <BTAPressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>90</LINE></BTAPressed>
+  <reset><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>128</LINE></reset>
+  <correct><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>97</LINE></correct>
+  <Buzzer_loop><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>70</LINE></Buzzer_loop>
+  <end><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>239</LINE></end>
+  <continue_redo><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>155</LINE></continue_redo>
+  <stop_redo><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc</FILE><LINE>161</LINE></stop_redo>
+  <main><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>224</LINE></main>
+  <col_off><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>19</LINE></col_off>
+  <Columns_loop_off_1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>20</LINE></Columns_loop_off_1>
+  <col_on><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>28</LINE></col_on>
+  <Columns_loop_on_1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>29</LINE></Columns_loop_on_1>
+  <row_on><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>37</LINE></row_on>
+  <Rows_loop_on_1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>38</LINE></Rows_loop_on_1>
+  <row_off><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>46</LINE></row_off>
+  <Rows_loop_off_1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>47</LINE></Rows_loop_off_1>
+  <loop1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>58</LINE></loop1>
+  <loop2><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>59</LINE></loop2>
+  <loop3><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>60</LINE></loop3>
+  <Delay1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>144</LINE></Delay1>
+  <loop11><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>148</LINE></loop11>
+  <loop21><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>149</LINE></loop21>
+  <curr><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>154</LINE></curr>
+  <besttt><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>159</LINE></besttt>
+  <score_zero><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>368</LINE></score_zero>
+  <score_one><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>377</LINE></score_one>
+  <score_two><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>386</LINE></score_two>
+  <score_three><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>395</LINE></score_three>
+  <score_four><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>404</LINE></score_four>
+  <score_five><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>413</LINE></score_five>
+  <score_six><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>422</LINE></score_six>
+  <score_seven><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>431</LINE></score_seven>
+  <score_eight><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>440</LINE></score_eight>
+  <score_nine><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>449</LINE></score_nine>
+  <cont_score><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>163</LINE></cont_score>
+  <best_zero><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>548</LINE></best_zero>
+  <best_one><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>557</LINE></best_one>
+  <best_two><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>566</LINE></best_two>
+  <best_three><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>575</LINE></best_three>
+  <best_four><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>584</LINE></best_four>
+  <best_five><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>593</LINE></best_five>
+  <best_six><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>602</LINE></best_six>
+  <best_seven><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>611</LINE></best_seven>
+  <best_eight><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>620</LINE></best_eight>
+  <best_nine><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>629</LINE></best_nine>
+  <zero><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>458</LINE></zero>
+  <one><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>467</LINE></one>
+  <two><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>476</LINE></two>
+  <three><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>485</LINE></three>
+  <four><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>494</LINE></four>
+  <five><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>503</LINE></five>
+  <six><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>512</LINE></six>
+  <seven><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>521</LINE></seven>
+  <eight><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>530</LINE></eight>
+  <nine><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>539</LINE></nine>
+  <NoJoy1><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc</FILE><LINE>168</LINE></NoJoy1>
+  <Joy><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>293</LINE></Joy>
+  <init><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>143</LINE></init>
+  <start_screen><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>152</LINE></start_screen>
+  <Press_js_to_start><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>359</LINE></Press_js_to_start>
+  <Joy_start><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>205</LINE></Joy_start>
+  <newHighScore><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>252</LINE></newHighScore>
+  <end_s><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>257</LINE></end_s>
+  <end_screen><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>267</LINE></end_screen>
+  <wait_state><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>330</LINE></wait_state>
+  <button_pressed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>326</LINE></button_pressed>
+  <continue><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>334</LINE></continue>
+  <inc_speed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>339</LINE></inc_speed>
+  <max_speed><FILE>C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm</FILE><LINE>344</LINE></max_speed>
+ </LABELS>
+</ASSEMBLER_INFO>
