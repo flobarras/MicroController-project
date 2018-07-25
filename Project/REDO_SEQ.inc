@@ -14,7 +14,7 @@ REDO_SEQ:
 		LDI R26,0x1E
 		CPSE R24,R26
 		RJMP not_ending					
-		RJMP error			;  Branch if R24 >= 30
+		RJMP error		
 
 		not_ending:
 		SBIS PIND,0                     ; Skip next instruction if the least significant bit of pin D is set (not pressed).
@@ -45,8 +45,8 @@ REDO_SEQ:
 		; To build a bit mask that has bit number n set: (0x01 << n)    (1 is 'left shifted' by n)
 		; To build a bit mask that has bits number n and x set: (0x01 << n)|(0x01 << x)
 		LDI R16,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
-		LDI R17,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col
 		OUT PORTD,R16
+		LDI R17,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col
 		OUT DDRD,R17
 		NOP
 		NOP
@@ -126,30 +126,14 @@ REDO_SEQ:
 		
 
 	reset:
-		/*
-		; Rows (7,6,5,4) are outputs (bits set)
-		; Columns (3,2,1,0) are inputs (bits cleared)
-		LDI R26,0xF0
-		OUT DDRD,R26
-
-		; Columns : enable pull-up (bits set)
-		; Rows are set to LOW (bits cleared)
-		LDI R26,0x0F
-		OUT PORTD,R26
-		*/
-
 		LDI R16,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col  ; equivalent to LDI R16,0x0F
-		LDI R17,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
 		OUT PORTD,R16
+		LDI R17,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
 		OUT DDRD,R17
-	
-	
-	
-
-	LDI R26,0x01
-	CPSE R26,R30
-	RJMP continue_redo
-	RJMP stop_redo
+		LDI R26,0x01
+		CPSE R26,R30
+		RJMP continue_redo
+		RJMP stop_redo
 	
 	
 	continue_redo:

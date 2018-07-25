@@ -8,11 +8,9 @@
 
 SCREEN_PRINT_LOOP:
 	LDI R17, 0b01000000 ; Position of the row ON
-	LDI R18, 0x07 
 	PrintScreenLoop: ; Loop on the rows
 		RCALL ScreenLoop
 		LSR R17 
-		DEC R18
 	BRNE PrintScreenLoop
 	RET
 
@@ -28,13 +26,13 @@ ScreenLoop:						; For one row
 	Loop_on_columns:			; Loop on the 10 bytes pointed by Z
 		LPM R27, Z+				; Loads one byte pointed to by the Z-register into the destination register Rd. Z is then incremented
 		LDI R16,0x08
-		Col_on_or_off: 			; loop on the byte stored in R27
+		Col_on_or_off: 			; Loop on the byte stored in R27
 			CBI PORTB, 3
 			SBRC R27,7 			; Skip next instruction if MSB of R27 is cleared
 			SBI PORTB,3
 			SBI PORTB,5
 			CBI PORTB,5
-			LSL R27				; --> new MSB at the next iteration, so that we analyse the whole byte
+			LSL R27				
 			DEC R16
 		BRNE Col_on_or_off
 		DEC R26

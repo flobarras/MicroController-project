@@ -67,9 +67,6 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="FIND_SCORES.inc">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="INITIALIZATION.inc">
       <SubType>Code</SubType>
     </Compile>

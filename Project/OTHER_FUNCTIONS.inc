@@ -157,7 +157,7 @@ Delay1:
 			MOV R21,R22
 			RJMP cont_score
 			besttt:
-			MOV R21,R29
+			MOV R21,R19
 			MACRO_PRINT_SCORE best_zero,best_one,best_two,best_three,best_four,best_five,best_six,best_seven,best_eight,best_nine
 			MOV R21,R20
 			cont_score:

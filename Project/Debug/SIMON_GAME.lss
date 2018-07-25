@@ -1,24 +1,22 @@
 
-AVRASM ver. 2.2.7  C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm Wed Jul 25 17:03:20 2018
+AVRASM ver. 2.2.7  C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm Wed Jul 25 18:50:38 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
 C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(10): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(125): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(126): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(127): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(128): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(129): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(130): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(157): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(158): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(159): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(160): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(161): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(162): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
 C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(10): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(125): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(126): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(127): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\FIND_SCORES.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(128): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(129): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(130): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc'
-C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(157): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\INITIALIZATION.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(158): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SCREEN_PRINT_LOOP.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(159): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\RANDOM_NUM.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(160): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\SEE_SEQ.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(161): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\REDO_SEQ.inc'
+C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(162): Including file 'C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\OTHER_FUNCTIONS.inc'
                                  
                                  
                                  
@@ -1059,6 +1057,38 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  |* MACROS *|
                                  \**********/
                                  
+                                 
+                                 .MACRO FIND_SCORES		; @0 score  @1  ten   @2 unit
+                                 	LDI R26,0x64
+                                 	CP @0,R26					
+                                 	BRGE except			;  Branch if current score >= 100
+                                 	LDI @1,0x00
+                                 	LDI R18,0x0A
+                                 	LDI R27,0x0A
+                                 	decaade:
+                                 		CP @0,R18
+                                 		BRLO numbers
+                                 		ADD R18,R27
+                                 		INC @1
+                                 		BRNE decaade
+                                 	numbers:
+                                 		SUB R18,R27
+                                 		SUB @0,R18
+                                 		LDI @2,0x00
+                                 		loopnb:
+                                 			CPSE @0,@2
+                                 			RJMP notthis
+                                 			RJMP end_mac
+                                 		notthis:
+                                 			INC @2
+                                 			BRNE loopnb
+                                 	except:
+                                 		LDI @1,0x09
+                                 		LDI @2,0x09
+                                 		RJMP end_mac
+                                 	end_mac:
+                                 .ENDMACRO
+                                 
                                  .MACRO DELAY_MACRO
                                  	CALL Buzzer_loop	
                                  	LDI R26,0x01 
@@ -1160,11 +1190,11 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  \*********************/
                                  
                                  .ORG 0x0000
-000000 c270                      RJMP init1
+000000 c245                      RJMP init1
                                  .ORG 0x001A									; Program address for timer/counter 1 overflow
 00001a c48e                      RJMP Timer1OverflowInterrupt
                                  .ORG 0x0020									; Program address for timer/counter 0 overflow
-000020 c486                      RJMP Timer0OverflowInterrupt
+000020 c485                      RJMP Timer0OverflowInterrupt
                                  
                                  
                                  .INCLUDE "INITIALIZATION.inc"
@@ -1175,45 +1205,45 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  INITIALIZATION:
                                  
-                                 ; Joystick
-000021 9822                      CBI DDRB,2								; Pin PB2 is an input
-000022 9a2a                      SBI PORTB,2								; Enable the pull-up resistor
+                                 	; Joystick
+000021 9822                      	CBI DDRB,2								; Pin PB2 is an input
+000022 9a2a                      	SBI PORTB,2								; Enable the pull-up resistor
                                  
-                                 ; Buzzer
-000023 9a21                      SBI DDRB,1								; Pin PB1 is an output (buzzer)
+                                 	; Buzzer
+000023 9a21                      	SBI DDRB,1								; Pin PB1 is an output (buzzer)
                                  
-                                 ; Screen 
-000024 9a23                      SBI DDRB,3
-000025 9a24                      SBI DDRB,4
-000026 9a25                      SBI DDRB,5						
-000027 9a2b                      SBI PORTB,3								; If PORTxn is written to '1' when the pin is 
-000028 9a2c                      SBI PORTB,4								; configured as an output pin, the port pin is driven high.
-000029 9a2d                      SBI PORTB,5
-                                 
-                                 
-                                 ; Keyboard
-                                 ; Rows (7 - first row,6,5,4) are outputs (bits set)
-                                 ; Columns (3 - first column,2,1,0) are inputs (bits cleared)
-00002a efa0                      LDI R26,0xF0
-00002b b9aa                      OUT DDRD,R26
-                                 ; Columns : enable pull-up (bits set)
-                                 ; Rows are set to LOW (bits cleared)
-00002c e0af                      LDI R26,0x0F
-00002d b9ab                      OUT PORTD,R26
+                                 	; Screen 
+000024 9a23                      	SBI DDRB,3
+000025 9a24                      	SBI DDRB,4
+000026 9a25                      	SBI DDRB,5						
+000027 9a2b                      	SBI PORTB,3								; If PORTxn is written to '1' when the pin is 
+000028 9a2c                      	SBI PORTB,4								; configured as an output pin, the port pin is driven high.
+000029 9a2d                      	SBI PORTB,5
                                  
                                  
-                                 ; Start Timer			
-00002e e014                      LDI R17,0x04
-00002f 9310 0081                 STS TCCR1B,R17							; Prescaler 256
-000031 9478                      SEI										; enable global interrupt & timer1 interrupt
-000032 e011                      LDI R17,0x01
-000033 9310 006f                 STS TIMSK1,R17
-000035 e010                      LDI R17,0x00
-000036 9310 0003                 STS PRTIM1,R17
-000038 e805                      LDI R16,0x85							; TCNTinit  (0xFFFF - 16e6 / (256 * 2))  --> 2Hz
-000039 ee1d                      LDI R17,0xED
-00003a 9300 0085                 STS TCNT1H,R16
-00003c 9310 0084                 STS TCNT1L,R17
+                                 	; Keyboard
+                                 	; Rows (7 - first row,6,5,4) are outputs (bits set)
+                                 	; Columns (3 - first column,2,1,0) are inputs (bits cleared)
+00002a efa0                      	LDI R26,0xF0
+00002b b9aa                      	OUT DDRD,R26
+                                 	; Columns : enable pull-up (bits set)
+                                 	; Rows are set to LOW (bits cleared)
+00002c e0af                      	LDI R26,0x0F
+00002d b9ab                      	OUT PORTD,R26
+                                 
+                                 
+                                 	; Start Timer			
+00002e e014                      	LDI R17,0x04
+00002f 9310 0081                 	STS TCCR1B,R17							; Prescaler 256
+000031 9478                      	SEI										; enable global interrupt & timer1 interrupt
+000032 e011                      	LDI R17,0x01
+000033 9310 006f                 	STS TIMSK1,R17
+000035 e010                      	LDI R17,0x00
+000036 9310 0003                 	STS PRTIM1,R17
+000038 e805                      	LDI R16,0x85							; TCNTinit  (0xFFFF - 16e6 / (256 * 2))  --> 2Hz
+000039 ee1d                      	LDI R17,0xED
+00003a 9300 0085                 	STS TCNT1H,R16
+00003c 9310 0084                 	STS TCNT1L,R17
                                  
                                  
                                  .INCLUDE "SCREEN_PRINT_LOOP.inc"
@@ -1227,155 +1257,75 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  SCREEN_PRINT_LOOP:
 00003f e410                      	LDI R17, 0b01000000 ; Position of the row ON
-000040 e027                      	LDI R18, 0x07 
                                  	PrintScreenLoop: ; Loop on the rows
-000041 d004                      		RCALL ScreenLoop
-000042 9516                      		LSR R17 
-000043 952a                      		DEC R18
-000044 f7e1                      	BRNE PrintScreenLoop
-000045 9508                      	RET
+000040 d003                      		RCALL ScreenLoop
+000041 9516                      		LSR R17 
+000042 f7e9                      	BRNE PrintScreenLoop
+000043 9508                      	RET
                                  
                                  
                                  
                                  ScreenLoop:						; For one row
-000046 93af                      	PUSH R26
-000047 93bf                      	PUSH R27
-000048 930f                      	PUSH R16	
-000049 931f                      	PUSH R17 
+000044 93af                      	PUSH R26
+000045 93bf                      	PUSH R27
+000046 930f                      	PUSH R16	
+000047 931f                      	PUSH R17 
                                  	
-00004a e0aa                      	LDI R26,0x0A				; 10, because 80/8 = 10
+000048 e0aa                      	LDI R26,0x0A				; 10, because 80/8 = 10
                                  	Loop_on_columns:			; Loop on the 10 bytes pointed by Z
-00004b 91b5                      		LPM R27, Z+				; Loads one byte pointed to by the Z-register into the destination register Rd. Z is then incremented
-00004c e008                      		LDI R16,0x08
-                                 		Col_on_or_off: 			; loop on the byte stored in R27
-00004d 982b                      			CBI PORTB, 3
-00004e fdb7                      			SBRC R27,7 			; Skip next instruction if MSB of R27 is cleared
-00004f 9a2b                      			SBI PORTB,3
-000050 9a2d                      			SBI PORTB,5
-000051 982d                      			CBI PORTB,5
-000052 0fbb                      			LSL R27				; --> new MSB at the next iteration, so that we analyse the whole byte
-000053 950a                      			DEC R16
-000054 f7c1                      		BRNE Col_on_or_off
-000055 95aa                      		DEC R26
-000056 f7a1                      	BRNE Loop_on_columns
+000049 91b5                      		LPM R27, Z+				; Loads one byte pointed to by the Z-register into the destination register Rd. Z is then incremented
+00004a e008                      		LDI R16,0x08
+                                 		Col_on_or_off: 			; Loop on the byte stored in R27
+00004b 982b                      			CBI PORTB, 3
+00004c fdb7                      			SBRC R27,7 			; Skip next instruction if MSB of R27 is cleared
+00004d 9a2b                      			SBI PORTB,3
+00004e 9a2d                      			SBI PORTB,5
+00004f 982d                      			CBI PORTB,5
+000050 0fbb                      			LSL R27				
+000051 950a                      			DEC R16
+000052 f7c1                      		BRNE Col_on_or_off
+000053 95aa                      		DEC R26
+000054 f7a1                      	BRNE Loop_on_columns
                                  
-000057 e0a8                      	LDI R26,0x08
+000055 e0a8                      	LDI R26,0x08
                                  	Row_on_or_off:			
-000058 982b                      		CBI PORTB,3
-000059 fd17                      		SBRC R17,7 				
-00005a 9a2b                      		SBI PORTB,3
-00005b 9a2d                      		SBI PORTB,5
-00005c 982d                      		CBI PORTB,5
-00005d 0f11                      		LSL R17 
-00005e 95aa                      		DEC R26
-00005f f7c1                      	BRNE Row_on_or_off
-000060 9a2c                      	SBI PORTB,4 
-000061 d010                      	RCALL pause 
-000062 982c                      	CBI PORTB,4 
-000063 911f                      	POP R17
-000064 910f                      	POP R16
-000065 91bf                      	POP R27
-000066 91af                      	POP R26
-000067 9508                      	RET
+000056 982b                      		CBI PORTB,3
+000057 fd17                      		SBRC R17,7 				
+000058 9a2b                      		SBI PORTB,3
+000059 9a2d                      		SBI PORTB,5
+00005a 982d                      		CBI PORTB,5
+00005b 0f11                      		LSL R17 
+00005c 95aa                      		DEC R26
+00005d f7c1                      	BRNE Row_on_or_off
+00005e 9a2c                      	SBI PORTB,4 
+00005f d010                      	RCALL pause 
+000060 982c                      	CBI PORTB,4 
+000061 911f                      	POP R17
+000062 910f                      	POP R16
+000063 91bf                      	POP R27
+000064 91af                      	POP R26
+000065 9508                      	RET
                                  
                                  pause1:
-000068 efaf                      	LDI R26,0xFF
+000066 efaf                      	LDI R26,0xFF
                                  	loop_pause1:
-000069 95aa                      		DEC R26
-00006a efbf                      		LDI R27,0xFF
+000067 95aa                      		DEC R26
+000068 efbf                      		LDI R27,0xFF
                                  		loop_pause2:
-00006b 95ba                      			DEC R27
-00006c ef9f                      			LDI R25,0xFF
+000069 95ba                      			DEC R27
+00006a ef9f                      			LDI R25,0xFF
                                  			loop_pause3:
-00006d 959a                      				DEC R25
-00006e f7f1                      				BRNE loop_pause3
-00006f f7d9                      			BRNE loop_pause2	
-000070 f7c1                      	BRNE loop_pause1
-000071 9508                      	RET 
+00006b 959a                      				DEC R25
+00006c f7f1                      				BRNE loop_pause3
+00006d f7d9                      			BRNE loop_pause2	
+00006e f7c1                      	BRNE loop_pause1
+00006f 9508                      	RET 
                                  
                                  pause:
-000072 dff5                      	RCALL pause1
-000073 dff4                      	RCALL pause1
-                                 .INCLUDE "FIND_SCORES.inc"
-000074 9508                      
-                                  * FIND_SCORES.inc
-                                  * Find out the ten and unit of current and best scores, in order to print them
-                                  */ 
-                                 
-                                 ; R21 : current score
-                                 ; R30 : best score
-                                 
-                                 ; R29 : ten of the current score
-                                 ; R22 : unit of the current score
-                                 ; R19 : ten of the best score
-                                 ; R20 : unit of the best score
-                                 
-                                 
-                                 FIND_SCORES:
-                                 
-000075 e6a4                      	LDI R26,0x64
-000076 175a                      	CP R21,R26					
-000077 f50c                      	BRGE except1			;  Branch if current score >= 100
-                                 
-                                 	; CURRENT SCORE
-000078 e0d0                      	LDI R29,0x00
-000079 e02a                      	LDI R18,0x0A
-00007a e0ba                      	LDI R27,0x0A
-                                 	decaade:
-00007b 1752                      		CP R21,R18
-00007c f018                      		BRLO numbers
-00007d 0f2b                      		ADD R18,R27
-00007e 95d3                      		INC R29
-00007f f7d9                      		BRNE decaade
-                                 	numbers:
-000080 1b2b                      		SUB R18,R27
-000081 1b52                      		SUB R21,R18
-000082 e060                      		LDI R22,0x00
-                                 		loopnb:
-000083 1356                      			CPSE R21,R22
-000084 c001                      			RJMP notthis
-000085 c002                      			RJMP best1
-                                 		notthis:
-000086 9563                      			INC R22
-000087 f7d9                      			BRNE loopnb
-                                 
-                                 	; BEST SCORE
-                                 	best1:
-000088 17ea                      		CP R30,R26					
-000089 f494                      		BRGE except2			;  Branch if best score >= 100
-00008a e030                      		LDI R19,0x00
-00008b e02a                      		LDI R18,0x0A
-                                 		decaade2:
-00008c 17e2                      			CP R30,R18
-00008d f018                      			BRLO numbers2
-00008e 0f2b                      			ADD R18,R27
-00008f 9533                      			INC R19
-000090 f7d9                      			BRNE decaade2
-                                 		numbers2:
-000091 1b2b                      			SUB R18,R27
-000092 1be2                      			SUB R30,R18
-000093 e040                      			LDI R20,0x00
-                                 			loopnb2:
-000094 13e4                      				CPSE R30,R20
-000095 c001                      				RJMP notthis2
-000096 9508                      				RET
-                                 			notthis2:
-000097 9543                      				INC R20
-000098 f7d9                      				BRNE loopnb2
-                                 
-                                 
-                                 	except1:
-000099 e0d9                      		LDI R29,0x09
-00009a e069                      		LDI R22,0x09
-00009b cfec                      		RJMP best1
-                                 
-                                 	except2:
-00009c e039                      		LDI R19,0x09
-00009d e049                      		LDI R20,0x09
-00009e 9508                      		RET
-                                 
+000070 dff5                      	RCALL pause1
+000071 dff4                      	RCALL pause1
                                  .INCLUDE "RANDOM_NUM.inc"
-                                 
+000072 9508                      
                                   * RANDOM_NUM.inc
                                   * Generate a random number between 1 and 4. Linear congruential algorithm
                                   */ 
@@ -1388,27 +1338,27 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  	; To do this, we first generate a one-byte pseudo-random number (so that period is high enough to have a 'good' pseudo-random number
                                  	; Algorithm implemented: Linear-Congruential Generator: x = (a * x_prev + b) modulo m   , m = 128
                                  
-00009f e0a5                      	LDI R26,0x05				; a = 5 (for generation of random numbers)
+000073 e0a5                      	LDI R26,0x05				; a = 5 (for generation of random numbers)
                                  
-0000a0 9fda                      	MUL R29,R26
-0000a1 0180                      	MOVW R16,R0				; R16: low bits / R17: high bits
-0000a2 e0a3                      	LDI R26,0x03			; b = 3
-0000a3 0f0a                      	ADD R16,R26
+000074 9fda                      	MUL R29,R26
+000075 0180                      	MOVW R16,R0				; R16: low bits / R17: high bits
+000076 e0a3                      	LDI R26,0x03			; b = 3
+000077 0f0a                      	ADD R16,R26
                                  
                                  
-0000a4 2fd0                      	MOV R29,R16			; update
+000078 2fd0                      	MOV R29,R16			; update
                                  
                                  	; R29 contains a pseudo-random byte. To generate a pseudo-random number between 1 and 4, we keep only 2 bits of R29 and we add 1
                                  
-0000a5 2f40                      	MOV R20,R16
-0000a6 714f                      	CBR R20,$E0		
-0000a7 7f48                      	CBR R20,$07	
-0000a8 9546                      	LSR R20
-0000a9 9546                      	LSR R20
-0000aa 9546                      	LSR R20	
-0000ab 9543                      	INC R20
+000079 2f40                      	MOV R20,R16
+00007a 714f                      	CBR R20,$E0		
+00007b 7f48                      	CBR R20,$07	
+00007c 9546                      	LSR R20
+00007d 9546                      	LSR R20
+00007e 9546                      	LSR R20	
+00007f 9543                      	INC R20
                                  
-0000ac 9508                      	RET
+000080 9508                      	RET
                                  .INCLUDE "SEE_SEQ.inc"
                                  
                                   * SEE_SEQ.inc
@@ -1418,68 +1368,69 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  SEE_SEQ:
                                  
                                  	show_seq:
-0000ad 940e 009f                 		CALL RANDOM_NUM		; Give a random number stored in R20 to know which part of the board must be lit up
-0000af e0a1                      		LDI R26,0x01
-0000b0 134a                      		CPSE R20,R26			
-0000b1 c001                      		RJMP next1
-0000b2 c008                      		RJMP First_quart
+000081 940e 0073                 		CALL RANDOM_NUM		; Give a random number stored in R20 to know which part of the board must be lit up
+000083 e0a1                      		LDI R26,0x01
+000084 134a                      		CPSE R20,R26			
+000085 c001                      		RJMP next1
+000086 c008                      		RJMP First_quart
                                  
                                  		next1:
-0000b3 e0a2                      			LDI R26,0x02
-0000b4 134a                      			CPSE R20,R26
-0000b5 c001                      			RJMP next2
-0000b6 c007                      			RJMP Second_quart
+000087 e0a2                      			LDI R26,0x02
+000088 134a                      			CPSE R20,R26
+000089 c001                      			RJMP next2
+00008a c007                      			RJMP Second_quart
                                  		next2:
-0000b7 e0a3                      			LDI R26,0x03
-0000b8 134a                      			CPSE R20,R26
-0000b9 c00a                      			RJMP Fourth_quart
-0000ba c006                      			RJMP Third_quart
+00008b e0a3                      			LDI R26,0x03
+00008c 134a                      			CPSE R20,R26
+00008d c00a                      			RJMP Fourth_quart
+00008e c006                      			RJMP Third_quart
                                  		
                                  		First_quart:	
-0000bb 940e 016f                 			CALL FIRST_PART
-0000bd c009                      			RJMP cont
+00008f 940e 0144                 			CALL FIRST_PART
+000091 c009                      			RJMP cont
                                  
                                  		Second_quart:
-0000be 940e 017a                 			CALL SECOND_PART
-0000c0 c006                      			RJMP cont
+000092 940e 014f                 			CALL SECOND_PART
+000094 c006                      			RJMP cont
                                  
                                  		Third_quart:
-0000c1 940e 0187                 			CALL THIRD_PART
-0000c3 c003                      			RJMP cont
+000095 940e 015c                 			CALL THIRD_PART
+000097 c003                      			RJMP cont
                                  
                                  		Fourth_quart:
-0000c4 940e 0194                 			CALL FOURTH_PART
-0000c6 c000                      			RJMP cont
+000098 940e 0169                 			CALL FOURTH_PART
+00009a c000                      			RJMP cont
                                  
                                  		cont:
                                  			; Delay depending on speed (controlled via R19, incremented every 0.5s)
-0000c7 e5af                      			LDI R26,0x5F 
-0000c8 1ba3                      			SUB R26,R19  
-0000c9 e0b3                      			LDI R27,0x03
-0000ca e1c0                      			LDI R28,0x10
-0000cb d095                      			RCALL Delay				
+00009b e5af                      			LDI R26,0x5F 
+00009c 1ba3                      			SUB R26,R19  
+00009d e0b3                      			LDI R27,0x03
+00009e e1c0                      			LDI R28,0x10
+00009f d096                      			RCALL Delay				
                                  
                                  			; 'Turn off' screen between each 'member' of the sequence
-0000cc 940e 019f                 			CALL TURN_OFF
-0000ce e2a0                      			LDI R26,0x20
-0000cf efbf                      			LDI R27,0xFF
-0000d0 efcf                      			LDI R28,0xFF
-0000d1 940e 0161                 			CALL Delay
+0000a0 940e 0174                 			CALL TURN_OFF
+0000a2 e2a0                      			LDI R26,0x20
+0000a3 efbf                      			LDI R27,0xFF
+0000a4 efcf                      			LDI R28,0xFF
+0000a5 940e 0136                 			CALL Delay
                                  
                                  			; check if sequence is over or not
-0000d3 e0a1                      			LDI R26,0x01
-0000d4 13ae                      			CPSE R26,R30			
-0000d5 c001                      			RJMP continue_seq
-0000d6 c002                      			RJMP stop_seq
+0000a7 e0a1                      			LDI R26,0x01
+0000a8 13ae                      			CPSE R26,R30			
+0000a9 c001                      			RJMP continue_seq
+0000aa c002                      			RJMP stop_seq
                                  	
                                  	continue_seq:
-0000d7 95ea                      		DEC R30
-0000d8 cfd4                      		RJMP show_seq
+0000ab 95ea                      		DEC R30
+0000ac cfd4                      		RJMP show_seq
                                  
                                  	stop_seq:
-0000d9 2fd6                      		MOV R29,R22			; Seed for generation of random numbers
-0000da 2fef                      		MOV R30,R31	
-0000db 9508                      		RET
+0000ad 2fd6                      		MOV R29,R22			; Seed for generation of random numbers
+0000ae 2fef                      		MOV R30,R31	
+0000af e080                      		LDI R24,0x00
+0000b0 9508                      		RET
                                  
                                  .INCLUDE "REDO_SEQ.inc"
                                  
@@ -1490,171 +1441,155 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  REDO_SEQ:
                                  
                                  	; "Reload" random sequence to check 
-0000dc 940e 009f                 	CALL RANDOM_NUM
+0000b1 940e 0073                 	CALL RANDOM_NUM
                                  
                                  	waiting:
-0000de ef2e                      		LDI R18,0xFE
+0000b3 ef2e                      		LDI R18,0xFE
                                  		; If R24 > 30, ends game (15s of inactivity)
-0000df e1ae                      		LDI R26,0x1E
-0000e0 138a                      		CPSE R24,R26
-0000e1 c001                      		RJMP not_ending					
-0000e2 c049                      		RJMP error			;  Branch if R24 >= 30
+0000b4 e1ae                      		LDI R26,0x1E
+0000b5 138a                      		CPSE R24,R26
+0000b6 c001                      		RJMP not_ending					
+0000b7 c049                      		RJMP error		
                                  
                                  		not_ending:
-0000e3 9b48                      		SBIS PIND,0                     ; Skip next instruction if the least significant bit of pin D is set (not pressed).
-0000e4 c007                      		RJMP C4Pressed
-0000e5 9b49                      		SBIS PIND,1
-0000e6 c006                      		RJMP C3Pressed
-0000e7 9b4a                      		SBIS PIND,2
-0000e8 c005                      		RJMP C2Pressed
-0000e9 9b4b                      		SBIS PIND,3
-0000ea c004                      		RJMP C1Pressed
-0000eb cff2                      		RJMP waiting
+0000b8 9b48                      		SBIS PIND,0                     ; Skip next instruction if the least significant bit of pin D is set (not pressed).
+0000b9 c007                      		RJMP C4Pressed
+0000ba 9b49                      		SBIS PIND,1
+0000bb c006                      		RJMP C3Pressed
+0000bc 9b4a                      		SBIS PIND,2
+0000bd c005                      		RJMP C2Pressed
+0000be 9b4b                      		SBIS PIND,3
+0000bf c004                      		RJMP C1Pressed
+0000c0 cff2                      		RJMP waiting
                                  
                                  	C4Pressed:
-0000ec cff1                      		RJMP waiting
+0000c1 cff1                      		RJMP waiting
                                  
                                  	C3Pressed:
-0000ed cff0                      		RJMP waiting
+0000c2 cff0                      		RJMP waiting
                                  
                                  	C2Pressed:
-0000ee cfef                      		RJMP waiting
+0000c3 cfef                      		RJMP waiting
                                  
                                  	C1Pressed:
                                  		
-0000ef ef2f                      		LDI R18,0xFF
+0000c4 ef2f                      		LDI R18,0xFF
                                  		
                                  		; See p100 Atmega328p datasheet and https://www.avrfreaks.net/forum/explain-it
                                  		; << left bit shift   ,   | bitwise OR
                                  		; To build a bit mask that has bit number n set: (0x01 << n)    (1 is 'left shifted' by n)
                                  		; To build a bit mask that has bits number n and x set: (0x01 << n)|(0x01 << x)
-0000f0 ef00                      		LDI R16,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
-0000f1 e01f                      		LDI R17,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col
-0000f2 b90b                      		OUT PORTD,R16
-0000f3 b91a                      		OUT DDRD,R17
-0000f4 0000                      		NOP
-0000f5 0000                      		NOP
-0000f6 0000                      		NOP
-0000f7 0000                      		NOP										; to be able to read back the value recently assigned to some of the pins
+0000c5 ef00                      		LDI R16,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
+0000c6 b90b                      		OUT PORTD,R16
+0000c7 e01f                      		LDI R17,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col
+0000c8 b91a                      		OUT DDRD,R17
+0000c9 0000                      		NOP
+0000ca 0000                      		NOP
+0000cb 0000                      		NOP
+0000cc 0000                      		NOP										; to be able to read back the value recently assigned to some of the pins
                                  
                                  
-0000f8 9b4f                      		SBIS PIND,7                     
-0000f9 c007                      		RJMP BT7Pressed
-0000fa 9b4e                      		SBIS PIND,6						; Skip next instruction if not pressed
-0000fb c00b                      		RJMP BT4Pressed
-0000fc 9b4d                      		SBIS PIND,5
-0000fd c00f                      		RJMP BT1Pressed
-0000fe 9b4c                      		SBIS PIND,4
-0000ff c013                      		RJMP BTAPressed
-000100 c034                      		RJMP reset
+0000cd 9b4f                      		SBIS PIND,7                     
+0000ce c007                      		RJMP BT7Pressed
+0000cf 9b4e                      		SBIS PIND,6						; Skip next instruction if not pressed
+0000d0 c00b                      		RJMP BT4Pressed
+0000d1 9b4d                      		SBIS PIND,5
+0000d2 c00f                      		RJMP BT1Pressed
+0000d3 9b4c                      		SBIS PIND,4
+0000d4 c013                      		RJMP BTAPressed
+0000d5 c034                      		RJMP reset
                                  
                                  		BT7Pressed:
-000101 940e 016f                 			CALL FIRST_PART
-000103 e0a1                      			LDI R26,0x01
-000104 134a                      			CPSE R20,R26
-000105 c026                      			RJMP error
-000106 c012                      			RJMP correct
+0000d6 940e 0144                 			CALL FIRST_PART
+0000d8 e0a1                      			LDI R26,0x01
+0000d9 134a                      			CPSE R20,R26
+0000da c026                      			RJMP error
+0000db c012                      			RJMP correct
                                  
                                  
                                  		BT4Pressed:
-000107 940e 017a                 			CALL SECOND_PART
-000109 e0a2                      			LDI R26,0x02
-00010a 134a                      			CPSE R20,R26
-00010b c020                      			RJMP error
-00010c c00c                      			RJMP correct	
+0000dc 940e 014f                 			CALL SECOND_PART
+0000de e0a2                      			LDI R26,0x02
+0000df 134a                      			CPSE R20,R26
+0000e0 c020                      			RJMP error
+0000e1 c00c                      			RJMP correct	
                                  			
                                  
                                  		BT1Pressed:
-00010d 940e 0187                 			CALL THIRD_PART
-00010f e0a3                      			LDI R26,0x03
-000110 134a                      			CPSE R20,R26
-000111 c01a                      			RJMP error
-000112 c006                      			RJMP correct
+0000e2 940e 015c                 			CALL THIRD_PART
+0000e4 e0a3                      			LDI R26,0x03
+0000e5 134a                      			CPSE R20,R26
+0000e6 c01a                      			RJMP error
+0000e7 c006                      			RJMP correct
                                  
                                  		BTAPressed:
-000113 940e 0194                 			CALL FOURTH_PART
-000115 e0a4                      			LDI R26,0x04
-000116 134a                      			CPSE R20,R26
-000117 c014                      			RJMP error
-000118 c000                      			RJMP correct
+0000e8 940e 0169                 			CALL FOURTH_PART
+0000ea e0a4                      			LDI R26,0x04
+0000eb 134a                      			CPSE R20,R26
+0000ec c014                      			RJMP error
+0000ed c000                      			RJMP correct
                                  			
                                  		correct:
-000119 ed7b                      			LDI R23,0xDB			; A5 (880 Hz) (FF - 16e6 / (256 * 880 * 2)) because complete period is 'buzzer on -> 
-00011a 940e 0168                 			CALL Buzzer_loop		; next time buzzer is on ----> corresponds to 2 overflows of timer 0
+0000ee ed7b                      			LDI R23,0xDB			; A5 (880 Hz) (FF - 16e6 / (256 * 880 * 2)) because complete period is 'buzzer on -> 
+0000ef 940e 013d                 			CALL Buzzer_loop		; next time buzzer is on ----> corresponds to 2 overflows of timer 0
                                  
-00011c e0af                      			LDI R26,0x0F 
-00011d e0b8                      			LDI R27,0x08
-00011e e3c0                      			LDI R28,0x30
-00011f 940e 0161                 			CALL Delay
+0000f1 e0af                      			LDI R26,0x0F 
+0000f2 e0b8                      			LDI R27,0x08
+0000f3 e3c0                      			LDI R28,0x30
+0000f4 940e 0136                 			CALL Delay
                                  
-000121 e090                      			LDI R25,0x00
-000122 9390 006e                 			STS TIMSK0,R25			; Disable interrpt for timer 0
+0000f6 e090                      			LDI R25,0x00
+0000f7 9390 006e                 			STS TIMSK0,R25			; Disable interrpt for timer 0
                                  
-000124 940e 019f                 			CALL TURN_OFF
+0000f9 940e 0174                 			CALL TURN_OFF
                                  
-000126 e2a0                      			LDI R26,0x20
-000127 e4b0                      			LDI R27,0x40
-000128 e5c0                      			LDI R28,0x50
-000129 940e 0161                 			CALL Delay
-00012b c009                      			RJMP reset
+0000fb e2a0                      			LDI R26,0x20
+0000fc e4b0                      			LDI R27,0x40
+0000fd e5c0                      			LDI R28,0x50
+0000fe 940e 0136                 			CALL Delay
+000100 c009                      			RJMP reset
                                  
                                  
                                  		error:
-00012c e170                      			LDI R23,0x10			; 130.81 Hz (C3)
-00012d 940e 0168                 			CALL Buzzer_loop
-00012f e1af                      			LDI R26,0x1F 
-000130 e0b8                      			LDI R27,0x08
-000131 e3c0                      			LDI R28,0x30
-000132 940e 0161                 			CALL Delay
-000134 c31e                      			RJMP end
+000101 e170                      			LDI R23,0x10			; 130.81 Hz (C3)
+000102 940e 013d                 			CALL Buzzer_loop
+000104 e1af                      			LDI R26,0x1F 
+000105 e0b8                      			LDI R27,0x08
+000106 e3c0                      			LDI R28,0x30
+000107 940e 0136                 			CALL Delay
+000109 c31e                      			RJMP end
                                  		
                                  
                                  	reset:
-                                 		/*
-                                 		; Rows (7,6,5,4) are outputs (bits set)
-                                 		; Columns (3,2,1,0) are inputs (bits cleared)
-                                 		LDI R26,0xF0
-                                 		OUT DDRD,R26
-                                 
-                                 		; Columns : enable pull-up (bits set)
-                                 		; Rows are set to LOW (bits cleared)
-                                 		LDI R26,0x0F
-                                 		OUT PORTD,R26
-                                 		*/
-                                 
-000135 e00f                      		LDI R16,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col  ; equivalent to LDI R16,0x0F
-000136 ef10                      		LDI R17,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
-000137 b90b                      		OUT PORTD,R16
-000138 b91a                      		OUT DDRD,R17
-                                 	
-                                 	
-                                 	
-                                 
-000139 e0a1                      	LDI R26,0x01
-00013a 13ae                      	CPSE R26,R30
-00013b c001                      	RJMP continue_redo
-00013c c002                      	RJMP stop_redo
+00010a e00f                      		LDI R16,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col  ; equivalent to LDI R16,0x0F
+00010b b90b                      		OUT PORTD,R16
+00010c ef10                      		LDI R17,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
+00010d b91a                      		OUT DDRD,R17
+00010e e0a1                      		LDI R26,0x01
+00010f 13ae                      		CPSE R26,R30
+000110 c001                      		RJMP continue_redo
+000111 c002                      		RJMP stop_redo
                                  	
                                  	
                                  	continue_redo:
-00013d 95ea                      		DEC R30
-00013e cf9d                      		RJMP REDO_SEQ
+000112 95ea                      		DEC R30
+000113 cf9d                      		RJMP REDO_SEQ
                                  
                                  	
                                  
                                  	stop_redo:
-00013f 9553                      		INC R21							; Increase score
-000140 95f3                      		INC R31							; Increase sequence length
-000141 2fd6                      		MOV R29,R22					; Seed for generation of random numbers
-000142 2fef                      		MOV R30,R31	
+000114 9553                      		INC R21							; Increase score
+000115 95f3                      		INC R31							; Increase sequence length
+000116 2fd6                      		MOV R29,R22					; Seed for generation of random numbers
+000117 2fef                      		MOV R30,R31	
                                  
-000143 e8a0                      		LDI R26,0x80
-000144 efbf                      		LDI R27,0xFF
-000145 efcf                      		LDI R28,0xFF
-000146 940e 0161                 		CALL Delay
+000118 e8a0                      		LDI R26,0x80
+000119 efbf                      		LDI R27,0xFF
+00011a efcf                      		LDI R28,0xFF
+00011b 940e 0136                 		CALL Delay
                                  
                                  .INCLUDE "OTHER_FUNCTIONS.inc"
-000148 c305                      
+00011d c305                      
                                   * OTHER_FUNCTIONS.inc
                                   *  - col_off
                                   *  - col_on
@@ -1674,39 +1609,39 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                   
                                  col_off:
                                  	Columns_loop_off_1:				
-000149 982b                      		CBI PORTB,3
-00014a 9a2d                      		SBI PORTB,5
-00014b 982d                      		CBI PORTB,5
-00014c 95aa                      		DEC R26
-00014d f7d9                      		BRNE Columns_loop_off_1
-00014e 9508                      	RET
+00011e 982b                      		CBI PORTB,3
+00011f 9a2d                      		SBI PORTB,5
+000120 982d                      		CBI PORTB,5
+000121 95aa                      		DEC R26
+000122 f7d9                      		BRNE Columns_loop_off_1
+000123 9508                      	RET
                                  
                                  col_on:
                                  	Columns_loop_on_1:				
-00014f 9a2b                      		SBI PORTB,3
-000150 9a2d                      		SBI PORTB,5
-000151 982d                      		CBI PORTB,5
-000152 95aa                      		DEC R26
-000153 f7d9                      		BRNE Columns_loop_on_1
-000154 9508                      	RET
+000124 9a2b                      		SBI PORTB,3
+000125 9a2d                      		SBI PORTB,5
+000126 982d                      		CBI PORTB,5
+000127 95aa                      		DEC R26
+000128 f7d9                      		BRNE Columns_loop_on_1
+000129 9508                      	RET
                                  	
                                  row_on:
                                  	Rows_loop_on_1:		
-000155 9a2b                      		SBI PORTB,3
-000156 9a2d                      		SBI PORTB,5
-000157 982d                      		CBI PORTB,5
-000158 95aa                      		DEC R26
-000159 f7d9                      		BRNE Rows_loop_on_1
-00015a 9508                      	RET
+00012a 9a2b                      		SBI PORTB,3
+00012b 9a2d                      		SBI PORTB,5
+00012c 982d                      		CBI PORTB,5
+00012d 95aa                      		DEC R26
+00012e f7d9                      		BRNE Rows_loop_on_1
+00012f 9508                      	RET
                                  
                                  row_off:	
                                  	Rows_loop_off_1:		
-00015b 982b                      		CBI PORTB,3
-00015c 9a2d                      		SBI PORTB,5
-00015d 982d                      		CBI PORTB,5
-00015e 95aa                      		DEC R26
-00015f f7d9                      		BRNE Rows_loop_off_1
-000160 9508                      	RET	
+000130 982b                      		CBI PORTB,3
+000131 9a2d                      		SBI PORTB,5
+000132 982d                      		CBI PORTB,5
+000133 95aa                      		DEC R26
+000134 f7d9                      		BRNE Rows_loop_off_1
+000135 9508                      	RET	
                                  
                                  
                                  
@@ -1714,299 +1649,299 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  	loop1:
                                  		loop2:
                                  			loop3:
-000161 95ca                      				DEC R28
-000162 f7f1                      				BRNE loop3
-000163 95ba                      			DEC R27
-000164 f7e1                      			BRNE loop2
-000165 95aa                      		DEC R26
-000166 f7d1                      		BRNE loop1
-000167 9508                      	RET
+000136 95ca                      				DEC R28
+000137 f7f1                      				BRNE loop3
+000138 95ba                      			DEC R27
+000139 f7e1                      			BRNE loop2
+00013a 95aa                      		DEC R26
+00013b f7d1                      		BRNE loop1
+00013c 9508                      	RET
                                  
                                  
                                  Buzzer_loop:
-000168 e001                      	LDI R16,0x01
-000169 9300 006e                 	STS TIMSK0,R16			; Enable interrupt for timer 0
-00016b e004                      	LDI R16,0x04			; Prescaler 256
-00016c bd05                      	OUT TCCR0B,R16 
-00016d bd76                      	OUT TCNT0,R23
-00016e 9508                      	RET
+00013d e001                      	LDI R16,0x01
+00013e 9300 006e                 	STS TIMSK0,R16			; Enable interrupt for timer 0
+000140 e004                      	LDI R16,0x04			; Prescaler 256
+000141 bd05                      	OUT TCCR0B,R16 
+000142 bd76                      	OUT TCNT0,R23
+000143 9508                      	RET
                                  	
                                  
                                  		
                                  FIRST_PART:
-00016f e3ac                      	LDI R26,0x3C
-000170 dfd8                      	RCALL col_off
-000171 e1a4                      	LDI R26,0x14
-000172 dfdc                      	RCALL col_on
-000173 e0a8                      	LDI R26,0x08
-000174 dfe0                      	RCALL row_on
-000175 9a2c                      	SBI PORTB,4
-000176 940e 0072                 	CALL pause
-000178 982c                      	CBI PORTB,4
-000179 9508                      	RET
+000144 e3ac                      	LDI R26,0x3C
+000145 dfd8                      	RCALL col_off
+000146 e1a4                      	LDI R26,0x14
+000147 dfdc                      	RCALL col_on
+000148 e0a8                      	LDI R26,0x08
+000149 dfe0                      	RCALL row_on
+00014a 9a2c                      	SBI PORTB,4
+00014b 940e 0070                 	CALL pause
+00014d 982c                      	CBI PORTB,4
+00014e 9508                      	RET
                                  
                                  SECOND_PART:
-00017a e2a8                      	LDI R26,0x28
-00017b dfcd                      	RCALL col_off
-00017c e1a4                      	LDI R26,0x14
-00017d dfd1                      	RCALL col_on
-00017e e1a4                      	LDI R26,0x14
-00017f dfc9                      	RCALL col_off
-000180 e0a8                      	LDI R26,0x08
-000181 dfd3                      	RCALL row_on
-000182 9a2c                      	SBI PORTB,4
-000183 940e 0072                 	CALL pause
-000185 982c                      	CBI PORTB,4
-000186 9508                      	RET
+00014f e2a8                      	LDI R26,0x28
+000150 dfcd                      	RCALL col_off
+000151 e1a4                      	LDI R26,0x14
+000152 dfd1                      	RCALL col_on
+000153 e1a4                      	LDI R26,0x14
+000154 dfc9                      	RCALL col_off
+000155 e0a8                      	LDI R26,0x08
+000156 dfd3                      	RCALL row_on
+000157 9a2c                      	SBI PORTB,4
+000158 940e 0070                 	CALL pause
+00015a 982c                      	CBI PORTB,4
+00015b 9508                      	RET
                                  
                                  THIRD_PART:
-000187 e1a4                      	LDI R26,0x14
-000188 dfc0                      	RCALL col_off
-000189 e1a4                      	LDI R26,0x14
-00018a dfc4                      	RCALL col_on
-00018b e2a8                      	LDI R26,0x28
-00018c dfbc                      	RCALL col_off
-00018d e0a8                      	LDI R26,0x08
-00018e dfc6                      	RCALL row_on
-00018f 9a2c                      	SBI PORTB,4
-000190 940e 0072                 	CALL pause
-000192 982c                      	CBI PORTB,4
-000193 9508                      	RET
+00015c e1a4                      	LDI R26,0x14
+00015d dfc0                      	RCALL col_off
+00015e e1a4                      	LDI R26,0x14
+00015f dfc4                      	RCALL col_on
+000160 e2a8                      	LDI R26,0x28
+000161 dfbc                      	RCALL col_off
+000162 e0a8                      	LDI R26,0x08
+000163 dfc6                      	RCALL row_on
+000164 9a2c                      	SBI PORTB,4
+000165 940e 0070                 	CALL pause
+000167 982c                      	CBI PORTB,4
+000168 9508                      	RET
                                  
                                  FOURTH_PART:
-000194 e1a4                      	LDI R26,0x14
-000195 dfb9                      	RCALL col_on
-000196 e3ac                      	LDI R26,0x3C
-000197 dfb1                      	RCALL col_off
-000198 e0a8                      	LDI R26,0x08
-000199 dfbb                      	RCALL row_on
-00019a 9a2c                      	SBI PORTB,4
-00019b 940e 0072                 	CALL pause
-00019d 982c                      	CBI PORTB,4
-00019e 9508                      	RET
+000169 e1a4                      	LDI R26,0x14
+00016a dfb9                      	RCALL col_on
+00016b e3ac                      	LDI R26,0x3C
+00016c dfb1                      	RCALL col_off
+00016d e0a8                      	LDI R26,0x08
+00016e dfbb                      	RCALL row_on
+00016f 9a2c                      	SBI PORTB,4
+000170 940e 0070                 	CALL pause
+000172 982c                      	CBI PORTB,4
+000173 9508                      	RET
                                  
                                  TURN_OFF:
-00019f e5a0                      	LDI R26,0x50
-0001a0 dfa8                      	RCALL col_off
-0001a1 e0a8                      	LDI R26,0x08
-0001a2 dfb8                      	RCALL row_off
-0001a3 9a2c                      	SBI PORTB,4
-0001a4 940e 0072                 	CALL pause
-0001a6 982c                      	CBI PORTB,4
-0001a7 9508                      	RET
+000174 e5a0                      	LDI R26,0x50
+000175 dfa8                      	RCALL col_off
+000176 e0a8                      	LDI R26,0x08
+000177 dfb8                      	RCALL row_off
+000178 9a2c                      	SBI PORTB,4
+000179 940e 0070                 	CALL pause
+00017b 982c                      	CBI PORTB,4
+00017c 9508                      	RET
                                  	
                                  
                                  
                                  Delay1:
-0001a8 940e 0168                 	CALL Buzzer_loop
-0001aa e0a1                      	LDI R26,0x01 
-0001ab edbf                      	LDI R27,0xDF
+00017d 940e 013d                 	CALL Buzzer_loop
+00017f e0a1                      	LDI R26,0x01 
+000180 edbf                      	LDI R27,0xDF
                                  	loop11:
                                  		loop21:
-0001ac e000                      			LDI R16,0x00
-0001ad 1380                      			CPSE R24,R16
-0001ae c001                      			RJMP curr
-0001af c03e                      			RJMP besttt
+000181 e000                      			LDI R16,0x00
+000182 1380                      			CPSE R24,R16
+000183 c001                      			RJMP curr
+000184 c03e                      			RJMP besttt
                                  			curr:
-0001b0 2f5d                      			MOV R21,R29
-0001b1 e000
-0001b2 1350
-0001b3 c003
-0001b4 e0f9
-0001b5 ecee
-0001b6 c033
-0001b7 e001
-0001b8 1350
-0001b9 c003
-0001ba e0fa
-0001bb e1e4
-0001bc c02d
-0001bd e002
-0001be 1350
-0001bf c003
-0001c0 e0fa
-0001c1 e5ea
-0001c2 c027
-0001c3 e003
-0001c4 1350
-0001c5 c003
-0001c6 e0fa
-0001c7 eae0
-0001c8 c021
-0001c9 e004
-0001ca 1350
-0001cb c003
-0001cc e0fa
-0001cd eee6
-0001ce c01b
-0001cf e005
-0001d0 1350
-0001d1 c003
-0001d2 e0fb
-0001d3 e2ec
-0001d4 c015
-0001d5 e006
-0001d6 1350
-0001d7 c003
-0001d8 e0fb
-0001d9 e7e2
-0001da c00f
-0001db e007
-0001dc 1350
-0001dd c003
-0001de e0fb
-0001df ebe8
-0001e0 c009
-0001e1 e008
-0001e2 1350
-0001e3 c003
-0001e4 e0fb
-0001e5 efee
-0001e6 c003
-0001e7 e0fc
-0001e8 e4e4
-0001e9 c000
-0001ea 940e 003f                 			MACRO_PRINT_SCORE score_zero,score_one,score_two,score_three,score_four,score_five,score_six,score_seven,score_eight,score_nine
-0001ec 2f56                      			MOV R21,R22
-0001ed c03d                      			RJMP cont_score
+000185 2f5d                      			MOV R21,R29
+000186 e000
+000187 1350
+000188 c003
+000189 e0f9
+00018a ecee
+00018b c033
+00018c e001
+00018d 1350
+00018e c003
+00018f e0fa
+000190 e1e4
+000191 c02d
+000192 e002
+000193 1350
+000194 c003
+000195 e0fa
+000196 e5ea
+000197 c027
+000198 e003
+000199 1350
+00019a c003
+00019b e0fa
+00019c eae0
+00019d c021
+00019e e004
+00019f 1350
+0001a0 c003
+0001a1 e0fa
+0001a2 eee6
+0001a3 c01b
+0001a4 e005
+0001a5 1350
+0001a6 c003
+0001a7 e0fb
+0001a8 e2ec
+0001a9 c015
+0001aa e006
+0001ab 1350
+0001ac c003
+0001ad e0fb
+0001ae e7e2
+0001af c00f
+0001b0 e007
+0001b1 1350
+0001b2 c003
+0001b3 e0fb
+0001b4 ebe8
+0001b5 c009
+0001b6 e008
+0001b7 1350
+0001b8 c003
+0001b9 e0fb
+0001ba efee
+0001bb c003
+0001bc e0fc
+0001bd e4e4
+0001be c000
+0001bf 940e 003f                 			MACRO_PRINT_SCORE score_zero,score_one,score_two,score_three,score_four,score_five,score_six,score_seven,score_eight,score_nine
+0001c1 2f56                      			MOV R21,R22
+0001c2 c03d                      			RJMP cont_score
                                  			besttt:
-0001ee 2f5d                      			MOV R21,R29
-0001ef e000
-0001f0 1350
-0001f1 c003
-0001f2 e0ff
-0001f3 e4e6
-0001f4 c033
-0001f5 e001
-0001f6 1350
-0001f7 c003
-0001f8 e0ff
-0001f9 e8ec
-0001fa c02d
-0001fb e002
-0001fc 1350
-0001fd c003
-0001fe e0ff
-0001ff ede2
-000200 c027
-000201 e003
-000202 1350
-000203 c003
-000204 e1f0
-000205 e1e8
-000206 c021
-000207 e004
-000208 1350
-000209 c003
-00020a e1f0
-00020b e5ee
-00020c c01b
-00020d e005
-00020e 1350
-00020f c003
-000210 e1f0
-000211 eae4
-000212 c015
-000213 e006
-000214 1350
-000215 c003
-000216 e1f0
-000217 eeea
-000218 c00f
-000219 e007
-00021a 1350
-00021b c003
-00021c e1f1
-00021d e3e0
-00021e c009
-00021f e008
-000220 1350
-000221 c003
-000222 e1f1
-000223 e7e6
-000224 c003
-000225 e1f1
-000226 ebec
-000227 c000
-000228 940e 003f                 			MACRO_PRINT_SCORE best_zero,best_one,best_two,best_three,best_four,best_five,best_six,best_seven,best_eight,best_nine
-00022a 2f54                      			MOV R21,R20
+0001c3 2f53                      			MOV R21,R19
+0001c4 e000
+0001c5 1350
+0001c6 c003
+0001c7 e0ff
+0001c8 e4e6
+0001c9 c033
+0001ca e001
+0001cb 1350
+0001cc c003
+0001cd e0ff
+0001ce e8ec
+0001cf c02d
+0001d0 e002
+0001d1 1350
+0001d2 c003
+0001d3 e0ff
+0001d4 ede2
+0001d5 c027
+0001d6 e003
+0001d7 1350
+0001d8 c003
+0001d9 e1f0
+0001da e1e8
+0001db c021
+0001dc e004
+0001dd 1350
+0001de c003
+0001df e1f0
+0001e0 e5ee
+0001e1 c01b
+0001e2 e005
+0001e3 1350
+0001e4 c003
+0001e5 e1f0
+0001e6 eae4
+0001e7 c015
+0001e8 e006
+0001e9 1350
+0001ea c003
+0001eb e1f0
+0001ec eeea
+0001ed c00f
+0001ee e007
+0001ef 1350
+0001f0 c003
+0001f1 e1f1
+0001f2 e3e0
+0001f3 c009
+0001f4 e008
+0001f5 1350
+0001f6 c003
+0001f7 e1f1
+0001f8 e7e6
+0001f9 c003
+0001fa e1f1
+0001fb ebec
+0001fc c000
+0001fd 940e 003f                 			MACRO_PRINT_SCORE best_zero,best_one,best_two,best_three,best_four,best_five,best_six,best_seven,best_eight,best_nine
+0001ff 2f54                      			MOV R21,R20
                                  			cont_score:
-00022b e000
-00022c 1350
-00022d c003
-00022e e0fc
-00022f e8ea
-000230 c033
-000231 e001
-000232 1350
-000233 c003
-000234 e0fc
-000235 ede0
-000236 c02d
-000237 e002
-000238 1350
-000239 c003
-00023a e0fd
-00023b e1e6
-00023c c027
-00023d e003
-00023e 1350
-00023f c003
-000240 e0fd
-000241 e5ec
-000242 c021
-000243 e004
-000244 1350
-000245 c003
-000246 e0fd
-000247 eae2
-000248 c01b
-000249 e005
-00024a 1350
-00024b c003
-00024c e0fd
-00024d eee8
-00024e c015
-00024f e006
-000250 1350
-000251 c003
-000252 e0fe
-000253 e2ee
-000254 c00f
-000255 e007
-000256 1350
-000257 c003
-000258 e0fe
-000259 e7e4
-00025a c009
-00025b e008
-00025c 1350
-00025d c003
-00025e e0fe
-00025f ebea
-000260 c003
-000261 e0ff
-000262 e0e0
-000263 c000
-000264 940e 003f                 			MACRO_PRINT_SCORE zero,one,two,three,four,five,six,seven,eight,nine
-000266 991a                      			SBIC PINB,2
-000267 c001                      			RJMP NoJoy1
-000268 c23a                      			RJMP Joy
+000200 e000
+000201 1350
+000202 c003
+000203 e0fc
+000204 e8ea
+000205 c033
+000206 e001
+000207 1350
+000208 c003
+000209 e0fc
+00020a ede0
+00020b c02d
+00020c e002
+00020d 1350
+00020e c003
+00020f e0fd
+000210 e1e6
+000211 c027
+000212 e003
+000213 1350
+000214 c003
+000215 e0fd
+000216 e5ec
+000217 c021
+000218 e004
+000219 1350
+00021a c003
+00021b e0fd
+00021c eae2
+00021d c01b
+00021e e005
+00021f 1350
+000220 c003
+000221 e0fd
+000222 eee8
+000223 c015
+000224 e006
+000225 1350
+000226 c003
+000227 e0fe
+000228 e2ee
+000229 c00f
+00022a e007
+00022b 1350
+00022c c003
+00022d e0fe
+00022e e7e4
+00022f c009
+000230 e008
+000231 1350
+000232 c003
+000233 e0fe
+000234 ebea
+000235 c003
+000236 e0ff
+000237 e0e0
+000238 c000
+000239 940e 003f                 			MACRO_PRINT_SCORE zero,one,two,three,four,five,six,seven,eight,nine
+00023b 991a                      			SBIC PINB,2
+00023c c001                      			RJMP NoJoy1
+00023d c264                      			RJMP Joy
                                  			NoJoy1:
-000269 95ba                      			DEC R27
-00026a e000                      			LDI R16,0x00
-00026b 13b0                      			CPSE R27,R16
-00026c cf3f                      			RJMP loop21
-00026d 95aa                      		DEC R26
-00026e 13a0                      		CPSE R26,R16
-00026f cf3c                      		RJMP loop11
-000270 9508                      	RET
+00023e 95ba                      			DEC R27
+00023f e000                      			LDI R16,0x00
+000240 13b0                      			CPSE R27,R16
+000241 cf3f                      			RJMP loop21
+000242 95aa                      		DEC R26
+000243 13a0                      		CPSE R26,R16
+000244 cf3c                      		RJMP loop11
+000245 9508                      	RET
                                  
                                  
                                  
                                  init1:
-000271 e0a0                      	LDI R26,0x00
-000272 93a0 dd00                 	STS $DD00,R26						; set highest score at zero at first
+000246 e0a0                      	LDI R26,0x00
+000247 93a0 dd00                 	STS $DD00,R26						; set highest score at zero at first
                                  
                                  
                                  /******************\
@@ -2014,8 +1949,8 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  \******************/
                                  
                                  init:
-000274 940e 0021                 	CALL INITIALIZATION
-000276 c000                      	RJMP start_screen
+000249 940e 0021                 	CALL INITIALIZATION
+00024b c000                      	RJMP start_screen
                                  
                                  
                                  /***********************************************************\
@@ -2024,430 +1959,430 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  start_screen:
                                  
-000277 ea7f                      	LDI R23,0xAF			; TCNT_INIT for timer 0 --> Key G (4)
-000278 940e 0168
-00027a e0a1
-00027b e0b2
-00027c e3c0
-00027d e0f9
-00027e e8e8
-00027f 940e 003f
-000281 991a
-000282 c001
-000283 c1bc
-000284 95ca
-000285 f7b9
-000286 95ba
-000287 f7a9
-000288 95aa
-000289 f799                      	DELAY_MACRO Joy_start
-00028a ec70                      	LDI R23,0xC0			; Key B 
-00028b 940e 0168
-00028d e0a1
-00028e e0b2
-00028f e3c0
-000290 e0f9
-000291 e8e8
-000292 940e 003f
-000294 991a
-000295 c001
-000296 c1a9
-000297 95ca
-000298 f7b9
-000299 95ba
-00029a f7a9
-00029b 95aa
-00029c f799                      	DELAY_MACRO Joy_start
-00029d e975                      	LDI R23,0x95			; Key D 
-00029e 940e 0168
-0002a0 e0a1
-0002a1 e0b2
-0002a2 e3c0
-0002a3 e0f9
-0002a4 e8e8
-0002a5 940e 003f
-0002a7 991a
-0002a8 c001
-0002a9 c196
-0002aa 95ca
-0002ab f7b9
-0002ac 95ba
-0002ad f7a9
-0002ae 95aa
-0002af f799                      	DELAY_MACRO Joy_start
-0002b0 e975                      	LDI R23,0x95			; Key D 
-0002b1 940e 0168
-0002b3 e0a1
-0002b4 e0b2
-0002b5 e3c0
-0002b6 e0f9
-0002b7 e8e8
-0002b8 940e 003f
-0002ba 991a
-0002bb c001
-0002bc c183
-0002bd 95ca
-0002be f7b9
-0002bf 95ba
-0002c0 f7a9
-0002c1 95aa
-0002c2 f799                      	DELAY_MACRO Joy_start
-0002c3 ea7b                      	LDI R23,0xAB			; Key F#
-0002c4 940e 0168
-0002c6 e0a1
-0002c7 e0b2
-0002c8 e3c0
-0002c9 e0f9
-0002ca e8e8
-0002cb 940e 003f
-0002cd 991a
-0002ce c001
-0002cf c170
-0002d0 95ca
-0002d1 f7b9
-0002d2 95ba
-0002d3 f7a9
-0002d4 95aa
-0002d5 f799                      	DELAY_MACRO Joy_start
-0002d6 eb78                      	LDI R23,0xB8			; Key A
-0002d7 940e 0168
-0002d9 e0a1
-0002da e0b2
-0002db e3c0
-0002dc e0f9
-0002dd e8e8
-0002de 940e 003f
-0002e0 991a
-0002e1 c001
-0002e2 c15d
-0002e3 95ca
-0002e4 f7b9
-0002e5 95ba
-0002e6 f7a9
-0002e7 95aa
-0002e8 f799                      	DELAY_MACRO Joy_start
-0002e9 ea70                      	LDI R23,0xA0			; Key E
-0002ea 940e 0168
-0002ec e0a1
-0002ed e0b2
-0002ee e3c0
-0002ef e0f9
-0002f0 e8e8
-0002f1 940e 003f
-0002f3 991a
-0002f4 c001
-0002f5 c14a
-0002f6 95ca
-0002f7 f7b9
-0002f8 95ba
-0002f9 f7a9
-0002fa 95aa
-0002fb f799                      	DELAY_MACRO Joy_start
-0002fc ea7f                      	LDI R23,0xAF			; Key G
-0002fd 940e 0168
-0002ff e0a1
-000300 e0b2
-000301 e3c0
-000302 e0f9
-000303 e8e8
-000304 940e 003f
-000306 991a
-000307 c001
-000308 c137
-000309 95ca
-00030a f7b9
-00030b 95ba
-00030c f7a9
-00030d 95aa
-00030e f799                      	DELAY_MACRO Joy_start
-00030f ec70                      	LDI R23,0xC0			; Key B
-000310 940e 0168
-000312 e0a1
-000313 e0b2
-000314 e3c0
-000315 e0f9
-000316 e8e8
-000317 940e 003f
-000319 991a
-00031a c001
-00031b c124
-00031c 95ca
-00031d f7b9
-00031e 95ba
-00031f f7a9
-000320 95aa
-000321 f799                      	DELAY_MACRO Joy_start
-000322 ec70                      	LDI R23,0xC0			; Key B 
-000323 940e 0168
-000325 e0a1
-000326 e0b2
-000327 e3c0
-000328 e0f9
-000329 e8e8
-00032a 940e 003f
-00032c 991a
-00032d c001
-00032e c111
-00032f 95ca
-000330 f7b9
-000331 95ba
-000332 f7a9
-000333 95aa
-000334 f799                      	DELAY_MACRO Joy_start
-000335 e975                      	LDI R23,0x95			; Key D 
-000336 940e 0168
-000338 e0a1
-000339 e0b2
-00033a e3c0
-00033b e0f9
-00033c e8e8
-00033d 940e 003f
-00033f 991a
-000340 c001
-000341 c0fe
-000342 95ca
-000343 f7b9
-000344 95ba
-000345 f7a9
-000346 95aa
-000347 f799                      	DELAY_MACRO Joy_start
-000348 ea7b                      	LDI R23,0xAB			; Key F#
-000349 940e 0168
-00034b e0a1
-00034c e0b2
-00034d e3c0
-00034e e0f9
-00034f e8e8
-000350 940e 003f
-000352 991a
-000353 c001
-000354 c0eb
-000355 95ca
-000356 f7b9
-000357 95ba
-000358 f7a9
-000359 95aa
-00035a f799                      	DELAY_MACRO Joy_start
-00035b e878                      	LDI R23,0x88			; Key C
-00035c 940e 0168
-00035e e0a1
-00035f e0b2
-000360 e3c0
-000361 e0f9
-000362 e8e8
-000363 940e 003f
-000365 991a
-000366 c001
-000367 c0d8
-000368 95ca
-000369 f7b9
-00036a 95ba
-00036b f7a9
-00036c 95aa
-00036d f799                      	DELAY_MACRO Joy_start
-00036e ea70                      	LDI R23,0xA0			; Key E
-00036f 940e 0168
-000371 e0a1
-000372 e0b2
-000373 e3c0
-000374 e0f9
-000375 e8e8
-000376 940e 003f
-000378 991a
-000379 c001
-00037a c0c5
-00037b 95ca
-00037c f7b9
-00037d 95ba
-00037e f7a9
-00037f 95aa
-000380 f799                      	DELAY_MACRO Joy_start
-000381 ea7f                      	LDI R23,0xAF			; Key G
-000382 940e 0168
-000384 e0a1
-000385 e0b2
-000386 e3c0
-000387 e0f9
-000388 e8e8
-000389 940e 003f
-00038b 991a
-00038c c001
-00038d c0b2
-00038e 95ca
-00038f f7b9
-000390 95ba
-000391 f7a9
-000392 95aa
-000393 f799                      	DELAY_MACRO Joy_start
-000394 ea7f                      	LDI R23,0xAF			; Key G
-000395 940e 0168
-000397 e0a1
-000398 e0b2
-000399 e3c0
-00039a e0f9
-00039b e8e8
-00039c 940e 003f
-00039e 991a
-00039f c001
-0003a0 c09f
-0003a1 95ca
-0003a2 f7b9
-0003a3 95ba
-0003a4 f7a9
-0003a5 95aa
-0003a6 f799                      	DELAY_MACRO Joy_start
-0003a7 ec70                      	LDI R23,0xC0			; Key B
-0003a8 940e 0168
-0003aa e0a1
-0003ab e0b2
-0003ac e3c0
-0003ad e0f9
-0003ae e8e8
-0003af 940e 003f
-0003b1 991a
-0003b2 c001
-0003b3 c08c
-0003b4 95ca
-0003b5 f7b9
-0003b6 95ba
-0003b7 f7a9
-0003b8 95aa
-0003b9 f799                      	DELAY_MACRO Joy_start
-0003ba e975                      	LDI R23,0x95			; Key D
-0003bb 940e 0168
-0003bd e0a1
-0003be e0b2
-0003bf e3c0
-0003c0 e0f9
-0003c1 e8e8
-0003c2 940e 003f
-0003c4 991a
-0003c5 c001
-0003c6 c079
-0003c7 95ca
-0003c8 f7b9
-0003c9 95ba
-0003ca f7a9
-0003cb 95aa
-0003cc f799                      	DELAY_MACRO Joy_start
-0003cd e878                      	LDI R23,0x88			; Key C
-0003ce 940e 0168
-0003d0 e0a1
-0003d1 e0b2
-0003d2 e3c0
-0003d3 e0f9
-0003d4 e8e8
-0003d5 940e 003f
-0003d7 991a
-0003d8 c001
-0003d9 c066
-0003da 95ca
-0003db f7b9
-0003dc 95ba
-0003dd f7a9
-0003de 95aa
-0003df f799                      	DELAY_MACRO Joy_start
-0003e0 ea70                      	LDI R23,0xA0			; Key E
-0003e1 940e 0168
-0003e3 e0a1
-0003e4 e0b2
-0003e5 e3c0
-0003e6 e0f9
-0003e7 e8e8
-0003e8 940e 003f
-0003ea 991a
-0003eb c001
-0003ec c053
-0003ed 95ca
-0003ee f7b9
-0003ef 95ba
-0003f0 f7a9
-0003f1 95aa
-0003f2 f799                      	DELAY_MACRO Joy_start
-0003f3 ea7f                      	LDI R23,0xAF			; Key G
-0003f4 940e 0168
-0003f6 e0a1
-0003f7 e0b2
-0003f8 e3c0
-0003f9 e0f9
-0003fa e8e8
-0003fb 940e 003f
-0003fd 991a
-0003fe c001
-0003ff c040
-000400 95ca
-000401 f7b9
-000402 95ba
-000403 f7a9
-000404 95aa
-000405 f799                      	DELAY_MACRO Joy_start
-000406 e975                      	LDI R23,0x95			; Key D
-000407 940e 0168
-000409 e0a1
-00040a e0b2
-00040b e3c0
-00040c e0f9
-00040d e8e8
-00040e 940e 003f
-000410 991a
-000411 c001
-000412 c02d
-000413 95ca
-000414 f7b9
-000415 95ba
-000416 f7a9
-000417 95aa
-000418 f799                      	DELAY_MACRO Joy_start
-000419 ea7b                      	LDI R23,0xAB			; Key F#
-00041a 940e 0168
-00041c e0a1
-00041d e0b2
-00041e e3c0
-00041f e0f9
-000420 e8e8
-000421 940e 003f
-000423 991a
-000424 c001
-000425 c01a
-000426 95ca
-000427 f7b9
-000428 95ba
-000429 f7a9
-00042a 95aa
-00042b f799                      	DELAY_MACRO Joy_start
-00042c eb78                      	LDI R23,0xB8			; Key A
-00042d 940e 0168
-00042f e0a1
-000430 e0b2
-000431 e3c0
-000432 e0f9
-000433 e8e8
-000434 940e 003f
-000436 991a
-000437 c001
-000438 c007
-000439 95ca
-00043a f7b9
-00043b 95ba
-00043c f7a9
-00043d 95aa
-00043e f799                      	DELAY_MACRO Joy_start
-00043f ce37                      	RJMP start_screen
+00024c ea7f                      	LDI R23,0xAF			; TCNT_INIT for timer 0 --> Key G (4)
+00024d 940e 013d
+00024f e0a1
+000250 e0b2
+000251 e3c0
+000252 e0f9
+000253 e8e8
+000254 940e 003f
+000256 991a
+000257 c001
+000258 c1bc
+000259 95ca
+00025a f7b9
+00025b 95ba
+00025c f7a9
+00025d 95aa
+00025e f799                      	DELAY_MACRO Joy_start
+00025f ec70                      	LDI R23,0xC0			; Key B 
+000260 940e 013d
+000262 e0a1
+000263 e0b2
+000264 e3c0
+000265 e0f9
+000266 e8e8
+000267 940e 003f
+000269 991a
+00026a c001
+00026b c1a9
+00026c 95ca
+00026d f7b9
+00026e 95ba
+00026f f7a9
+000270 95aa
+000271 f799                      	DELAY_MACRO Joy_start
+000272 e975                      	LDI R23,0x95			; Key D 
+000273 940e 013d
+000275 e0a1
+000276 e0b2
+000277 e3c0
+000278 e0f9
+000279 e8e8
+00027a 940e 003f
+00027c 991a
+00027d c001
+00027e c196
+00027f 95ca
+000280 f7b9
+000281 95ba
+000282 f7a9
+000283 95aa
+000284 f799                      	DELAY_MACRO Joy_start
+000285 e975                      	LDI R23,0x95			; Key D 
+000286 940e 013d
+000288 e0a1
+000289 e0b2
+00028a e3c0
+00028b e0f9
+00028c e8e8
+00028d 940e 003f
+00028f 991a
+000290 c001
+000291 c183
+000292 95ca
+000293 f7b9
+000294 95ba
+000295 f7a9
+000296 95aa
+000297 f799                      	DELAY_MACRO Joy_start
+000298 ea7b                      	LDI R23,0xAB			; Key F#
+000299 940e 013d
+00029b e0a1
+00029c e0b2
+00029d e3c0
+00029e e0f9
+00029f e8e8
+0002a0 940e 003f
+0002a2 991a
+0002a3 c001
+0002a4 c170
+0002a5 95ca
+0002a6 f7b9
+0002a7 95ba
+0002a8 f7a9
+0002a9 95aa
+0002aa f799                      	DELAY_MACRO Joy_start
+0002ab eb78                      	LDI R23,0xB8			; Key A
+0002ac 940e 013d
+0002ae e0a1
+0002af e0b2
+0002b0 e3c0
+0002b1 e0f9
+0002b2 e8e8
+0002b3 940e 003f
+0002b5 991a
+0002b6 c001
+0002b7 c15d
+0002b8 95ca
+0002b9 f7b9
+0002ba 95ba
+0002bb f7a9
+0002bc 95aa
+0002bd f799                      	DELAY_MACRO Joy_start
+0002be ea70                      	LDI R23,0xA0			; Key E
+0002bf 940e 013d
+0002c1 e0a1
+0002c2 e0b2
+0002c3 e3c0
+0002c4 e0f9
+0002c5 e8e8
+0002c6 940e 003f
+0002c8 991a
+0002c9 c001
+0002ca c14a
+0002cb 95ca
+0002cc f7b9
+0002cd 95ba
+0002ce f7a9
+0002cf 95aa
+0002d0 f799                      	DELAY_MACRO Joy_start
+0002d1 ea7f                      	LDI R23,0xAF			; Key G
+0002d2 940e 013d
+0002d4 e0a1
+0002d5 e0b2
+0002d6 e3c0
+0002d7 e0f9
+0002d8 e8e8
+0002d9 940e 003f
+0002db 991a
+0002dc c001
+0002dd c137
+0002de 95ca
+0002df f7b9
+0002e0 95ba
+0002e1 f7a9
+0002e2 95aa
+0002e3 f799                      	DELAY_MACRO Joy_start
+0002e4 ec70                      	LDI R23,0xC0			; Key B
+0002e5 940e 013d
+0002e7 e0a1
+0002e8 e0b2
+0002e9 e3c0
+0002ea e0f9
+0002eb e8e8
+0002ec 940e 003f
+0002ee 991a
+0002ef c001
+0002f0 c124
+0002f1 95ca
+0002f2 f7b9
+0002f3 95ba
+0002f4 f7a9
+0002f5 95aa
+0002f6 f799                      	DELAY_MACRO Joy_start
+0002f7 ec70                      	LDI R23,0xC0			; Key B 
+0002f8 940e 013d
+0002fa e0a1
+0002fb e0b2
+0002fc e3c0
+0002fd e0f9
+0002fe e8e8
+0002ff 940e 003f
+000301 991a
+000302 c001
+000303 c111
+000304 95ca
+000305 f7b9
+000306 95ba
+000307 f7a9
+000308 95aa
+000309 f799                      	DELAY_MACRO Joy_start
+00030a e975                      	LDI R23,0x95			; Key D 
+00030b 940e 013d
+00030d e0a1
+00030e e0b2
+00030f e3c0
+000310 e0f9
+000311 e8e8
+000312 940e 003f
+000314 991a
+000315 c001
+000316 c0fe
+000317 95ca
+000318 f7b9
+000319 95ba
+00031a f7a9
+00031b 95aa
+00031c f799                      	DELAY_MACRO Joy_start
+00031d ea7b                      	LDI R23,0xAB			; Key F#
+00031e 940e 013d
+000320 e0a1
+000321 e0b2
+000322 e3c0
+000323 e0f9
+000324 e8e8
+000325 940e 003f
+000327 991a
+000328 c001
+000329 c0eb
+00032a 95ca
+00032b f7b9
+00032c 95ba
+00032d f7a9
+00032e 95aa
+00032f f799                      	DELAY_MACRO Joy_start
+000330 e878                      	LDI R23,0x88			; Key C
+000331 940e 013d
+000333 e0a1
+000334 e0b2
+000335 e3c0
+000336 e0f9
+000337 e8e8
+000338 940e 003f
+00033a 991a
+00033b c001
+00033c c0d8
+00033d 95ca
+00033e f7b9
+00033f 95ba
+000340 f7a9
+000341 95aa
+000342 f799                      	DELAY_MACRO Joy_start
+000343 ea70                      	LDI R23,0xA0			; Key E
+000344 940e 013d
+000346 e0a1
+000347 e0b2
+000348 e3c0
+000349 e0f9
+00034a e8e8
+00034b 940e 003f
+00034d 991a
+00034e c001
+00034f c0c5
+000350 95ca
+000351 f7b9
+000352 95ba
+000353 f7a9
+000354 95aa
+000355 f799                      	DELAY_MACRO Joy_start
+000356 ea7f                      	LDI R23,0xAF			; Key G
+000357 940e 013d
+000359 e0a1
+00035a e0b2
+00035b e3c0
+00035c e0f9
+00035d e8e8
+00035e 940e 003f
+000360 991a
+000361 c001
+000362 c0b2
+000363 95ca
+000364 f7b9
+000365 95ba
+000366 f7a9
+000367 95aa
+000368 f799                      	DELAY_MACRO Joy_start
+000369 ea7f                      	LDI R23,0xAF			; Key G
+00036a 940e 013d
+00036c e0a1
+00036d e0b2
+00036e e3c0
+00036f e0f9
+000370 e8e8
+000371 940e 003f
+000373 991a
+000374 c001
+000375 c09f
+000376 95ca
+000377 f7b9
+000378 95ba
+000379 f7a9
+00037a 95aa
+00037b f799                      	DELAY_MACRO Joy_start
+00037c ec70                      	LDI R23,0xC0			; Key B
+00037d 940e 013d
+00037f e0a1
+000380 e0b2
+000381 e3c0
+000382 e0f9
+000383 e8e8
+000384 940e 003f
+000386 991a
+000387 c001
+000388 c08c
+000389 95ca
+00038a f7b9
+00038b 95ba
+00038c f7a9
+00038d 95aa
+00038e f799                      	DELAY_MACRO Joy_start
+00038f e975                      	LDI R23,0x95			; Key D
+000390 940e 013d
+000392 e0a1
+000393 e0b2
+000394 e3c0
+000395 e0f9
+000396 e8e8
+000397 940e 003f
+000399 991a
+00039a c001
+00039b c079
+00039c 95ca
+00039d f7b9
+00039e 95ba
+00039f f7a9
+0003a0 95aa
+0003a1 f799                      	DELAY_MACRO Joy_start
+0003a2 e878                      	LDI R23,0x88			; Key C
+0003a3 940e 013d
+0003a5 e0a1
+0003a6 e0b2
+0003a7 e3c0
+0003a8 e0f9
+0003a9 e8e8
+0003aa 940e 003f
+0003ac 991a
+0003ad c001
+0003ae c066
+0003af 95ca
+0003b0 f7b9
+0003b1 95ba
+0003b2 f7a9
+0003b3 95aa
+0003b4 f799                      	DELAY_MACRO Joy_start
+0003b5 ea70                      	LDI R23,0xA0			; Key E
+0003b6 940e 013d
+0003b8 e0a1
+0003b9 e0b2
+0003ba e3c0
+0003bb e0f9
+0003bc e8e8
+0003bd 940e 003f
+0003bf 991a
+0003c0 c001
+0003c1 c053
+0003c2 95ca
+0003c3 f7b9
+0003c4 95ba
+0003c5 f7a9
+0003c6 95aa
+0003c7 f799                      	DELAY_MACRO Joy_start
+0003c8 ea7f                      	LDI R23,0xAF			; Key G
+0003c9 940e 013d
+0003cb e0a1
+0003cc e0b2
+0003cd e3c0
+0003ce e0f9
+0003cf e8e8
+0003d0 940e 003f
+0003d2 991a
+0003d3 c001
+0003d4 c040
+0003d5 95ca
+0003d6 f7b9
+0003d7 95ba
+0003d8 f7a9
+0003d9 95aa
+0003da f799                      	DELAY_MACRO Joy_start
+0003db e975                      	LDI R23,0x95			; Key D
+0003dc 940e 013d
+0003de e0a1
+0003df e0b2
+0003e0 e3c0
+0003e1 e0f9
+0003e2 e8e8
+0003e3 940e 003f
+0003e5 991a
+0003e6 c001
+0003e7 c02d
+0003e8 95ca
+0003e9 f7b9
+0003ea 95ba
+0003eb f7a9
+0003ec 95aa
+0003ed f799                      	DELAY_MACRO Joy_start
+0003ee ea7b                      	LDI R23,0xAB			; Key F#
+0003ef 940e 013d
+0003f1 e0a1
+0003f2 e0b2
+0003f3 e3c0
+0003f4 e0f9
+0003f5 e8e8
+0003f6 940e 003f
+0003f8 991a
+0003f9 c001
+0003fa c01a
+0003fb 95ca
+0003fc f7b9
+0003fd 95ba
+0003fe f7a9
+0003ff 95aa
+000400 f799                      	DELAY_MACRO Joy_start
+000401 eb78                      	LDI R23,0xB8			; Key A
+000402 940e 013d
+000404 e0a1
+000405 e0b2
+000406 e3c0
+000407 e0f9
+000408 e8e8
+000409 940e 003f
+00040b 991a
+00040c c001
+00040d c007
+00040e 95ca
+00040f f7b9
+000410 95ba
+000411 f7a9
+000412 95aa
+000413 f799                      	DELAY_MACRO Joy_start
+000414 ce37                      	RJMP start_screen
                                  
                                  	
                                  	Joy_start:
-000440 94f8                      		CLI							; Stop timer (Global Interrupt Disable)
-000441 9160 0084                 		LDS R22,TCNT1L				; Seed for generation of random numbers 
-000443 9478                      		SEI							; (random as we use the time at which the user presses the joystick)
-000444 e090                      		LDI R25,0x00
-000445 9390 006e                 		STS TIMSK0,R25
-000447 2fd6                      		MOV R29,R22
-000448 e0e0                      		LDI R30,0x00				; Counter for the sequence
-000449 e0f1                      		LDI R31,0x01				; Length of the sequence
-00044a e030                      		LDI R19,0x00				; For speed
-00044b e043                      		LDI R20,0x03				; indicate which part of the screen is on
-00044c e050                      		LDI R21,0x00				; Score
-00044d c000                      		RJMP main
+000415 94f8                      		CLI							; Stop timer (Global Interrupt Disable)
+000416 9160 0084                 		LDS R22,TCNT1L				; Seed for generation of random numbers 
+000418 9478                      		SEI							; (random as we use the time at which the user presses the joystick)
+000419 e090                      		LDI R25,0x00
+00041a 9390 006e                 		STS TIMSK0,R25
+00041c 2fd6                      		MOV R29,R22
+00041d e0e0                      		LDI R30,0x00				; Counter for the sequence
+00041e e0f1                      		LDI R31,0x01				; Length of the sequence
+00041f e030                      		LDI R19,0x00				; For speed
+000420 e043                      		LDI R20,0x03				; indicate which part of the screen is on
+000421 e050                      		LDI R21,0x00				; Score
+000422 c000                      		RJMP main
                                  
                                  
                                  /*************************\
@@ -2456,13 +2391,14 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  main: 
                                  
-00044e 2fef                      	MOV R30,R31			; Counter for the sequence is equal to its length (increased every time the player succeeds)
+000423 2fef                      	MOV R30,R31			; Counter for the sequence is equal to its length (increased every time the player succeeds)
                                  
                                  	; PART 1 : The screen is divided in four parts, that lit up randomly (only one part is lit up at one time)		
-00044f 940e 00ad                 	CALL SEE_SEQ
+000424 940e 0081                 	CALL SEE_SEQ
                                  
-                                 	; PART 2 : The user must reproduce the sequence	
-000451 940e 00dc                 	CALL REDO_SEQ
+                                 	; PART 2 : The user must reproduce the sequence. The game ends when the user makes an error, or when he does not do any action
+                                 	; during 15	consecutive seconds
+000426 940e 00b1                 	CALL REDO_SEQ
                                  
                                  
                                  /*******************\
@@ -2470,27 +2406,70 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  \*******************/
                                  
                                  end:
-000453 e090                      	LDI R25,0x00
-000454 9390 006e                 	STS TIMSK0,R25				; Disable interrpt for timer 0 (to stop error sound)
+000428 e090                      	LDI R25,0x00
+000429 9390 006e                 	STS TIMSK0,R25				; Disable interrpt for timer 0 (to stop error sound)
                                  
-000456 9829                      	CBI PORTB,1
-000457 e0a5                      	LDI R26,0x05
-000458 93a0 0081                 	STS TCCR1B,R26				; Prescaler 1024
-00045a e080                      	LDI R24,0x00
-00045b 91e0 dd00                 	LDS R30,$DD00				; Load the stored highest score	(in R30)		
-00045d 175e                      	CP R21,R30					; Compare stored high score to current score (R21)
-00045e f40c                      	BRGE newHighScore			;  Branch if R21 >= R30 (unsigned)
-00045f c003                      	RJMP end_s
+00042b 9829                      	CBI PORTB,1
+00042c e0a5                      	LDI R26,0x05
+00042d 93a0 0081                 	STS TCCR1B,R26				; Prescaler 1024
+00042f e080                      	LDI R24,0x00
+000430 91e0 dd00                 	LDS R30,$DD00				; Load the stored highest score	(in R30)		
+000432 175e                      	CP R21,R30					; Compare stored high score to current score (R21)
+000433 f40c                      	BRGE newHighScore			;  Branch if R21 >= R30 (unsigned)
+000434 c003                      	RJMP end_s
                                  
                                  	newHighScore:
-000460 9350 dd00                 		STS $DD00,R21 			; new high score
-000462 2fe5                      		MOV R30,R21
+000435 9350 dd00                 		STS $DD00,R21 			; new high score
+000437 2fe5                      		MOV R30,R21
                                  
                                  
                                  end_s:
-000463 e090                      	LDI R25,0x00
-000464 9390 006f                 	STS TIMSK1,R25				; Disable interrupt for timer 1
-000466 940e 0075                 	CALL FIND_SCORES
+000438 e090                      	LDI R25,0x00
+000439 9390 006f                 	STS TIMSK1,R25				; Disable interrupt for timer 1
+00043b e6a4
+00043c 175a
+00043d f484
+00043e e0d0
+00043f e02a
+000440 e0ba
+000441 1752
+000442 f018
+000443 0f2b
+000444 95d3
+000445 f7d9
+000446 1b2b
+000447 1b52
+000448 e060
+000449 1356
+00044a c001
+00044b c005
+00044c 9563
+00044d f7d9
+00044e e0d9
+00044f e069
+000450 c000                      	FIND_SCORES R21,R29,R22		; Find out the ten and unit of current score, in order to print it
+000451 e6a4
+000452 17ea
+000453 f484
+000454 e030
+000455 e02a
+000456 e0ba
+000457 17e2
+000458 f018
+000459 0f2b
+00045a 9533
+00045b f7d9
+00045c 1b2b
+00045d 1be2
+00045e e040
+00045f 13e4
+000460 c001
+000461 c005
+000462 9543
+000463 f7d9
+000464 e039
+000465 e049
+000466 c000                      	FIND_SCORES R30,R19,R20		; Find out the ten and unit of best score, in order to print it
                                  
                                  
                                  /******************************************************************************\
@@ -2501,62 +2480,62 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  	; Alternatively print the score, the best score and the text "Press JS to start"
                                  	; Plus: melody
-000468 e081                      	LDI R24,0x01
-000469 ea75                      	LDI R23,0xA5			; Key F (4)	 	
-00046a 940e 01a8                 	CALL Delay1
-00046c eb78                      	LDI R23,0xB8			; Key A#			 	
-00046d 940e 01a8                 	CALL Delay1
-00046f e080                      	LDI R24,0x00
-000470 e87e                      	LDI R23,0x8E			; Key C#		 
-000471 940e 01a8                 	CALL Delay1
-000473 ea75                      	LDI R23,0xA5			; Key F		 	
-000474 940e 01a8                 	CALL Delay1
-000476 e878                      	LDI R23,0x88			; Key C			 
-000477 940e 01a8                 	CALL Delay1
-000479 e97b                      	LDI R23,0x9B			; Key D#			 
-00047a 940e 01a8                 	CALL Delay1
-00047c ea7f                      	LDI R23,0xAF			; Key G			 	
-00047d 940e 0168
-00047f e0a1
-000480 e0b2
-000481 e3c0
-000482 e0f9
-000483 e8e8
-000484 940e 003f
-000486 991a
-000487 c001
-000488 c01a
-000489 95ca
-00048a f7b9
-00048b 95ba
-00048c f7a9
-00048d 95aa
-00048e f799                      	DELAY_MACRO Joy
-00048f ea7b                      	LDI R23,0xAB			; Key F#		 		
-000490 940e 0168
-000492 e0a1
-000493 e0b2
-000494 e3c0
-000495 e0f9
-000496 e8e8
-000497 940e 003f
-000499 991a
-00049a c001
-00049b c007
-00049c 95ca
-00049d f7b9
-00049e 95ba
-00049f f7a9
-0004a0 95aa
-0004a1 f799                      	DELAY_MACRO Joy
+000467 e081                      	LDI R24,0x01
+000468 ea75                      	LDI R23,0xA5			; Key F (4)	 	
+000469 940e 017d                 	CALL Delay1
+00046b eb78                      	LDI R23,0xB8			; Key A#			 	
+00046c 940e 017d                 	CALL Delay1
+00046e e080                      	LDI R24,0x00
+00046f e87e                      	LDI R23,0x8E			; Key C#		 
+000470 940e 017d                 	CALL Delay1
+000472 ea75                      	LDI R23,0xA5			; Key F		 	
+000473 940e 017d                 	CALL Delay1
+000475 e878                      	LDI R23,0x88			; Key C			 
+000476 940e 017d                 	CALL Delay1
+000478 e97b                      	LDI R23,0x9B			; Key D#			 
+000479 940e 017d                 	CALL Delay1
+00047b ea7f                      	LDI R23,0xAF			; Key G			 	
+00047c 940e 013d
+00047e e0a1
+00047f e0b2
+000480 e3c0
+000481 e0f9
+000482 e8e8
+000483 940e 003f
+000485 991a
+000486 c001
+000487 c01a
+000488 95ca
+000489 f7b9
+00048a 95ba
+00048b f7a9
+00048c 95aa
+00048d f799                      	DELAY_MACRO Joy
+00048e ea7b                      	LDI R23,0xAB			; Key F#		 		
+00048f 940e 013d
+000491 e0a1
+000492 e0b2
+000493 e3c0
+000494 e0f9
+000495 e8e8
+000496 940e 003f
+000498 991a
+000499 c001
+00049a c007
+00049b 95ca
+00049c f7b9
+00049d 95ba
+00049e f7a9
+00049f 95aa
+0004a0 f799                      	DELAY_MACRO Joy
                                  
-0004a2 cfc5                      	RJMP end_screen
+0004a1 cfc5                      	RJMP end_screen
                                  
                                  	
                                  Joy:
-0004a3 e090                      	LDI R25,0x00
-0004a4 9390 006e                 	STS TIMSK0,R25				; Disable interrupt for timer 0
-0004a6 cdcd                      	RJMP init
+0004a2 e090                      	LDI R25,0x00
+0004a3 9390 006e                 	STS TIMSK0,R25				; Disable interrupt for timer 0
+0004a5 cda3                      	RJMP init
                                  
                                  
                                  
@@ -2567,8 +2546,8 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  Timer0OverflowInterrupt:
                                  	; Used for the buzzer
-0004a7 bd76                      	OUT TCNT0,R23				; TCNTinit
-                                 	;SBI PINB,1					; invert output of buzzer
+0004a6 bd76                      	OUT TCNT0,R23				; TCNTinit
+0004a7 9a19                      	SBI PINB,1					; invert output of buzzer
 0004a8 9518                      	RETI
                                  
                                  Timer1OverflowInterrupt:
@@ -2732,40 +2711,40 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(131
                                  
                                  score_two:
 00052d 0000
-00052e 0003
+00052e 8007
 00052f 0300
 000530 66d2
-000531 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
+000531 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000532 0000
-000533 8004
+000533 8000
 000534 0000
 000535 914a
-000536 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+000536 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
 000537 0000
-000538 0004
+000538 0001
 000539 0000
 00053a 9046
-00053b 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
+00053b 00a0                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 00053c 0000
 00053d 0002
 00053e 0100
 00053f 90ce
 000540 0098                      	.db 0b00000000, 0b00000000, 0b00000010, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000541 0000
-000542 0001
+000542 0004
 000543 0000
 000544 9052
-000545 0084                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+000545 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
 000546 0000
-000547 8000
+000547 8004
 000548 0000
 000549 9152
-00054a 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+00054a 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
 00054b 0000
-00054c 8007
+00054c 0003
 00054d 0300
 00054e 66ce
-00054f 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+00054f 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_three: 
 000550 0000
@@ -3788,9 +3767,9 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   0 y  :   0 z  :   1 r0 :   1 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  77 r17:  18 r18:  15 r19:   7 r20:  20 
-r21:  40 r22:   9 r23:  41 r24:   7 r25:  21 r26: 126 r27:  74 r28:  59 
-r29:  10 r30:  71 r31:  61 
+r13:   0 r14:   0 r15:   0 r16:  77 r17:  18 r18:  13 r19:   8 r20:  20 
+r21:  40 r22:   9 r23:  41 r24:   8 r25:  21 r26: 127 r27:  75 r28:  59 
+r29:   9 r30:  71 r31:  61 
 Registers used: 18 out of 35 (51.4%)
 
 "ATmega328P" instruction use summary:
@@ -3799,16 +3778,16 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   3 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
 brne  :  96 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  90 cbi   :  18 cbr   :   2 
+brvs  :   0 bset  :   0 bst   :   0 call  :  89 cbi   :  18 cbr   :   2 
 clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   5 cpc   :   0 
-cpi   :   0 cpse  :  44 dec   :  96 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :   0 cpse  :  44 dec   :  95 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   0 inc   :   9 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   : 356 lds   :   2 lpm   :   1 lsl   :   2 
+ld    :   0 ldd   :   0 ldi   : 358 lds   :   2 lpm   :   1 lsl   :   2 
 lsr   :   4 mov   :  13 movw  :   1 mul   :   1 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   4 or    :   0 ori   :   0 out   :   9 pop   :   8 
-push  :   6 rcall :  21 ret   :  21 reti  :   3 rjmp  : 177 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :  24 sbic  :  27 sbis  :   8 
+push  :   6 rcall :  21 ret   :  19 reti  :   3 rjmp  : 179 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :  25 sbic  :  27 sbis  :   8 
 sbiw  :   0 sbr   :   0 sbrc  :   2 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   2 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :  16 
