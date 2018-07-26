@@ -14,6 +14,18 @@
 |* MACROS *|
 \**********/
 
+.MACRO KEYBOARD_CHECK_COL			; Row x is LOW, check columns
+	NOP
+	SBIS PIND,3						; Skip next instruction if not pressed
+	RJMP @0
+	SBIS PIND,2
+	RJMP @1
+	SBIS PIND,1
+	RJMP @2
+	SBIS PIND,0
+	RJMP @3
+	RJMP @4
+.ENDMACRO
 
 .MACRO FIND_SCORES		; @0 score  @1  ten   @2 unit
 	LDI R26,0x64
@@ -165,6 +177,7 @@ RJMP Timer0OverflowInterrupt
 init1:
 	LDI R26,0x00
 	STS $DD00,R26						; set highest score at zero at first
+	LDI R28,0x01
 
 
 /******************\
@@ -237,13 +250,17 @@ start_screen:
 		CLI							; Stop timer (Global Interrupt Disable)
 		LDS R22,TCNT1L				; Seed for generation of random numbers 
 		SEI							; (random as we use the time at which the user presses the joystick)
+		LDI R26,0x01
+		CPSE R28,R26
+		LDS R22,$FF00
+		LDS R26,$DD00
+		ADD R22,R26
 		LDI R25,0x00
 		STS TIMSK0,R25
 		MOV R29,R22
 		LDI R30,0x00				; Counter for the sequence
 		LDI R31,0x01				; Length of the sequence
 		LDI R19,0x00				; For speed
-		LDI R20,0x03				; indicate which part of the screen is on
 		LDI R21,0x00				; Score
 		RJMP main
 
@@ -667,7 +684,6 @@ best_nine:
 	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
-
 
 
 

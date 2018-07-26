@@ -27,9 +27,10 @@ INITIALIZATION:
 	LDI R26,0xF0
 	OUT DDRD,R26
 	; Columns : enable pull-up (bits set)
-	; Rows are set to LOW (bits cleared)
-	LDI R26,0x0F
-	OUT PORTD,R26
+	SBI PORTD,3
+	SBI PORTD,2
+	SBI PORTD,1
+	SBI PORTD,0
 
 
 	; Start Timer			

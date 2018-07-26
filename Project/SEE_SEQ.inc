@@ -69,4 +69,3 @@ SEE_SEQ:
 		MOV R30,R31	
 		LDI R24,0x00
 		RET
-

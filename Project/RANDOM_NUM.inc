@@ -1,14 +1,13 @@
 /*
  * RANDOM_NUM.inc
- * Generate a random number between 1 and 4. Linear congruential algorithm
+ * Generate a random number between 1 and 4, stored in R20. Linear congruential algorithm
  */ 
 
 
  
 RANDOM_NUM:
-	; 4 lines that are lighted up in random order
-
-	; To do this, we first generate a one-byte pseudo-random number (so that period is high enough to have a 'good' pseudo-random number
+	
+	; First generate a one-byte pseudo-random number (so that period is high enough to have a 'good' pseudo-random number)
 	; Algorithm implemented: Linear-Congruential Generator: x = (a * x_prev + b) modulo m   , m = 128
 
 	LDI R26,0x05				; a = 5 (for generation of random numbers)

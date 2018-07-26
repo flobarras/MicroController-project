@@ -16,55 +16,37 @@ REDO_SEQ:
 		RJMP not_ending					
 		RJMP error		
 
-		not_ending:
-		SBIS PIND,0                     ; Skip next instruction if the least significant bit of pin D is set (not pressed).
-		RJMP C4Pressed
-		SBIS PIND,1
-		RJMP C3Pressed
-		SBIS PIND,2
-		RJMP C2Pressed
-		SBIS PIND,3
-		RJMP C1Pressed
-		RJMP waiting
+	not_ending:																	; Keyboard: 4 steps method
+		row1_low:													
+			CBI PORTD,7															; STEP 1 : Row 1 set to LOW
+			SBI PORTD,6
+			SBI PORTD,5
+			SBI PORTD,4
+			KEYBOARD_CHECK_COL BT7Pressed,OtherBut,OtherBut,OtherBut,row2_low
+		row2_low:																	
+			SBI PORTD,7															; STEP 2 : Row 2 set to LOW
+			CBI PORTD,6
+			SBI PORTD,5
+			SBI PORTD,4
+			KEYBOARD_CHECK_COL BT4Pressed,OtherBut,OtherBut,OtherBut,row3_low
+		row3_low:
+			SBI PORTD,7															; STEP 3 : Row 3 set to LOW
+			SBI PORTD,6
+			CBI PORTD,5
+			SBI PORTD,4
+			KEYBOARD_CHECK_COL BT1Pressed,OtherBut,OtherBut,OtherBut,row4_low
+		row4_low:
+			SBI PORTD,7															; STEP 4 : Row 4 set to LOW
+			SBI PORTD,6
+			SBI PORTD,5
+			CBI PORTD,4
+			KEYBOARD_CHECK_COL BTAPressed,OtherBut,OtherBut,OtherBut,waiting
 
-	C4Pressed:
-		RJMP waiting
-
-	C3Pressed:
-		RJMP waiting
-
-	C2Pressed:
-		RJMP waiting
-
-	C1Pressed:
+		OtherBut:
+			RJMP waiting
 		
-		LDI R18,0xFF
-		
-		; See p100 Atmega328p datasheet and https://www.avrfreaks.net/forum/explain-it
-		; << left bit shift   ,   | bitwise OR
-		; To build a bit mask that has bit number n set: (0x01 << n)    (1 is 'left shifted' by n)
-		; To build a bit mask that has bits number n and x set: (0x01 << n)|(0x01 << x)
-		LDI R16,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
-		OUT PORTD,R16
-		LDI R17,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col
-		OUT DDRD,R17
-		NOP
-		NOP
-		NOP
-		NOP										; to be able to read back the value recently assigned to some of the pins
-
-
-		SBIS PIND,7                     
-		RJMP BT7Pressed
-		SBIS PIND,6						; Skip next instruction if not pressed
-		RJMP BT4Pressed
-		SBIS PIND,5
-		RJMP BT1Pressed
-		SBIS PIND,4
-		RJMP BTAPressed
-		RJMP reset
-
 		BT7Pressed:
+			LDI R18,0xFF
 			CALL FIRST_PART
 			LDI R26,0x01
 			CPSE R20,R26
@@ -73,6 +55,7 @@ REDO_SEQ:
 
 
 		BT4Pressed:
+			LDI R18,0xFF
 			CALL SECOND_PART
 			LDI R26,0x02
 			CPSE R20,R26
@@ -81,6 +64,7 @@ REDO_SEQ:
 			
 
 		BT1Pressed:
+			LDI R18,0xFF
 			CALL THIRD_PART
 			LDI R26,0x03
 			CPSE R20,R26
@@ -88,6 +72,7 @@ REDO_SEQ:
 			RJMP correct
 
 		BTAPressed:
+			LDI R18,0xFF
 			CALL FOURTH_PART
 			LDI R26,0x04
 			CPSE R20,R26
@@ -97,23 +82,18 @@ REDO_SEQ:
 		correct:
 			LDI R23,0xDB			; A5 (880 Hz) (FF - 16e6 / (256 * 880 * 2)) because complete period is 'buzzer on -> 
 			CALL Buzzer_loop		; next time buzzer is on ----> corresponds to 2 overflows of timer 0
-
 			LDI R26,0x0F 
 			LDI R27,0x08
 			LDI R28,0x30
 			CALL Delay
-
 			LDI R25,0x00
 			STS TIMSK0,R25			; Disable interrpt for timer 0
-
 			CALL TURN_OFF
-
 			LDI R26,0x20
 			LDI R27,0x40
 			LDI R28,0x50
 			CALL Delay
-			RJMP reset
-
+			RJMP continue_game
 
 		error:
 			LDI R23,0x10			; 130.81 Hz (C3)
@@ -125,22 +105,15 @@ REDO_SEQ:
 			RJMP end
 		
 
-	reset:
-		LDI R16,(1<<3)|(1<<2)|(1<<1)|(1<<0)			; 3 = 1st col, 2 = 2nd col, 1 = 3rd col, 0 = 4th col  ; equivalent to LDI R16,0x0F
-		OUT PORTD,R16
-		LDI R17,(1<<7)|(1<<6)|(1<<5)|(1<<4)			; 7 = 1st row, 6 = 2nd row, 5 = 3rd row, 4 = 4th row
-		OUT DDRD,R17
+	continue_game:
 		LDI R26,0x01
 		CPSE R26,R30
 		RJMP continue_redo
 		RJMP stop_redo
 	
-	
 	continue_redo:
 		DEC R30
 		RJMP REDO_SEQ
-
-	
 
 	stop_redo:
 		INC R21							; Increase score
