@@ -13,12 +13,12 @@ RANDOM_NUM:
 	LDI R26,0x05				; a = 5 (for generation of random numbers)
 
 	MUL R29,R26
-	MOVW R16,R0				; R16: low bits / R17: high bits
-	LDI R26,0x03			; b = 3
+	MOVW R16,R0					; R16: low bits / R17: high bits
+	LDI R26,0x03				; b = 3
 	ADD R16,R26
 
 
-	MOV R29,R16			; update
+	MOV R29,R16					; update
 
 	; R29 contains a pseudo-random byte. To generate a pseudo-random number between 1 and 4, we keep only 2 bits of R29 and we add 1
 

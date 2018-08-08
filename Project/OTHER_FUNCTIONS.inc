@@ -1,9 +1,7 @@
 /*
  * OTHER_FUNCTIONS.inc
- *  - col_off
- *  - col_on
- *  - row_on
- *	- row_off
+ *  - col_or_row_off
+ *  - col_or_row_on
  *	- Delay
  *  - Buzzer_loop
  *  - FIRST_PART
@@ -12,46 +10,27 @@
  *  - FOURTH_PART
  *  - TURN_OFF
  *  - Delay1
+ *  - EEPROM_READ
+ *  - EEPROM_WRITE
  */ 
 
 
  
-col_off:
-	Columns_loop_off_1:				
-		CBI PORTB,3
-		SBI PORTB,5
-		CBI PORTB,5
-		DEC R26
-		BRNE Columns_loop_off_1
+col_or_row_off:			
+	CBI PORTB,3
+	SBI PORTB,5
+	CBI PORTB,5
+	DEC R26
+	BRNE col_or_row_off
 	RET
 
-col_on:
-	Columns_loop_on_1:				
-		SBI PORTB,3
-		SBI PORTB,5
-		CBI PORTB,5
-		DEC R26
-		BRNE Columns_loop_on_1
+col_or_row_on:		
+	SBI PORTB,3
+	SBI PORTB,5
+	CBI PORTB,5
+	DEC R26
+	BRNE col_or_row_on
 	RET
-	
-row_on:
-	Rows_loop_on_1:		
-		SBI PORTB,3
-		SBI PORTB,5
-		CBI PORTB,5
-		DEC R26
-		BRNE Rows_loop_on_1
-	RET
-
-row_off:	
-	Rows_loop_off_1:		
-		CBI PORTB,3
-		SBI PORTB,5
-		CBI PORTB,5
-		DEC R26
-		BRNE Rows_loop_off_1
-	RET	
-
 
 
 Delay:
@@ -72,18 +51,18 @@ Buzzer_loop:
 	STS TIMSK0,R16			; Enable interrupt for timer 0
 	LDI R16,0x04			; Prescaler 256
 	OUT TCCR0B,R16 
-	OUT TCNT0,R23
+	OUT TCNT0,R23			; TCNT init
 	RET
 	
 
 		
 FIRST_PART:
 	LDI R26,0x3C
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x14
-	RCALL col_on
+	RCALL col_or_row_on
 	LDI R26,0x08
-	RCALL row_on
+	RCALL col_or_row_on
 	SBI PORTB,4
 	CALL pause
 	CBI PORTB,4
@@ -91,13 +70,13 @@ FIRST_PART:
 
 SECOND_PART:
 	LDI R26,0x28
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x14
-	RCALL col_on
+	RCALL col_or_row_on
 	LDI R26,0x14
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x08
-	RCALL row_on
+	RCALL col_or_row_on
 	SBI PORTB,4
 	CALL pause
 	CBI PORTB,4
@@ -105,13 +84,13 @@ SECOND_PART:
 
 THIRD_PART:
 	LDI R26,0x14
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x14
-	RCALL col_on
+	RCALL col_or_row_on
 	LDI R26,0x28
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x08
-	RCALL row_on
+	RCALL col_or_row_on
 	SBI PORTB,4
 	CALL pause
 	CBI PORTB,4
@@ -119,21 +98,19 @@ THIRD_PART:
 
 FOURTH_PART:
 	LDI R26,0x14
-	RCALL col_on
+	RCALL col_or_row_on
 	LDI R26,0x3C
-	RCALL col_off
+	RCALL col_or_row_off
 	LDI R26,0x08
-	RCALL row_on
+	RCALL col_or_row_on
 	SBI PORTB,4
 	CALL pause
 	CBI PORTB,4
 	RET
 
 TURN_OFF:
-	LDI R26,0x50
-	RCALL col_off
-	LDI R26,0x08
-	RCALL row_off
+	LDI R26,0x58
+	RCALL col_or_row_off
 	SBI PORTB,4
 	CALL pause
 	CBI PORTB,4
@@ -144,7 +121,7 @@ TURN_OFF:
 Delay1:
 	CALL Buzzer_loop
 	LDI R26,0x01 
-	LDI R27,0xDF
+	LDI R27,0xFF
 	loop11:
 		loop21:
 			LDI R16,0x00
@@ -173,5 +150,26 @@ Delay1:
 		DEC R26
 		CPSE R26,R16
 		RJMP loop11
+	RET
+
+
+EEPROM_READ:
+	SBIC EECR,1
+	RJMP EEPROM_READ		; Wait until bit 1 of EECR is cleared (means previous write is completed)
+	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
+	OUT EEARL,R17
+	SBI EECR,0				; Set bit EEPROM Read Enable  -->  Start reading
+	IN R30,EEDR				; Store in R30 the readed data (contained in EEDR)
+	RET
+
+
+EEPROM_WRITE:
+	SBIC EECR,1
+	RJMP EEPROM_WRITE		; Wait until bit 1 of EECR is cleared (means previous write is completed)
+	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
+	OUT EEARL,R17
+	OUT EEDR,R30			; Data from R30 are written to Data Register
+	SBI EECR,2				; Set bit 2 of Control register	(needed so that next instruction effectively write)	
+	SBI EECR,1				; Start EEPROM write
 	RET
 

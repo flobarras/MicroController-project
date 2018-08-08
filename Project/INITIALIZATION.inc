@@ -5,6 +5,10 @@
 
 INITIALIZATION:
 
+	; Switch
+	CBI DDRB,0						; Pin PB0 is an input
+	SBI PORTB,0 					; Enable the pull-up resistor
+
 	; Joystick
 	CBI DDRB,2								; Pin PB2 is an input
 	SBI PORTB,2								; Enable the pull-up resistor

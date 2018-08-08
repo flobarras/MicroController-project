@@ -9,6 +9,10 @@ REDO_SEQ:
 	CALL RANDOM_NUM
 
 	waiting:
+		SBI PORTD,7															
+		SBI PORTD,6
+		SBI PORTD,5
+		SBI PORTD,4
 		LDI R18,0xFE
 		; If R24 > 30, ends game (15s of inactivity)
 		LDI R26,0x1E
@@ -118,7 +122,7 @@ REDO_SEQ:
 	stop_redo:
 		INC R21							; Increase score
 		INC R31							; Increase sequence length
-		MOV R29,R22					; Seed for generation of random numbers
+		MOV R29,R22						; Seed for generation of random numbers
 		MOV R30,R31	
 
 		LDI R26,0x80
@@ -126,4 +130,4 @@ REDO_SEQ:
 		LDI R28,0xFF
 		CALL Delay
 
-		RJMP main
+		RJMP main 

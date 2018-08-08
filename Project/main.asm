@@ -7,7 +7,7 @@
 \************************************/
 
 
-.INCLUDE "m328pdef.inc"						; Load addresses of (I/O) registers
+.INCLUDE "m328pdef.inc"				; Load addresses of (I/O) registers
 
 
 /**********\
@@ -27,10 +27,10 @@
 	RJMP @4
 .ENDMACRO
 
-.MACRO FIND_SCORES		; @0 score  @1  ten   @2 unit
+.MACRO FIND_SCORES					; @0 score  @1  ten   @2 unit
 	LDI R26,0x64
 	CP @0,R26					
-	BRGE except			;  Branch if current score >= 100
+	BRGE except						;  Branch if current score >= 100
 	LDI @1,0x00
 	LDI R18,0x0A
 	LDI R27,0x0A
@@ -62,12 +62,12 @@
 	CALL Buzzer_loop	
 	LDI R26,0x01 
 	LDI R27,0x02
-	LDI R28,0x30
+	LDI R28,0x80
 	loop13:
 		loop23:
 			loop33:
-				LDI ZH, high(Press_js_to_start<<1)
-				LDI ZL, low(Press_js_to_start<<1)
+				LDI ZH,high(@1<<1)
+				LDI ZL,low(@1<<1)
 				CALL SCREEN_PRINT_LOOP
 				SBIC PINB,2
 				RJMP NoJoy
@@ -175,9 +175,17 @@ RJMP Timer0OverflowInterrupt
 
 
 init1:
-	LDI R26,0x00
-	STS $DD00,R26						; set highest score at zero at first
 	LDI R28,0x01
+
+/* WARNING : BEFORE BEGINNING THE GAME FOR THE FIRST TIME, TAKE CARE THE EEPROM IS SET TO ZERO AT ADDRESS 0x0000
+	;CLI
+	LDI R18,0x00
+	LDI R17,0x00
+	LDI R30,0x00
+	CALL EEPROM_WRITE
+	;SEI
+*/
+
 
 
 /******************\
@@ -195,54 +203,54 @@ init:
 
 start_screen:
 
-	LDI R23,0xAF			; TCNT_INIT for timer 0 --> Key G (4)
-	DELAY_MACRO Joy_start
-	LDI R23,0xC0			; Key B 
-	DELAY_MACRO Joy_start
-	LDI R23,0x95			; Key D 
-	DELAY_MACRO Joy_start
-	LDI R23,0x95			; Key D 
-	DELAY_MACRO Joy_start
-	LDI R23,0xAB			; Key F#
-	DELAY_MACRO Joy_start
-	LDI R23,0xB8			; Key A
-	DELAY_MACRO Joy_start
-	LDI R23,0xA0			; Key E
-	DELAY_MACRO Joy_start
-	LDI R23,0xAF			; Key G
-	DELAY_MACRO Joy_start
-	LDI R23,0xC0			; Key B
-	DELAY_MACRO Joy_start
-	LDI R23,0xC0			; Key B 
-	DELAY_MACRO Joy_start
-	LDI R23,0x95			; Key D 
-	DELAY_MACRO Joy_start
-	LDI R23,0xAB			; Key F#
-	DELAY_MACRO Joy_start
-	LDI R23,0x88			; Key C
-	DELAY_MACRO Joy_start
-	LDI R23,0xA0			; Key E
-	DELAY_MACRO Joy_start
-	LDI R23,0xAF			; Key G
-	DELAY_MACRO Joy_start
-	LDI R23,0xAF			; Key G
-	DELAY_MACRO Joy_start
-	LDI R23,0xC0			; Key B
-	DELAY_MACRO Joy_start
-	LDI R23,0x95			; Key D
-	DELAY_MACRO Joy_start
-	LDI R23,0x88			; Key C
-	DELAY_MACRO Joy_start
-	LDI R23,0xA0			; Key E
-	DELAY_MACRO Joy_start
-	LDI R23,0xAF			; Key G
-	DELAY_MACRO Joy_start
-	LDI R23,0x95			; Key D
-	DELAY_MACRO Joy_start
-	LDI R23,0xAB			; Key F#
-	DELAY_MACRO Joy_start
-	LDI R23,0xB8			; Key A
-	DELAY_MACRO Joy_start
+	LDI R23,0xAF								; TCNT_INIT for timer 0 --> Key G (4)
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xC0								; Key B 
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0x95								; Key D 
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0x95								; Key D 
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xAB								; Key F#
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xB8								; Key A
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xA0								; Key E
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xAF								; Key G
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xC0								; Key B
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xC0								; Key B 
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0x95								; Key D 
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xAB								; Key F#
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0x88								; Key C
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xA0								; Key E
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xAF								; Key G
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xAF								; Key G
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xC0								; Key B
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0x95								; Key D
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0x88								; Key C
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xA0								; Key E
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0xAF								; Key G
+	DELAY_MACRO Joy_start,Press_JS_to_start
+	LDI R23,0x95								; Key D
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xAB								; Key F#
+	DELAY_MACRO Joy_start,switch_sound
+	LDI R23,0xB8								; Key A
+	DELAY_MACRO Joy_start,switch_sound
 	RJMP start_screen
 
 	
@@ -252,9 +260,7 @@ start_screen:
 		SEI							; (random as we use the time at which the user presses the joystick)
 		LDI R26,0x01
 		CPSE R28,R26
-		LDS R22,$FF00
-		LDS R26,$DD00
-		ADD R22,R26
+		MOV R22,R18
 		LDI R25,0x00
 		STS TIMSK0,R25
 		MOV R29,R22
@@ -288,26 +294,36 @@ main:
 end:
 	LDI R25,0x00
 	STS TIMSK0,R25				; Disable interrpt for timer 0 (to stop error sound)
-
 	CBI PORTB,1
-	LDI R26,0x05
-	STS TCCR1B,R26				; Prescaler 1024
-	LDI R24,0x00
-	LDS R30,$DD00				; Load the stored highest score	(in R30)		
+
+	CLI							; Disable all interrupts (to not interfer with reading operation of the EEPROM)
+	LDI R18,0x00
+	LDI R17,0x00
+	CALL EEPROM_READ			; Load the stored highest score	(in R30) from the EEPROM (non-volatile memory)
+	SEI
+					
 	CP R21,R30					; Compare stored high score to current score (R21)
 	BRGE newHighScore			;  Branch if R21 >= R30 (unsigned)
 	RJMP end_s
 
 	newHighScore:
-		STS $DD00,R21 			; new high score
 		MOV R30,R21
+		CLI
+		LDI R18,0x00
+		LDI R17,0x00
+		CALL EEPROM_WRITE		; Write in EEPROM the new best score
+		SEI
+		
 
 
 end_s:
-	LDI R25,0x00
-	STS TIMSK1,R25				; Disable interrupt for timer 1
 	FIND_SCORES R21,R29,R22		; Find out the ten and unit of current score, in order to print it
 	FIND_SCORES R30,R19,R20		; Find out the ten and unit of best score, in order to print it
+	CLI							; Stop timer (Global Interrupt Disable)
+	LDS R18,TCNT1L				; Seed for generation of random numbers for the next game 
+	SEI							; Global enable interrupt
+	LDI R25,0x00
+	STS TIMSK1,R25				; Disable interrupt for timer 1
 
 
 /******************************************************************************\
@@ -319,30 +335,30 @@ end_screen:
 	; Alternatively print the score, the best score and the text "Press JS to start"
 	; Plus: melody
 	LDI R24,0x01
-	LDI R23,0xA5			; Key F (4)	 	
+	LDI R23,0xA5							; Key F (4)	 	
 	CALL Delay1
-	LDI R23,0xB8			; Key A#			 	
+	LDI R23,0xB8							; Key A#			 	
+	CALL Delay1
+	LDI R23,0x8E							; Key C#		 
 	CALL Delay1
 	LDI R24,0x00
-	LDI R23,0x8E			; Key C#		 
+	LDI R23,0xA5							; Key F		 	
 	CALL Delay1
-	LDI R23,0xA5			; Key F		 	
+	LDI R23,0x88							; Key C			 
 	CALL Delay1
-	LDI R23,0x88			; Key C			 
+	LDI R23,0x9B							; Key D#			 
 	CALL Delay1
-	LDI R23,0x9B			; Key D#			 
-	CALL Delay1
-	LDI R23,0xAF			; Key G			 	
-	DELAY_MACRO Joy
-	LDI R23,0xAB			; Key F#		 		
-	DELAY_MACRO Joy
+	LDI R23,0xAF							; Key G			 	
+	DELAY_MACRO Joy,Press_JS_to_start
+	LDI R23,0xAB							; Key F#		 		
+	DELAY_MACRO Joy,Press_JS_to_start
 
 	RJMP end_screen
 
 	
 Joy:
 	LDI R25,0x00
-	STS TIMSK0,R25				; Disable interrupt for timer 0
+	STS TIMSK0,R25			; Disable interrupt for timer 0
 	RJMP init
 
 
@@ -354,20 +370,29 @@ Joy:
 
 Timer0OverflowInterrupt:
 	; Used for the buzzer
+	; If switch is low : no sound
 	OUT TCNT0,R23				; TCNTinit
-	SBI PINB,1					; invert output of buzzer
-	RETI
+	SBIC PINB,0					; Skip next instruction if bit 0 of pinB is cleared
+	RJMP switchHigh				
+	switchLow:
+		LDI R23,0x00
+		STS TIMSK0,R23
+		RETI
+	switchHigh:
+		SBI PINB,1					; invert output of buzzer
+		RETI
+	
 
 Timer1OverflowInterrupt:
-	; Used to increase the speed during the game
+	; Used to increase the speed during the game, and to check for user inactivity
 	; Plus, at the beginning, to get a random seed
 	PUSH R25
 	PUSH R23
-	LDI R23,0x85                    ; TCNTinit (2 Hz) 
+	LDI R23,0x85                ; TCNTinit (2 Hz) 
 	LDI R25,0xED					
 	STS TCNT1H,R23					
 	STS TCNT1L,R25 
-
+	
 	LDI R25,0xFF
 	CPSE R18,R25
 	RJMP wait_state
@@ -429,8 +454,8 @@ score_one:
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
 
 score_two:
@@ -515,13 +540,13 @@ zero:
 	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 
 one:
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-	.db 0b00000000, 0b00000000, 0b0100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 
 two:	
 	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
@@ -609,8 +634,8 @@ best_one:
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
+	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
 
 best_two:
@@ -685,5 +710,13 @@ best_nine:
 	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
 
+switch_sound:
+	.db 0b00011010, 0b01001100, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b11110000, 0b00100100, 0b11000000
+	.db 0b00101010, 0b01010010, 0b10010100, 0b10000001, 0b00101001, 0b00000011, 0b11010010, 0b00010000, 0b00111101, 0b00100000
+	.db 0b01001010, 0b01010010, 0b10010100, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00000000
+	.db 0b01001010, 0b01010010, 0b10010011, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b11000000
+	.db 0b01001011, 0b01010010, 0b10010000, 0b10000001, 0b00101101, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b00100000
+	.db 0b00101010, 0b11010010, 0b10010100, 0b10000001, 0b00101011, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00100000
+	.db 0b00011010, 0b01010010, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b00010000, 0b00100100, 0b11000000
 
-
+	
