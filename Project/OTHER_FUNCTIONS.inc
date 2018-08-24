@@ -47,11 +47,13 @@ Delay:
 
 
 Buzzer_loop:
+	PUSH R16
 	LDI R16,0x01
 	STS TIMSK0,R16			; Enable interrupt for timer 0
 	LDI R16,0x04			; Prescaler 256
 	OUT TCCR0B,R16 
 	OUT TCNT0,R23			; TCNT init
+	POP R16
 	RET
 	
 
@@ -172,4 +174,5 @@ EEPROM_WRITE:
 	SBI EECR,2				; Set bit 2 of Control register	(needed so that next instruction effectively write)	
 	SBI EECR,1				; Start EEPROM write
 	RET
+
 

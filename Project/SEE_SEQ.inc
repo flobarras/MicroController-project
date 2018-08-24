@@ -45,7 +45,7 @@ SEE_SEQ:
 			SUB R26,R19  
 			LDI R27,0x03
 			LDI R28,0x10
-			RCALL Delay				
+			CALL Delay				
 
 			; 'Turn off' screen between each 'member' of the sequence
 			CALL TURN_OFF

@@ -22,12 +22,11 @@ RANDOM_NUM:
 
 	; R29 contains a pseudo-random byte. To generate a pseudo-random number between 1 and 4, we keep only 2 bits of R29 and we add 1
 
-	MOV R20,R16
-	CBR R20,$E0		
-	CBR R20,$07	
-	LSR R20
-	LSR R20
-	LSR R20	
+	LDI R20,0x00
+	SBRC R16,6		
+	LDI R20,0x02
+	SBRC R16,3	
+	INC R20
 	INC R20
 
 	RET

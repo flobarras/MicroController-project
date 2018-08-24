@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm Wed Aug 08 19:30:02 2018
+AVRASM ver. 2.2.7  C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm Sat Aug 25 00:36:53 2018
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
 C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(10): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.150\avrasm\inc\m328pdef.inc'
@@ -1003,7 +1003,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  |* SECOND TERM PROJECT : SIMON GAME *|
                                  |*     AUTHOR : FLORENCE BARRAS     *|
                                  |*            SUMMER 2018           *|
-                                 |*           SIMON_GAME.asm         *|
+                                 |*             main.asm             *|
                                  \************************************/
                                  
                                  
@@ -1202,11 +1202,11 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  \*********************/
                                  
                                  .ORG 0x0000
-000000 c265                      RJMP init1
+000000 c267                      RJMP init1
                                  .ORG 0x001A									; Program address for timer/counter 1 overflow
-00001a c4bc                      RJMP Timer1OverflowInterrupt
+00001a c4c3                      RJMP Timer1OverflowInterrupt
                                  .ORG 0x0020									; Program address for timer/counter 0 overflow
-000020 c4ad                      RJMP Timer0OverflowInterrupt
+000020 c4b1                      RJMP Timer0OverflowInterrupt
                                  
                                  
                                  .INCLUDE "INITIALIZATION.inc"
@@ -1236,7 +1236,6 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
 00002a 9a2c                      	SBI PORTB,4								; configured as an output pin, the port pin is driven high.
 00002b 9a2d                      	SBI PORTB,5
                                  
-                                 
                                  	; Keyboard
                                  	; Rows (7 - first row,6,5,4) are outputs (bits set)
                                  	; Columns (3 - first column,2,1,0) are inputs (bits cleared)
@@ -1248,20 +1247,18 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
 000030 9a59                      	SBI PORTD,1
 000031 9a58                      	SBI PORTD,0
                                  
-                                 
                                  	; Start Timer			
 000032 e014                      	LDI R17,0x04
 000033 9310 0081                 	STS TCCR1B,R17							; Prescaler 256
-000035 9478                      	SEI										; enable global interrupt & timer1 interrupt
+000035 9478                      	SEI										; Enable global interrupt 
 000036 e011                      	LDI R17,0x01
-000037 9310 006f                 	STS TIMSK1,R17
+000037 9310 006f                 	STS TIMSK1,R17							; Enable timer1 interrupt
 000039 e010                      	LDI R17,0x00
 00003a 9310 0003                 	STS PRTIM1,R17
-00003c e805                      	LDI R16,0x85							; TCNTinit  (0xFFFF - 16e6 / (256 * 2))  --> 2Hz
-00003d ee1d                      	LDI R17,0xED
-00003e 9300 0085                 	STS TCNT1H,R16
+00003c e815                      	LDI R17,0x85							; TCNTinit  (0xFFFF - 16e6 / (256 * 2))  --> 2Hz
+00003d 9310 0085                 	STS TCNT1H,R17
+00003f ee1d                      	LDI R17,0xED
 000040 9310 0084                 	STS TCNT1L,R17
-                                 
                                  
                                  .INCLUDE "SCREEN_PRINT_LOOP.inc"
 000042 9508                      
@@ -1361,15 +1358,14 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  	; R29 contains a pseudo-random byte. To generate a pseudo-random number between 1 and 4, we keep only 2 bits of R29 and we add 1
                                  
-000079 2f40                      	MOV R20,R16
-00007a 714f                      	CBR R20,$E0		
-00007b 7f48                      	CBR R20,$07	
-00007c 9546                      	LSR R20
-00007d 9546                      	LSR R20
-00007e 9546                      	LSR R20	
-00007f 9543                      	INC R20
+000079 e040                      	LDI R20,0x00
+00007a fd06                      	SBRC R16,6		
+00007b e042                      	LDI R20,0x02
+00007c fd03                      	SBRC R16,3	
+00007d 9543                      	INC R20
+00007e 9543                      	INC R20
                                  
-000080 9508                      	RET
+00007f 9508                      	RET
                                  .INCLUDE "SEE_SEQ.inc"
                                  
                                   * SEE_SEQ.inc
@@ -1379,49 +1375,49 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  SEE_SEQ:
                                  
                                  	show_seq:
-000081 940e 0073                 		CALL RANDOM_NUM		; Give a random number stored in R20 to know which part of the board must be lit up
-000083 e0a1                      		LDI R26,0x01
-000084 134a                      		CPSE R20,R26			
-000085 c001                      		RJMP next1
-000086 c008                      		RJMP First_quart
+000080 940e 0073                 		CALL RANDOM_NUM		; Give a random number stored in R20 to know which part of the board must be lit up
+000082 e0a1                      		LDI R26,0x01
+000083 134a                      		CPSE R20,R26			
+000084 c001                      		RJMP next1
+000085 c008                      		RJMP First_quart
                                  
                                  		next1:
-000087 e0a2                      			LDI R26,0x02
-000088 134a                      			CPSE R20,R26
-000089 c001                      			RJMP next2
-00008a c007                      			RJMP Second_quart
+000086 e0a2                      			LDI R26,0x02
+000087 134a                      			CPSE R20,R26
+000088 c001                      			RJMP next2
+000089 c007                      			RJMP Second_quart
                                  		next2:
-00008b e0a3                      			LDI R26,0x03
-00008c 134a                      			CPSE R20,R26
-00008d c00a                      			RJMP Fourth_quart
-00008e c006                      			RJMP Third_quart
+00008a e0a3                      			LDI R26,0x03
+00008b 134a                      			CPSE R20,R26
+00008c c00a                      			RJMP Fourth_quart
+00008d c006                      			RJMP Third_quart
                                  		
                                  		First_quart:	
-00008f 940e 0157                 			CALL FIRST_PART
-000091 c009                      			RJMP cont
+00008e 940e 0159                 			CALL FIRST_PART
+000090 c009                      			RJMP cont
                                  
                                  		Second_quart:
-000092 940e 0162                 			CALL SECOND_PART
-000094 c006                      			RJMP cont
+000091 940e 0164                 			CALL SECOND_PART
+000093 c006                      			RJMP cont
                                  
                                  		Third_quart:
-000095 940e 016f                 			CALL THIRD_PART
-000097 c003                      			RJMP cont
+000094 940e 0171                 			CALL THIRD_PART
+000096 c003                      			RJMP cont
                                  
                                  		Fourth_quart:
-000098 940e 017c                 			CALL FOURTH_PART
-00009a c000                      			RJMP cont
+000097 940e 017e                 			CALL FOURTH_PART
+000099 c000                      			RJMP cont
                                  
                                  		cont:
                                  			; Delay depending on speed (controlled via R19, incremented every 0.5s)
-00009b e5af                      			LDI R26,0x5F 
-00009c 1ba3                      			SUB R26,R19  
-00009d e0b3                      			LDI R27,0x03
-00009e e1c0                      			LDI R28,0x10
-00009f d0a9                      			RCALL Delay				
+00009a e5af                      			LDI R26,0x5F 
+00009b 1ba3                      			SUB R26,R19  
+00009c e0b3                      			LDI R27,0x03
+00009d e1c0                      			LDI R28,0x10
+00009e 940e 0149                 			CALL Delay				
                                  
                                  			; 'Turn off' screen between each 'member' of the sequence
-0000a0 940e 0187                 			CALL TURN_OFF
+0000a0 940e 0189                 			CALL TURN_OFF
 0000a2 e2a0                      			LDI R26,0x20
 0000a3 efbf                      			LDI R27,0xFF
 0000a4 efcf                      			LDI R28,0xFF
@@ -1435,7 +1431,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  	
                                  	continue_seq:
 0000ab 95ea                      		DEC R30
-0000ac cfd4                      		RJMP show_seq
+0000ac cfd3                      		RJMP show_seq
                                  
                                  	stop_seq:
 0000ad 2fd6                      		MOV R29,R22			; Seed for generation of random numbers
@@ -1531,7 +1527,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  		
                                  		BT7Pressed:
 0000f5 ef2f                      			LDI R18,0xFF
-0000f6 940e 0157                 			CALL FIRST_PART
+0000f6 940e 0159                 			CALL FIRST_PART
 0000f8 e0a1                      			LDI R26,0x01
 0000f9 134a                      			CPSE R20,R26
 0000fa c029                      			RJMP error
@@ -1540,7 +1536,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  		BT4Pressed:
 0000fc ef2f                      			LDI R18,0xFF
-0000fd 940e 0162                 			CALL SECOND_PART
+0000fd 940e 0164                 			CALL SECOND_PART
 0000ff e0a2                      			LDI R26,0x02
 000100 134a                      			CPSE R20,R26
 000101 c022                      			RJMP error
@@ -1549,7 +1545,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  		BT1Pressed:
 000103 ef2f                      			LDI R18,0xFF
-000104 940e 016f                 			CALL THIRD_PART
+000104 940e 0171                 			CALL THIRD_PART
 000106 e0a3                      			LDI R26,0x03
 000107 134a                      			CPSE R20,R26
 000108 c01b                      			RJMP error
@@ -1557,7 +1553,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  		BTAPressed:
 00010a ef2f                      			LDI R18,0xFF
-00010b 940e 017c                 			CALL FOURTH_PART
+00010b 940e 017e                 			CALL FOURTH_PART
 00010d e0a4                      			LDI R26,0x04
 00010e 134a                      			CPSE R20,R26
 00010f c014                      			RJMP error
@@ -1572,7 +1568,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
 000117 940e 0149                 			CALL Delay
 000119 e090                      			LDI R25,0x00
 00011a 9390 006e                 			STS TIMSK0,R25			; Disable interrpt for timer 0
-00011c 940e 0187                 			CALL TURN_OFF
+00011c 940e 0189                 			CALL TURN_OFF
 00011e e2a0                      			LDI R26,0x20
 00011f e4b0                      			LDI R27,0x40
 000120 e5c0                      			LDI R28,0x50
@@ -1586,7 +1582,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
 000128 e0b8                      			LDI R27,0x08
 000129 e3c0                      			LDI R28,0x30
 00012a 940e 0149                 			CALL Delay
-00012c c31b                      			RJMP end
+00012c c31e                      			RJMP end
                                  		
                                  
                                  	continue_game:
@@ -1611,7 +1607,7 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
 00013a 940e 0149                 		CALL Delay
                                  
                                  .INCLUDE "OTHER_FUNCTIONS.inc"
-00013c c306                      
+00013c c309                      
                                   * OTHER_FUNCTIONS.inc
                                   *  - col_or_row_off
                                   *  - col_or_row_on
@@ -1660,307 +1656,310 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  
                                  Buzzer_loop:
-000150 e001                      	LDI R16,0x01
-000151 9300 006e                 	STS TIMSK0,R16			; Enable interrupt for timer 0
-000153 e004                      	LDI R16,0x04			; Prescaler 256
-000154 bd05                      	OUT TCCR0B,R16 
-000155 bd76                      	OUT TCNT0,R23			; TCNT init
-000156 9508                      	RET
+000150 930f                      	PUSH R16
+000151 e001                      	LDI R16,0x01
+000152 9300 006e                 	STS TIMSK0,R16			; Enable interrupt for timer 0
+000154 e004                      	LDI R16,0x04			; Prescaler 256
+000155 bd05                      	OUT TCCR0B,R16 
+000156 bd76                      	OUT TCNT0,R23			; TCNT init
+000157 910f                      	POP R16
+000158 9508                      	RET
                                  	
                                  
                                  		
                                  FIRST_PART:
-000157 e3ac                      	LDI R26,0x3C
-000158 dfe4                      	RCALL col_or_row_off
-000159 e1a4                      	LDI R26,0x14
-00015a dfe8                      	RCALL col_or_row_on
-00015b e0a8                      	LDI R26,0x08
+000159 e3ac                      	LDI R26,0x3C
+00015a dfe2                      	RCALL col_or_row_off
+00015b e1a4                      	LDI R26,0x14
 00015c dfe6                      	RCALL col_or_row_on
-00015d 9a2c                      	SBI PORTB,4
-00015e 940e 0067                 	CALL pause
-000160 982c                      	CBI PORTB,4
-000161 9508                      	RET
+00015d e0a8                      	LDI R26,0x08
+00015e dfe4                      	RCALL col_or_row_on
+00015f 9a2c                      	SBI PORTB,4
+000160 940e 0067                 	CALL pause
+000162 982c                      	CBI PORTB,4
+000163 9508                      	RET
                                  
                                  SECOND_PART:
-000162 e2a8                      	LDI R26,0x28
-000163 dfd9                      	RCALL col_or_row_off
-000164 e1a4                      	LDI R26,0x14
-000165 dfdd                      	RCALL col_or_row_on
+000164 e2a8                      	LDI R26,0x28
+000165 dfd7                      	RCALL col_or_row_off
 000166 e1a4                      	LDI R26,0x14
-000167 dfd5                      	RCALL col_or_row_off
-000168 e0a8                      	LDI R26,0x08
-000169 dfd9                      	RCALL col_or_row_on
-00016a 9a2c                      	SBI PORTB,4
-00016b 940e 0067                 	CALL pause
-00016d 982c                      	CBI PORTB,4
-00016e 9508                      	RET
+000167 dfdb                      	RCALL col_or_row_on
+000168 e1a4                      	LDI R26,0x14
+000169 dfd3                      	RCALL col_or_row_off
+00016a e0a8                      	LDI R26,0x08
+00016b dfd7                      	RCALL col_or_row_on
+00016c 9a2c                      	SBI PORTB,4
+00016d 940e 0067                 	CALL pause
+00016f 982c                      	CBI PORTB,4
+000170 9508                      	RET
                                  
                                  THIRD_PART:
-00016f e1a4                      	LDI R26,0x14
-000170 dfcc                      	RCALL col_or_row_off
 000171 e1a4                      	LDI R26,0x14
-000172 dfd0                      	RCALL col_or_row_on
-000173 e2a8                      	LDI R26,0x28
-000174 dfc8                      	RCALL col_or_row_off
-000175 e0a8                      	LDI R26,0x08
-000176 dfcc                      	RCALL col_or_row_on
-000177 9a2c                      	SBI PORTB,4
-000178 940e 0067                 	CALL pause
-00017a 982c                      	CBI PORTB,4
-00017b 9508                      	RET
+000172 dfca                      	RCALL col_or_row_off
+000173 e1a4                      	LDI R26,0x14
+000174 dfce                      	RCALL col_or_row_on
+000175 e2a8                      	LDI R26,0x28
+000176 dfc6                      	RCALL col_or_row_off
+000177 e0a8                      	LDI R26,0x08
+000178 dfca                      	RCALL col_or_row_on
+000179 9a2c                      	SBI PORTB,4
+00017a 940e 0067                 	CALL pause
+00017c 982c                      	CBI PORTB,4
+00017d 9508                      	RET
                                  
                                  FOURTH_PART:
-00017c e1a4                      	LDI R26,0x14
-00017d dfc5                      	RCALL col_or_row_on
-00017e e3ac                      	LDI R26,0x3C
-00017f dfbd                      	RCALL col_or_row_off
-000180 e0a8                      	LDI R26,0x08
-000181 dfc1                      	RCALL col_or_row_on
-000182 9a2c                      	SBI PORTB,4
-000183 940e 0067                 	CALL pause
-000185 982c                      	CBI PORTB,4
-000186 9508                      	RET
+00017e e1a4                      	LDI R26,0x14
+00017f dfc3                      	RCALL col_or_row_on
+000180 e3ac                      	LDI R26,0x3C
+000181 dfbb                      	RCALL col_or_row_off
+000182 e0a8                      	LDI R26,0x08
+000183 dfbf                      	RCALL col_or_row_on
+000184 9a2c                      	SBI PORTB,4
+000185 940e 0067                 	CALL pause
+000187 982c                      	CBI PORTB,4
+000188 9508                      	RET
                                  
                                  TURN_OFF:
-000187 e5a8                      	LDI R26,0x58
-000188 dfb4                      	RCALL col_or_row_off
-000189 9a2c                      	SBI PORTB,4
-00018a 940e 0067                 	CALL pause
-00018c 982c                      	CBI PORTB,4
-00018d 9508                      	RET
+000189 e5a8                      	LDI R26,0x58
+00018a dfb2                      	RCALL col_or_row_off
+00018b 9a2c                      	SBI PORTB,4
+00018c 940e 0067                 	CALL pause
+00018e 982c                      	CBI PORTB,4
+00018f 9508                      	RET
                                  	
                                  
                                  
                                  Delay1:
-00018e 940e 0150                 	CALL Buzzer_loop
-000190 e0a1                      	LDI R26,0x01 
-000191 efbf                      	LDI R27,0xFF
+000190 940e 0150                 	CALL Buzzer_loop
+000192 e0a1                      	LDI R26,0x01 
+000193 efbf                      	LDI R27,0xFF
                                  	loop11:
                                  		loop21:
-000192 e000                      			LDI R16,0x00
-000193 1380                      			CPSE R24,R16
-000194 c001                      			RJMP curr
-000195 c03e                      			RJMP besttt
+000194 e000                      			LDI R16,0x00
+000195 1380                      			CPSE R24,R16
+000196 c001                      			RJMP curr
+000197 c03e                      			RJMP besttt
                                  			curr:
-000196 2f5d                      			MOV R21,R29
-000197 e000
-000198 1350
-000199 c003
-00019a e0fa
-00019b e2ea
-00019c c033
-00019d e001
-00019e 1350
-00019f c003
-0001a0 e0fa
-0001a1 e7e0
-0001a2 c02d
-0001a3 e002
-0001a4 1350
-0001a5 c003
-0001a6 e0fa
-0001a7 ebe6
-0001a8 c027
-0001a9 e003
-0001aa 1350
-0001ab c003
-0001ac e0fa
-0001ad efec
-0001ae c021
-0001af e004
-0001b0 1350
-0001b1 c003
-0001b2 e0fb
-0001b3 e4e2
-0001b4 c01b
-0001b5 e005
-0001b6 1350
-0001b7 c003
-0001b8 e0fb
-0001b9 e8e8
-0001ba c015
-0001bb e006
-0001bc 1350
-0001bd c003
-0001be e0fb
-0001bf ecee
-0001c0 c00f
-0001c1 e007
-0001c2 1350
-0001c3 c003
-0001c4 e0fc
-0001c5 e1e4
-0001c6 c009
-0001c7 e008
-0001c8 1350
-0001c9 c003
-0001ca e0fc
-0001cb e5ea
-0001cc c003
-0001cd e0fc
-0001ce eae0
-0001cf c000
-0001d0 940e 0043                 			MACRO_PRINT_SCORE score_zero,score_one,score_two,score_three,score_four,score_five,score_six,score_seven,score_eight,score_nine
-0001d2 2f56                      			MOV R21,R22
-0001d3 c03d                      			RJMP cont_score
+000198 2f5d                      			MOV R21,R29
+000199 e000
+00019a 1350
+00019b c003
+00019c e0fa
+00019d e3e8
+00019e c033
+00019f e001
+0001a0 1350
+0001a1 c003
+0001a2 e0fa
+0001a3 e7ee
+0001a4 c02d
+0001a5 e002
+0001a6 1350
+0001a7 c003
+0001a8 e0fa
+0001a9 ece4
+0001aa c027
+0001ab e003
+0001ac 1350
+0001ad c003
+0001ae e0fb
+0001af e0ea
+0001b0 c021
+0001b1 e004
+0001b2 1350
+0001b3 c003
+0001b4 e0fb
+0001b5 e5e0
+0001b6 c01b
+0001b7 e005
+0001b8 1350
+0001b9 c003
+0001ba e0fb
+0001bb e9e6
+0001bc c015
+0001bd e006
+0001be 1350
+0001bf c003
+0001c0 e0fb
+0001c1 edec
+0001c2 c00f
+0001c3 e007
+0001c4 1350
+0001c5 c003
+0001c6 e0fc
+0001c7 e2e2
+0001c8 c009
+0001c9 e008
+0001ca 1350
+0001cb c003
+0001cc e0fc
+0001cd e6e8
+0001ce c003
+0001cf e0fc
+0001d0 eaee
+0001d1 c000
+0001d2 940e 0043                 			MACRO_PRINT_SCORE score_zero,score_one,score_two,score_three,score_four,score_five,score_six,score_seven,score_eight,score_nine
+0001d4 2f56                      			MOV R21,R22
+0001d5 c03d                      			RJMP cont_score
                                  			besttt:
-0001d4 2f53                      			MOV R21,R19
-0001d5 e000
-0001d6 1350
-0001d7 c003
-0001d8 e0ff
-0001d9 eae2
-0001da c033
-0001db e001
-0001dc 1350
-0001dd c003
-0001de e0ff
-0001df eee8
-0001e0 c02d
-0001e1 e002
-0001e2 1350
-0001e3 c003
-0001e4 e1f0
-0001e5 e2ee
-0001e6 c027
-0001e7 e003
-0001e8 1350
-0001e9 c003
-0001ea e1f0
-0001eb e7e4
-0001ec c021
-0001ed e004
-0001ee 1350
-0001ef c003
-0001f0 e1f0
-0001f1 ebea
-0001f2 c01b
-0001f3 e005
-0001f4 1350
-0001f5 c003
-0001f6 e1f1
-0001f7 e0e0
-0001f8 c015
-0001f9 e006
-0001fa 1350
-0001fb c003
-0001fc e1f1
-0001fd e4e6
-0001fe c00f
-0001ff e007
-000200 1350
-000201 c003
-000202 e1f1
-000203 e8ec
-000204 c009
-000205 e008
-000206 1350
-000207 c003
-000208 e1f1
-000209 ede2
-00020a c003
-00020b e1f2
-00020c e1e8
-00020d c000
-00020e 940e 0043                 			MACRO_PRINT_SCORE best_zero,best_one,best_two,best_three,best_four,best_five,best_six,best_seven,best_eight,best_nine
-000210 2f54                      			MOV R21,R20
+0001d6 2f53                      			MOV R21,R19
+0001d7 e000
+0001d8 1350
+0001d9 c003
+0001da e0ff
+0001db ebe0
+0001dc c033
+0001dd e001
+0001de 1350
+0001df c003
+0001e0 e0ff
+0001e1 efe6
+0001e2 c02d
+0001e3 e002
+0001e4 1350
+0001e5 c003
+0001e6 e1f0
+0001e7 e3ec
+0001e8 c027
+0001e9 e003
+0001ea 1350
+0001eb c003
+0001ec e1f0
+0001ed e8e2
+0001ee c021
+0001ef e004
+0001f0 1350
+0001f1 c003
+0001f2 e1f0
+0001f3 ece8
+0001f4 c01b
+0001f5 e005
+0001f6 1350
+0001f7 c003
+0001f8 e1f1
+0001f9 e0ee
+0001fa c015
+0001fb e006
+0001fc 1350
+0001fd c003
+0001fe e1f1
+0001ff e5e4
+000200 c00f
+000201 e007
+000202 1350
+000203 c003
+000204 e1f1
+000205 e9ea
+000206 c009
+000207 e008
+000208 1350
+000209 c003
+00020a e1f1
+00020b eee0
+00020c c003
+00020d e1f2
+00020e e2e6
+00020f c000
+000210 940e 0043                 			MACRO_PRINT_SCORE best_zero,best_one,best_two,best_three,best_four,best_five,best_six,best_seven,best_eight,best_nine
+000212 2f54                      			MOV R21,R20
                                  			cont_score:
-000211 e000
-000212 1350
-000213 c003
-000214 e0fc
-000215 eee6
-000216 c033
-000217 e001
-000218 1350
-000219 c003
-00021a e0fd
-00021b e2ec
-00021c c02d
-00021d e002
-00021e 1350
-00021f c003
-000220 e0fd
-000221 e7e2
-000222 c027
-000223 e003
-000224 1350
-000225 c003
-000226 e0fd
-000227 ebe8
-000228 c021
-000229 e004
-00022a 1350
-00022b c003
-00022c e0fd
-00022d efee
-00022e c01b
-00022f e005
-000230 1350
-000231 c003
-000232 e0fe
-000233 e4e4
-000234 c015
-000235 e006
-000236 1350
-000237 c003
-000238 e0fe
-000239 e8ea
-00023a c00f
-00023b e007
-00023c 1350
-00023d c003
-00023e e0fe
-00023f ede0
-000240 c009
-000241 e008
-000242 1350
-000243 c003
-000244 e0ff
-000245 e1e6
-000246 c003
-000247 e0ff
-000248 e5ec
-000249 c000
-00024a 940e 0043                 			MACRO_PRINT_SCORE zero,one,two,three,four,five,six,seven,eight,nine
-00024c 991a                      			SBIC PINB,2
-00024d c001                      			RJMP NoJoy1
-00024e c27b                      			RJMP Joy
+000213 e000
+000214 1350
+000215 c003
+000216 e0fc
+000217 efe4
+000218 c033
+000219 e001
+00021a 1350
+00021b c003
+00021c e0fd
+00021d e3ea
+00021e c02d
+00021f e002
+000220 1350
+000221 c003
+000222 e0fd
+000223 e8e0
+000224 c027
+000225 e003
+000226 1350
+000227 c003
+000228 e0fd
+000229 ece6
+00022a c021
+00022b e004
+00022c 1350
+00022d c003
+00022e e0fe
+00022f e0ec
+000230 c01b
+000231 e005
+000232 1350
+000233 c003
+000234 e0fe
+000235 e5e2
+000236 c015
+000237 e006
+000238 1350
+000239 c003
+00023a e0fe
+00023b e9e8
+00023c c00f
+00023d e007
+00023e 1350
+00023f c003
+000240 e0fe
+000241 edee
+000242 c009
+000243 e008
+000244 1350
+000245 c003
+000246 e0ff
+000247 e2e4
+000248 c003
+000249 e0ff
+00024a e6ea
+00024b c000
+00024c 940e 0043                 			MACRO_PRINT_SCORE zero,one,two,three,four,five,six,seven,eight,nine
+00024e 991a                      			SBIC PINB,2
+00024f c001                      			RJMP NoJoy1
+000250 c27c                      			RJMP Joy
                                  			NoJoy1:
-00024f 95ba                      			DEC R27
-000250 e000                      			LDI R16,0x00
-000251 13b0                      			CPSE R27,R16
-000252 cf3f                      			RJMP loop21
-000253 95aa                      		DEC R26
-000254 13a0                      		CPSE R26,R16
-000255 cf3c                      		RJMP loop11
-000256 9508                      	RET
+000251 95ba                      			DEC R27
+000252 e000                      			LDI R16,0x00
+000253 13b0                      			CPSE R27,R16
+000254 cf3f                      			RJMP loop21
+000255 95aa                      		DEC R26
+000256 13a0                      		CPSE R26,R16
+000257 cf3c                      		RJMP loop11
+000258 9508                      	RET
                                  
                                  
                                  EEPROM_READ:
-000257 99f9                      	SBIC EECR,1
-000258 cffe                      	RJMP EEPROM_READ		; Wait until bit 1 of EECR is cleared (means previous write is completed)
-000259 bd22                      	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
-00025a bd11                      	OUT EEARL,R17
-00025b 9af8                      	SBI EECR,0				; Set bit EEPROM Read Enable  -->  Start reading
-00025c b5e0                      	IN R30,EEDR				; Store in R30 the readed data (contained in EEDR)
-00025d 9508                      	RET
+000259 99f9                      	SBIC EECR,1
+00025a cffe                      	RJMP EEPROM_READ		; Wait until bit 1 of EECR is cleared (means previous write is completed)
+00025b bd22                      	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
+00025c bd11                      	OUT EEARL,R17
+00025d 9af8                      	SBI EECR,0				; Set bit EEPROM Read Enable  -->  Start reading
+00025e b5e0                      	IN R30,EEDR				; Store in R30 the readed data (contained in EEDR)
+00025f 9508                      	RET
                                  
                                  
                                  EEPROM_WRITE:
-00025e 99f9                      	SBIC EECR,1
-00025f cffe                      	RJMP EEPROM_WRITE		; Wait until bit 1 of EECR is cleared (means previous write is completed)
-000260 bd22                      	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
-000261 bd11                      	OUT EEARL,R17
-000262 bde0                      	OUT EEDR,R30			; Data from R30 are written to Data Register
-000263 9afa                      	SBI EECR,2				; Set bit 2 of Control register	(needed so that next instruction effectively write)	
-000264 9af9                      	SBI EECR,1				; Start EEPROM write
-000265 9508                      	RET
+000260 99f9                      	SBIC EECR,1
+000261 cffe                      	RJMP EEPROM_WRITE		; Wait until bit 1 of EECR is cleared (means previous write is completed)
+000262 bd22                      	OUT EEARH,R18			; Address (R18:R17) is stored in the Address Registers High and Low
+000263 bd11                      	OUT EEARL,R17
+000264 bde0                      	OUT EEDR,R30			; Data from R30 are written to Data Register
+000265 9afa                      	SBI EECR,2				; Set bit 2 of Control register	(needed so that next instruction effectively write)	
+000266 9af9                      	SBI EECR,1				; Start EEPROM write
+000267 9508                      	RET
+                                 
                                  
                                  
                                  
                                  init1:
-000266 e0c1                      	LDI R28,0x01
+000268 e001                      	LDI R16,0x01
                                  
                                  /* WARNING : BEFORE BEGINNING THE GAME FOR THE FIRST TIME, TAKE CARE THE EEPROM IS SET TO ZERO AT ADDRESS 0x0000
                                  	;CLI
@@ -1978,8 +1977,8 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  \******************/
                                  
                                  init:
-000267 940e 0021                 	CALL INITIALIZATION
-000269 c000                      	RJMP start_screen
+000269 940e 0021                 	CALL INITIALIZATION
+00026b c000                      	RJMP start_screen
                                  
                                  
                                  /***********************************************************\
@@ -1988,432 +1987,433 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  start_screen:
                                  
-00026a ea7f                      	LDI R23,0xAF								; TCNT_INIT for timer 0 --> Key G (4)
-00026b 940e 0150
-00026d e0a1
-00026e e0b2
-00026f e8c0
-000270 e0f9
-000271 eee4
-000272 940e 0043
-000274 991a
-000275 c001
-000276 c1bc
-000277 95ca
-000278 f7b9
-000279 95ba
-00027a f7a9
-00027b 95aa
-00027c f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-00027d ec70                      	LDI R23,0xC0								; Key B 
-00027e 940e 0150
-000280 e0a1
-000281 e0b2
-000282 e8c0
-000283 e0f9
-000284 eee4
-000285 940e 0043
-000287 991a
-000288 c001
-000289 c1a9
-00028a 95ca
-00028b f7b9
-00028c 95ba
-00028d f7a9
-00028e 95aa
-00028f f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000290 e975                      	LDI R23,0x95								; Key D 
-000291 940e 0150
-000293 e0a1
-000294 e0b2
-000295 e8c0
-000296 e0f9
-000297 eee4
-000298 940e 0043
-00029a 991a
-00029b c001
-00029c c196
-00029d 95ca
-00029e f7b9
-00029f 95ba
-0002a0 f7a9
-0002a1 95aa
-0002a2 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-0002a3 e975                      	LDI R23,0x95								; Key D 
-0002a4 940e 0150
-0002a6 e0a1
-0002a7 e0b2
-0002a8 e8c0
-0002a9 e1f2
-0002aa e5ee
-0002ab 940e 0043
-0002ad 991a
-0002ae c001
-0002af c183
-0002b0 95ca
-0002b1 f7b9
-0002b2 95ba
-0002b3 f7a9
-0002b4 95aa
-0002b5 f799                      	DELAY_MACRO Joy_start,switch_sound
-0002b6 ea7b                      	LDI R23,0xAB								; Key F#
-0002b7 940e 0150
-0002b9 e0a1
-0002ba e0b2
-0002bb e8c0
-0002bc e1f2
-0002bd e5ee
-0002be 940e 0043
-0002c0 991a
-0002c1 c001
-0002c2 c170
-0002c3 95ca
-0002c4 f7b9
-0002c5 95ba
-0002c6 f7a9
-0002c7 95aa
-0002c8 f799                      	DELAY_MACRO Joy_start,switch_sound
-0002c9 eb78                      	LDI R23,0xB8								; Key A
-0002ca 940e 0150
-0002cc e0a1
-0002cd e0b2
-0002ce e8c0
-0002cf e1f2
-0002d0 e5ee
-0002d1 940e 0043
-0002d3 991a
-0002d4 c001
-0002d5 c15d
-0002d6 95ca
-0002d7 f7b9
-0002d8 95ba
-0002d9 f7a9
-0002da 95aa
-0002db f799                      	DELAY_MACRO Joy_start,switch_sound
-0002dc ea70                      	LDI R23,0xA0								; Key E
-0002dd 940e 0150
-0002df e0a1
-0002e0 e0b2
-0002e1 e8c0
-0002e2 e0f9
-0002e3 eee4
-0002e4 940e 0043
-0002e6 991a
-0002e7 c001
-0002e8 c14a
-0002e9 95ca
-0002ea f7b9
-0002eb 95ba
-0002ec f7a9
-0002ed 95aa
-0002ee f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-0002ef ea7f                      	LDI R23,0xAF								; Key G
-0002f0 940e 0150
-0002f2 e0a1
-0002f3 e0b2
-0002f4 e8c0
-0002f5 e0f9
-0002f6 eee4
-0002f7 940e 0043
-0002f9 991a
-0002fa c001
-0002fb c137
-0002fc 95ca
-0002fd f7b9
-0002fe 95ba
-0002ff f7a9
-000300 95aa
-000301 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000302 ec70                      	LDI R23,0xC0								; Key B
-000303 940e 0150
-000305 e0a1
-000306 e0b2
-000307 e8c0
-000308 e0f9
-000309 eee4
-00030a 940e 0043
-00030c 991a
-00030d c001
-00030e c124
-00030f 95ca
-000310 f7b9
-000311 95ba
-000312 f7a9
-000313 95aa
-000314 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000315 ec70                      	LDI R23,0xC0								; Key B 
-000316 940e 0150
-000318 e0a1
-000319 e0b2
-00031a e8c0
-00031b e1f2
-00031c e5ee
-00031d 940e 0043
-00031f 991a
-000320 c001
-000321 c111
-000322 95ca
-000323 f7b9
-000324 95ba
-000325 f7a9
-000326 95aa
-000327 f799                      	DELAY_MACRO Joy_start,switch_sound
-000328 e975                      	LDI R23,0x95								; Key D 
-000329 940e 0150
-00032b e0a1
-00032c e0b2
-00032d e8c0
-00032e e1f2
-00032f e5ee
-000330 940e 0043
-000332 991a
-000333 c001
-000334 c0fe
-000335 95ca
-000336 f7b9
-000337 95ba
-000338 f7a9
-000339 95aa
-00033a f799                      	DELAY_MACRO Joy_start,switch_sound
-00033b ea7b                      	LDI R23,0xAB								; Key F#
-00033c 940e 0150
-00033e e0a1
-00033f e0b2
-000340 e8c0
-000341 e1f2
-000342 e5ee
-000343 940e 0043
-000345 991a
-000346 c001
-000347 c0eb
-000348 95ca
-000349 f7b9
-00034a 95ba
-00034b f7a9
-00034c 95aa
-00034d f799                      	DELAY_MACRO Joy_start,switch_sound
-00034e e878                      	LDI R23,0x88								; Key C
-00034f 940e 0150
-000351 e0a1
-000352 e0b2
-000353 e8c0
-000354 e0f9
-000355 eee4
-000356 940e 0043
-000358 991a
-000359 c001
-00035a c0d8
-00035b 95ca
-00035c f7b9
-00035d 95ba
-00035e f7a9
-00035f 95aa
-000360 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000361 ea70                      	LDI R23,0xA0								; Key E
-000362 940e 0150
-000364 e0a1
-000365 e0b2
-000366 e8c0
-000367 e0f9
-000368 eee4
-000369 940e 0043
-00036b 991a
-00036c c001
-00036d c0c5
-00036e 95ca
-00036f f7b9
-000370 95ba
-000371 f7a9
-000372 95aa
-000373 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000374 ea7f                      	LDI R23,0xAF								; Key G
-000375 940e 0150
-000377 e0a1
-000378 e0b2
-000379 e8c0
-00037a e0f9
-00037b eee4
-00037c 940e 0043
-00037e 991a
-00037f c001
-000380 c0b2
-000381 95ca
-000382 f7b9
-000383 95ba
-000384 f7a9
-000385 95aa
-000386 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-000387 ea7f                      	LDI R23,0xAF								; Key G
-000388 940e 0150
-00038a e0a1
-00038b e0b2
-00038c e8c0
-00038d e1f2
-00038e e5ee
-00038f 940e 0043
-000391 991a
-000392 c001
-000393 c09f
-000394 95ca
-000395 f7b9
-000396 95ba
-000397 f7a9
-000398 95aa
-000399 f799                      	DELAY_MACRO Joy_start,switch_sound
-00039a ec70                      	LDI R23,0xC0								; Key B
-00039b 940e 0150
-00039d e0a1
-00039e e0b2
-00039f e8c0
-0003a0 e1f2
-0003a1 e5ee
-0003a2 940e 0043
-0003a4 991a
-0003a5 c001
-0003a6 c08c
-0003a7 95ca
-0003a8 f7b9
-0003a9 95ba
-0003aa f7a9
-0003ab 95aa
-0003ac f799                      	DELAY_MACRO Joy_start,switch_sound
-0003ad e975                      	LDI R23,0x95								; Key D
-0003ae 940e 0150
-0003b0 e0a1
-0003b1 e0b2
-0003b2 e8c0
-0003b3 e1f2
-0003b4 e5ee
-0003b5 940e 0043
-0003b7 991a
-0003b8 c001
-0003b9 c079
-0003ba 95ca
-0003bb f7b9
-0003bc 95ba
-0003bd f7a9
-0003be 95aa
-0003bf f799                      	DELAY_MACRO Joy_start,switch_sound
-0003c0 e878                      	LDI R23,0x88								; Key C
-0003c1 940e 0150
-0003c3 e0a1
-0003c4 e0b2
-0003c5 e8c0
-0003c6 e0f9
-0003c7 eee4
-0003c8 940e 0043
-0003ca 991a
-0003cb c001
-0003cc c066
-0003cd 95ca
-0003ce f7b9
-0003cf 95ba
-0003d0 f7a9
-0003d1 95aa
-0003d2 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-0003d3 ea70                      	LDI R23,0xA0								; Key E
-0003d4 940e 0150
-0003d6 e0a1
-0003d7 e0b2
-0003d8 e8c0
-0003d9 e0f9
-0003da eee4
-0003db 940e 0043
-0003dd 991a
-0003de c001
-0003df c053
-0003e0 95ca
-0003e1 f7b9
-0003e2 95ba
-0003e3 f7a9
-0003e4 95aa
-0003e5 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-0003e6 ea7f                      	LDI R23,0xAF								; Key G
-0003e7 940e 0150
-0003e9 e0a1
-0003ea e0b2
-0003eb e8c0
-0003ec e0f9
-0003ed eee4
-0003ee 940e 0043
-0003f0 991a
-0003f1 c001
-0003f2 c040
-0003f3 95ca
-0003f4 f7b9
-0003f5 95ba
-0003f6 f7a9
-0003f7 95aa
-0003f8 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
-0003f9 e975                      	LDI R23,0x95								; Key D
-0003fa 940e 0150
-0003fc e0a1
-0003fd e0b2
-0003fe e8c0
-0003ff e1f2
-000400 e5ee
-000401 940e 0043
-000403 991a
-000404 c001
-000405 c02d
-000406 95ca
-000407 f7b9
-000408 95ba
-000409 f7a9
-00040a 95aa
-00040b f799                      	DELAY_MACRO Joy_start,switch_sound
-00040c ea7b                      	LDI R23,0xAB								; Key F#
-00040d 940e 0150
-00040f e0a1
-000410 e0b2
-000411 e8c0
-000412 e1f2
-000413 e5ee
-000414 940e 0043
-000416 991a
-000417 c001
-000418 c01a
-000419 95ca
-00041a f7b9
-00041b 95ba
-00041c f7a9
-00041d 95aa
-00041e f799                      	DELAY_MACRO Joy_start,switch_sound
-00041f eb78                      	LDI R23,0xB8								; Key A
-000420 940e 0150
-000422 e0a1
-000423 e0b2
-000424 e8c0
-000425 e1f2
-000426 e5ee
-000427 940e 0043
-000429 991a
-00042a c001
-00042b c007
-00042c 95ca
-00042d f7b9
-00042e 95ba
-00042f f7a9
-000430 95aa
-000431 f799                      	DELAY_MACRO Joy_start,switch_sound
-000432 ce37                      	RJMP start_screen
+00026c ea7f                      	LDI R23,0xAF								; TCNT_INIT for timer 0 --> Key G (4)
+00026d 940e 0150
+00026f e0a1
+000270 e0b2
+000271 e8c0
+000272 e0f9
+000273 efe2
+000274 940e 0043
+000276 991a
+000277 c001
+000278 c1bc
+000279 95ca
+00027a f7b9
+00027b 95ba
+00027c f7a9
+00027d 95aa
+00027e f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+00027f ec70                      	LDI R23,0xC0								; Key B 
+000280 940e 0150
+000282 e0a1
+000283 e0b2
+000284 e8c0
+000285 e0f9
+000286 efe2
+000287 940e 0043
+000289 991a
+00028a c001
+00028b c1a9
+00028c 95ca
+00028d f7b9
+00028e 95ba
+00028f f7a9
+000290 95aa
+000291 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000292 e975                      	LDI R23,0x95								; Key D 
+000293 940e 0150
+000295 e0a1
+000296 e0b2
+000297 e8c0
+000298 e0f9
+000299 efe2
+00029a 940e 0043
+00029c 991a
+00029d c001
+00029e c196
+00029f 95ca
+0002a0 f7b9
+0002a1 95ba
+0002a2 f7a9
+0002a3 95aa
+0002a4 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+0002a5 e975                      	LDI R23,0x95								; Key D 
+0002a6 940e 0150
+0002a8 e0a1
+0002a9 e0b2
+0002aa e8c0
+0002ab e1f2
+0002ac e6ec
+0002ad 940e 0043
+0002af 991a
+0002b0 c001
+0002b1 c183
+0002b2 95ca
+0002b3 f7b9
+0002b4 95ba
+0002b5 f7a9
+0002b6 95aa
+0002b7 f799                      	DELAY_MACRO Joy_start,switch_sound
+0002b8 ea7b                      	LDI R23,0xAB								; Key F#
+0002b9 940e 0150
+0002bb e0a1
+0002bc e0b2
+0002bd e8c0
+0002be e1f2
+0002bf e6ec
+0002c0 940e 0043
+0002c2 991a
+0002c3 c001
+0002c4 c170
+0002c5 95ca
+0002c6 f7b9
+0002c7 95ba
+0002c8 f7a9
+0002c9 95aa
+0002ca f799                      	DELAY_MACRO Joy_start,switch_sound
+0002cb eb78                      	LDI R23,0xB8								; Key A
+0002cc 940e 0150
+0002ce e0a1
+0002cf e0b2
+0002d0 e8c0
+0002d1 e1f2
+0002d2 e6ec
+0002d3 940e 0043
+0002d5 991a
+0002d6 c001
+0002d7 c15d
+0002d8 95ca
+0002d9 f7b9
+0002da 95ba
+0002db f7a9
+0002dc 95aa
+0002dd f799                      	DELAY_MACRO Joy_start,switch_sound
+0002de ea70                      	LDI R23,0xA0								; Key E
+0002df 940e 0150
+0002e1 e0a1
+0002e2 e0b2
+0002e3 e8c0
+0002e4 e0f9
+0002e5 efe2
+0002e6 940e 0043
+0002e8 991a
+0002e9 c001
+0002ea c14a
+0002eb 95ca
+0002ec f7b9
+0002ed 95ba
+0002ee f7a9
+0002ef 95aa
+0002f0 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+0002f1 ea7f                      	LDI R23,0xAF								; Key G
+0002f2 940e 0150
+0002f4 e0a1
+0002f5 e0b2
+0002f6 e8c0
+0002f7 e0f9
+0002f8 efe2
+0002f9 940e 0043
+0002fb 991a
+0002fc c001
+0002fd c137
+0002fe 95ca
+0002ff f7b9
+000300 95ba
+000301 f7a9
+000302 95aa
+000303 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000304 ec70                      	LDI R23,0xC0								; Key B
+000305 940e 0150
+000307 e0a1
+000308 e0b2
+000309 e8c0
+00030a e0f9
+00030b efe2
+00030c 940e 0043
+00030e 991a
+00030f c001
+000310 c124
+000311 95ca
+000312 f7b9
+000313 95ba
+000314 f7a9
+000315 95aa
+000316 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000317 ec70                      	LDI R23,0xC0								; Key B 
+000318 940e 0150
+00031a e0a1
+00031b e0b2
+00031c e8c0
+00031d e1f2
+00031e e6ec
+00031f 940e 0043
+000321 991a
+000322 c001
+000323 c111
+000324 95ca
+000325 f7b9
+000326 95ba
+000327 f7a9
+000328 95aa
+000329 f799                      	DELAY_MACRO Joy_start,switch_sound
+00032a e975                      	LDI R23,0x95								; Key D 
+00032b 940e 0150
+00032d e0a1
+00032e e0b2
+00032f e8c0
+000330 e1f2
+000331 e6ec
+000332 940e 0043
+000334 991a
+000335 c001
+000336 c0fe
+000337 95ca
+000338 f7b9
+000339 95ba
+00033a f7a9
+00033b 95aa
+00033c f799                      	DELAY_MACRO Joy_start,switch_sound
+00033d ea7b                      	LDI R23,0xAB								; Key F#
+00033e 940e 0150
+000340 e0a1
+000341 e0b2
+000342 e8c0
+000343 e1f2
+000344 e6ec
+000345 940e 0043
+000347 991a
+000348 c001
+000349 c0eb
+00034a 95ca
+00034b f7b9
+00034c 95ba
+00034d f7a9
+00034e 95aa
+00034f f799                      	DELAY_MACRO Joy_start,switch_sound
+000350 e878                      	LDI R23,0x88								; Key C
+000351 940e 0150
+000353 e0a1
+000354 e0b2
+000355 e8c0
+000356 e0f9
+000357 efe2
+000358 940e 0043
+00035a 991a
+00035b c001
+00035c c0d8
+00035d 95ca
+00035e f7b9
+00035f 95ba
+000360 f7a9
+000361 95aa
+000362 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000363 ea70                      	LDI R23,0xA0								; Key E
+000364 940e 0150
+000366 e0a1
+000367 e0b2
+000368 e8c0
+000369 e0f9
+00036a efe2
+00036b 940e 0043
+00036d 991a
+00036e c001
+00036f c0c5
+000370 95ca
+000371 f7b9
+000372 95ba
+000373 f7a9
+000374 95aa
+000375 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000376 ea7f                      	LDI R23,0xAF								; Key G
+000377 940e 0150
+000379 e0a1
+00037a e0b2
+00037b e8c0
+00037c e0f9
+00037d efe2
+00037e 940e 0043
+000380 991a
+000381 c001
+000382 c0b2
+000383 95ca
+000384 f7b9
+000385 95ba
+000386 f7a9
+000387 95aa
+000388 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+000389 ea7f                      	LDI R23,0xAF								; Key G
+00038a 940e 0150
+00038c e0a1
+00038d e0b2
+00038e e8c0
+00038f e1f2
+000390 e6ec
+000391 940e 0043
+000393 991a
+000394 c001
+000395 c09f
+000396 95ca
+000397 f7b9
+000398 95ba
+000399 f7a9
+00039a 95aa
+00039b f799                      	DELAY_MACRO Joy_start,switch_sound
+00039c ec70                      	LDI R23,0xC0								; Key B
+00039d 940e 0150
+00039f e0a1
+0003a0 e0b2
+0003a1 e8c0
+0003a2 e1f2
+0003a3 e6ec
+0003a4 940e 0043
+0003a6 991a
+0003a7 c001
+0003a8 c08c
+0003a9 95ca
+0003aa f7b9
+0003ab 95ba
+0003ac f7a9
+0003ad 95aa
+0003ae f799                      	DELAY_MACRO Joy_start,switch_sound
+0003af e975                      	LDI R23,0x95								; Key D
+0003b0 940e 0150
+0003b2 e0a1
+0003b3 e0b2
+0003b4 e8c0
+0003b5 e1f2
+0003b6 e6ec
+0003b7 940e 0043
+0003b9 991a
+0003ba c001
+0003bb c079
+0003bc 95ca
+0003bd f7b9
+0003be 95ba
+0003bf f7a9
+0003c0 95aa
+0003c1 f799                      	DELAY_MACRO Joy_start,switch_sound
+0003c2 e878                      	LDI R23,0x88								; Key C
+0003c3 940e 0150
+0003c5 e0a1
+0003c6 e0b2
+0003c7 e8c0
+0003c8 e0f9
+0003c9 efe2
+0003ca 940e 0043
+0003cc 991a
+0003cd c001
+0003ce c066
+0003cf 95ca
+0003d0 f7b9
+0003d1 95ba
+0003d2 f7a9
+0003d3 95aa
+0003d4 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+0003d5 ea70                      	LDI R23,0xA0								; Key E
+0003d6 940e 0150
+0003d8 e0a1
+0003d9 e0b2
+0003da e8c0
+0003db e0f9
+0003dc efe2
+0003dd 940e 0043
+0003df 991a
+0003e0 c001
+0003e1 c053
+0003e2 95ca
+0003e3 f7b9
+0003e4 95ba
+0003e5 f7a9
+0003e6 95aa
+0003e7 f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+0003e8 ea7f                      	LDI R23,0xAF								; Key G
+0003e9 940e 0150
+0003eb e0a1
+0003ec e0b2
+0003ed e8c0
+0003ee e0f9
+0003ef efe2
+0003f0 940e 0043
+0003f2 991a
+0003f3 c001
+0003f4 c040
+0003f5 95ca
+0003f6 f7b9
+0003f7 95ba
+0003f8 f7a9
+0003f9 95aa
+0003fa f799                      	DELAY_MACRO Joy_start,Press_JS_to_start
+0003fb e975                      	LDI R23,0x95								; Key D
+0003fc 940e 0150
+0003fe e0a1
+0003ff e0b2
+000400 e8c0
+000401 e1f2
+000402 e6ec
+000403 940e 0043
+000405 991a
+000406 c001
+000407 c02d
+000408 95ca
+000409 f7b9
+00040a 95ba
+00040b f7a9
+00040c 95aa
+00040d f799                      	DELAY_MACRO Joy_start,switch_sound
+00040e ea7b                      	LDI R23,0xAB								; Key F#
+00040f 940e 0150
+000411 e0a1
+000412 e0b2
+000413 e8c0
+000414 e1f2
+000415 e6ec
+000416 940e 0043
+000418 991a
+000419 c001
+00041a c01a
+00041b 95ca
+00041c f7b9
+00041d 95ba
+00041e f7a9
+00041f 95aa
+000420 f799                      	DELAY_MACRO Joy_start,switch_sound
+000421 eb78                      	LDI R23,0xB8								; Key A
+000422 940e 0150
+000424 e0a1
+000425 e0b2
+000426 e8c0
+000427 e1f2
+000428 e6ec
+000429 940e 0043
+00042b 991a
+00042c c001
+00042d c007
+00042e 95ca
+00042f f7b9
+000430 95ba
+000431 f7a9
+000432 95aa
+000433 f799                      	DELAY_MACRO Joy_start,switch_sound
+000434 ce37                      	RJMP start_screen
                                  
                                  	
                                  	Joy_start:
-000433 94f8                      		CLI							; Stop timer (Global Interrupt Disable)
-000434 9160 0084                 		LDS R22,TCNT1L				; Seed for generation of random numbers 
-000436 9478                      		SEI							; (random as we use the time at which the user presses the joystick)
-000437 e0a1                      		LDI R26,0x01
-000438 13ca                      		CPSE R28,R26
-000439 2f62                      		MOV R22,R18
-00043a e090                      		LDI R25,0x00
-00043b 9390 006e                 		STS TIMSK0,R25
-00043d 2fd6                      		MOV R29,R22
-00043e e0e0                      		LDI R30,0x00				; Counter for the sequence
-00043f e0f1                      		LDI R31,0x01				; Length of the sequence
-000440 e030                      		LDI R19,0x00				; For speed
-000441 e050                      		LDI R21,0x00				; Score
-000442 c000                      		RJMP main
+000435 94f8                      		CLI							; Stop timer (Global Interrupt Disable)
+000436 9160 0026                 		LDS R22,TCNT0				; Seed for generation of random numbers 
+000438 0f6c                      		ADD R22,R28
+000439 9478                      		SEI							; (random as we use the time at which the user presses the joystick)
+00043a e0a1                      		LDI R26,0x01
+00043b 130a                      		CPSE R16,R26
+00043c 2f62                      		MOV R22,R18
+00043d e090                      		LDI R25,0x00
+00043e 9390 006e                 		STS TIMSK0,R25
+000440 2fd6                      		MOV R29,R22
+000441 e0e0                      		LDI R30,0x00				; Counter for the sequence
+000442 e0f1                      		LDI R31,0x01				; Length of the sequence
+000443 e030                      		LDI R19,0x00				; For speed
+000444 e050                      		LDI R21,0x00				; Score
+000445 c000                      		RJMP main
                                  
                                  
                                  /*************************\
@@ -2422,14 +2422,14 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  main: 
                                  
-000443 2fef                      	MOV R30,R31			; Counter for the sequence is equal to its length (increased every time the player succeeds)
+000446 2fef                      	MOV R30,R31			; Counter for the sequence is equal to its length (increased every time the player succeeds)
                                  
                                  	; PART 1 : The screen is divided in four parts, that lit up randomly (only one part is lit up at one time)		
-000444 940e 0081                 	CALL SEE_SEQ
+000447 940e 0080                 	CALL SEE_SEQ
                                  
                                  	; PART 2 : The user must reproduce the sequence. The game ends when the user makes an error, or when he does not do any action
                                  	; during 15	consecutive seconds
-000446 940e 00b1                 	CALL REDO_SEQ
+000449 940e 00b1                 	CALL REDO_SEQ
                                  
                                  
                                  /*******************\
@@ -2437,80 +2437,80 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  \*******************/
                                  
                                  end:
-000448 e090                      	LDI R25,0x00
-000449 9390 006e                 	STS TIMSK0,R25				; Disable interrpt for timer 0 (to stop error sound)
-00044b 9829                      	CBI PORTB,1
+00044b e090                      	LDI R25,0x00
+00044c 9390 006e                 	STS TIMSK0,R25				; Disable interrpt for timer 0 (to stop error sound)
+00044e 9829                      	CBI PORTB,1
                                  
-00044c 94f8                      	CLI							; Disable all interrupts (to not interfer with reading operation of the EEPROM)
-00044d e020                      	LDI R18,0x00
-00044e e010                      	LDI R17,0x00
-00044f 940e 0257                 	CALL EEPROM_READ			; Load the stored highest score	(in R30) from the EEPROM (non-volatile memory)
-000451 9478                      	SEI
+00044f 94f8                      	CLI							; Disable all interrupts (to not interfer with reading operation of the EEPROM)
+000450 e020                      	LDI R18,0x00
+000451 e010                      	LDI R17,0x00
+000452 940e 0259                 	CALL EEPROM_READ			; Load the stored highest score	(in R30) from the EEPROM (non-volatile memory)
+000454 9478                      	SEI
                                  					
-000452 175e                      	CP R21,R30					; Compare stored high score to current score (R21)
-000453 f40c                      	BRGE newHighScore			;  Branch if R21 >= R30 (unsigned)
-000454 c007                      	RJMP end_s
+000455 175e                      	CP R21,R30					; Compare stored high score to current score (R21)
+000456 f40c                      	BRGE newHighScore			;  Branch if R21 >= R30 (unsigned)
+000457 c007                      	RJMP end_s
                                  
                                  	newHighScore:
-000455 2fe5                      		MOV R30,R21
-000456 94f8                      		CLI
-000457 e020                      		LDI R18,0x00
-000458 e010                      		LDI R17,0x00
-000459 940e 025e                 		CALL EEPROM_WRITE		; Write in EEPROM the new best score
-00045b 9478                      		SEI
+000458 2fe5                      		MOV R30,R21
+000459 94f8                      		CLI
+00045a e020                      		LDI R18,0x00
+00045b e010                      		LDI R17,0x00
+00045c 940e 0260                 		CALL EEPROM_WRITE		; Write in EEPROM the new best score
+00045e 9478                      		SEI
                                  		
                                  
                                  
                                  end_s:
-00045c e6a4
-00045d 175a
-00045e f484
-00045f e0d0
-000460 e02a
-000461 e0ba
-000462 1752
-000463 f018
-000464 0f2b
-000465 95d3
-000466 f7d9
-000467 1b2b
-000468 1b52
-000469 e060
-00046a 1356
-00046b c001
-00046c c005
-00046d 9563
-00046e f7d9
-00046f e0d9
-000470 e069
-000471 c000                      	FIND_SCORES R21,R29,R22		; Find out the ten and unit of current score, in order to print it
-000472 e6a4
-000473 17ea
-000474 f484
-000475 e030
-000476 e02a
-000477 e0ba
-000478 17e2
-000479 f018
-00047a 0f2b
-00047b 9533
-00047c f7d9
-00047d 1b2b
-00047e 1be2
-00047f e040
-000480 13e4
-000481 c001
-000482 c005
-000483 9543
-000484 f7d9
-000485 e039
-000486 e049
-000487 c000                      	FIND_SCORES R30,R19,R20		; Find out the ten and unit of best score, in order to print it
-000488 94f8                      	CLI							; Stop timer (Global Interrupt Disable)
-000489 9120 0084                 	LDS R18,TCNT1L				; Seed for generation of random numbers for the next game 
-00048b 9478                      	SEI							; Global enable interrupt
-00048c e090                      	LDI R25,0x00
-00048d 9390 006f                 	STS TIMSK1,R25				; Disable interrupt for timer 1
+00045f e6a4
+000460 175a
+000461 f484
+000462 e0d0
+000463 e02a
+000464 e0ba
+000465 1752
+000466 f018
+000467 0f2b
+000468 95d3
+000469 f7d9
+00046a 1b2b
+00046b 1b52
+00046c e060
+00046d 1356
+00046e c001
+00046f c005
+000470 9563
+000471 f7d9
+000472 e0d9
+000473 e069
+000474 c000                      	FIND_SCORES R21,R29,R22		; Find out the ten and unit of current score, in order to print it
+000475 e6a4
+000476 17ea
+000477 f484
+000478 e030
+000479 e02a
+00047a e0ba
+00047b 17e2
+00047c f018
+00047d 0f2b
+00047e 9533
+00047f f7d9
+000480 1b2b
+000481 1be2
+000482 e040
+000483 13e4
+000484 c001
+000485 c005
+000486 9543
+000487 f7d9
+000488 e039
+000489 e049
+00048a c000                      	FIND_SCORES R30,R19,R20		; Find out the ten and unit of best score, in order to print it
+00048b 94f8                      	CLI							; Stop timer (Global Interrupt Disable)
+00048c 9120 0084                 	LDS R18,TCNT1L				; Seed for generation of random numbers for the next game 
+00048e 9478                      	SEI							; Global enable interrupt
+00048f e090                      	LDI R25,0x00
+000490 9390 006f                 	STS TIMSK1,R25				; Disable interrupt for timer 1
                                  
                                  
                                  /******************************************************************************\
@@ -2521,62 +2521,63 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  
                                  	; Alternatively print the score, the best score and the text "Press JS to start"
                                  	; Plus: melody
-00048f e081                      	LDI R24,0x01
-000490 ea75                      	LDI R23,0xA5							; Key F (4)	 	
-000491 940e 018e                 	CALL Delay1
-000493 eb78                      	LDI R23,0xB8							; Key A#			 	
-000494 940e 018e                 	CALL Delay1
-000496 e87e                      	LDI R23,0x8E							; Key C#		 
-000497 940e 018e                 	CALL Delay1
-000499 e080                      	LDI R24,0x00
-00049a ea75                      	LDI R23,0xA5							; Key F		 	
-00049b 940e 018e                 	CALL Delay1
-00049d e878                      	LDI R23,0x88							; Key C			 
-00049e 940e 018e                 	CALL Delay1
-0004a0 e97b                      	LDI R23,0x9B							; Key D#			 
-0004a1 940e 018e                 	CALL Delay1
-0004a3 ea7f                      	LDI R23,0xAF							; Key G			 	
-0004a4 940e 0150
-0004a6 e0a1
-0004a7 e0b2
-0004a8 e8c0
-0004a9 e0f9
-0004aa eee4
-0004ab 940e 0043
-0004ad 991a
-0004ae c001
-0004af c01a
-0004b0 95ca
-0004b1 f7b9
-0004b2 95ba
-0004b3 f7a9
-0004b4 95aa
-0004b5 f799                      	DELAY_MACRO Joy,Press_JS_to_start
-0004b6 ea7b                      	LDI R23,0xAB							; Key F#		 		
-0004b7 940e 0150
-0004b9 e0a1
-0004ba e0b2
-0004bb e8c0
-0004bc e0f9
-0004bd eee4
-0004be 940e 0043
-0004c0 991a
-0004c1 c001
-0004c2 c007
-0004c3 95ca
-0004c4 f7b9
-0004c5 95ba
-0004c6 f7a9
-0004c7 95aa
-0004c8 f799                      	DELAY_MACRO Joy,Press_JS_to_start
+000492 e081                      	LDI R24,0x01
+000493 ea75                      	LDI R23,0xA5							; Key F (4)	 	
+000494 940e 0190                 	CALL Delay1
+000496 eb78                      	LDI R23,0xB8							; Key A			 	
+000497 940e 0190                 	CALL Delay1
+000499 e87e                      	LDI R23,0x8E							; Key C#		 
+00049a 940e 0190                 	CALL Delay1
+00049c e080                      	LDI R24,0x00
+00049d ea75                      	LDI R23,0xA5							; Key F		 	
+00049e 940e 0190                 	CALL Delay1
+0004a0 e878                      	LDI R23,0x88							; Key C			 
+0004a1 940e 0190                 	CALL Delay1
+0004a3 e97b                      	LDI R23,0x9B							; Key D#			 
+0004a4 940e 0190                 	CALL Delay1
+0004a6 ea7f                      	LDI R23,0xAF							; Key G			 	
+0004a7 940e 0150
+0004a9 e0a1
+0004aa e0b2
+0004ab e8c0
+0004ac e0f9
+0004ad efe2
+0004ae 940e 0043
+0004b0 991a
+0004b1 c001
+0004b2 c01a
+0004b3 95ca
+0004b4 f7b9
+0004b5 95ba
+0004b6 f7a9
+0004b7 95aa
+0004b8 f799                      	DELAY_MACRO Joy,Press_JS_to_start
+0004b9 ea7b                      	LDI R23,0xAB							; Key F#		 		
+0004ba 940e 0150
+0004bc e0a1
+0004bd e0b2
+0004be e8c0
+0004bf e0f9
+0004c0 efe2
+0004c1 940e 0043
+0004c3 991a
+0004c4 c001
+0004c5 c007
+0004c6 95ca
+0004c7 f7b9
+0004c8 95ba
+0004c9 f7a9
+0004ca 95aa
+0004cb f799                      	DELAY_MACRO Joy,Press_JS_to_start
                                  
-0004c9 cfc5                      	RJMP end_screen
+0004cc cfc5                      	RJMP end_screen
                                  
                                  	
                                  Joy:
-0004ca e090                      	LDI R25,0x00
-0004cb 9390 006e                 	STS TIMSK0,R25			; Disable interrupt for timer 0
-0004cd cd99                      	RJMP init
+0004cd e000                      	LDI R16,0x00
+0004ce e090                      	LDI R25,0x00
+0004cf 9390 006e                 	STS TIMSK0,R25				; Disable interrupt for timer 0
+0004d1 cd97                      	RJMP init
                                  
                                  
                                  
@@ -2588,55 +2589,58 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  Timer0OverflowInterrupt:
                                  	; Used for the buzzer
                                  	; If switch is low : no sound
-0004ce bd76                      	OUT TCNT0,R23				; TCNTinit
-0004cf 9918                      	SBIC PINB,0					; Skip next instruction if bit 0 of pinB is cleared
-0004d0 c004                      	RJMP switchHigh				
+0004d2 b61f                      	IN R1,SREG
+0004d3 bd76                      	OUT TCNT0,R23				; TCNTinit
+0004d4 9918                      	SBIC PINB,0					; Skip next instruction if bit 0 of pinB is cleared
+0004d5 c005                      	RJMP switchHigh				
                                  	switchLow:
-0004d1 e070                      		LDI R23,0x00
-0004d2 9370 006e                 		STS TIMSK0,R23
-0004d4 9518                      		RETI
+0004d6 e070                      		LDI R23,0x00
+0004d7 9370 006e                 		STS TIMSK0,R23
+0004d9 be1f                      		OUT SREG,R1
+0004da 9518                      		RETI
                                  	switchHigh:
-0004d5 9a19                      		SBI PINB,1					; invert output of buzzer
-0004d6 9518                      		RETI
+0004db 9a19                      		SBI PINB,1				; invert output of buzzer
+0004dc be1f                      		OUT SREG,R1
+0004dd 9518                      		RETI
                                  	
                                  
                                  Timer1OverflowInterrupt:
                                  	; Used to increase the speed during the game, and to check for user inactivity
                                  	; Plus, at the beginning, to get a random seed
-0004d7 939f                      	PUSH R25
-0004d8 937f                      	PUSH R23
-0004d9 e875                      	LDI R23,0x85                ; TCNTinit (2 Hz) 
-0004da ee9d                      	LDI R25,0xED					
-0004db 9370 0085                 	STS TCNT1H,R23					
-0004dd 9390 0084                 	STS TCNT1L,R25 
+0004de 939f                      	PUSH R25
+0004df b61f                      	IN R1,SREG
+0004e0 e895                      	LDI R25,0x85                ; TCNTinit (2 Hz) 			
+0004e1 9390 0085                 	STS TCNT1H,R25	
+0004e3 ee9d                      	LDI R25,0xED					
+0004e4 9390 0084                 	STS TCNT1L,R25 
                                  	
-0004df ef9f                      	LDI R25,0xFF
-0004e0 1329                      	CPSE R18,R25
-0004e1 c003                      	RJMP wait_state
-0004e2 c000                      	RJMP button_pressed
+0004e6 ef9f                      	LDI R25,0xFF
+0004e7 1329                      	CPSE R18,R25
+0004e8 c003                      	RJMP wait_state
+0004e9 c000                      	RJMP button_pressed
                                  
                                  	button_pressed:
-0004e3 e080                      		LDI R24,0x00
-0004e4 c002                      		RJMP continue
+0004ea e080                      		LDI R24,0x00
+0004eb c002                      		RJMP continue
                                  
                                  	wait_state:
-0004e5 9583                      		INC R24
-0004e6 c000                      		RJMP continue
+0004ec 9583                      		INC R24
+0004ed c000                      		RJMP continue
                                  
                                  	continue:
-0004e7 e490                      	LDI R25,0x40
-0004e8 1339                      	CPSE R19,R25
-0004e9 c001                      	RJMP inc_speed
-0004ea c004                      	RJMP max_speed
+0004ee e490                      	LDI R25,0x40
+0004ef 1339                      	CPSE R19,R25
+0004f0 c001                      	RJMP inc_speed
+0004f1 c004                      	RJMP max_speed
                                  	inc_speed:
-0004eb 9533                      		INC R19
-0004ec 917f                      		POP R23
-0004ed 919f                      		POP R25
-0004ee 9518                      		RETI
+0004f2 9533                      		INC R19
+0004f3 be1f                      		OUT SREG,R1
+0004f4 919f                      		POP R25
+0004f5 9518                      		RETI
                                  	max_speed:
-0004ef 917f                      		POP R23
-0004f0 919f                      		POP R25
-0004f1 9518                      		RETI
+0004f6 919f                      		POP R25
+0004f7 be1f                      		OUT SREG,R1
+0004f8 9518                      		RETI
                                  
                                  
                                  
@@ -2649,1188 +2653,1188 @@ C:\Users\Florence\microcontroller labs\TestProjectsSolution\Project\main.asm(174
                                  ; /!\ On a given line, first number -> last column  
                                  
                                  Press_js_to_start:   ;.db = define byte / program memory	
-0004f2 5222
-0004f3 0043
-0004f4 30c4
-0004f5 6380
-0004f6 213d                      	.db 0b00100010, 0b01010010, 0b01000011, 0b00000000, 0b11000100, 0b00110000, 0b10000000, 0b01100011, 0b00111101, 0b00100001
-0004f7 5221
-0004f8 8144
-0004f9 4924
-0004fa 9440
-0004fb a184                      	.db 0b00100001, 0b01010010, 0b01000100, 0b10000001, 0b00100100, 0b01001001, 0b01000000, 0b10010100, 0b10000100, 0b10100001
-0004fc d220
-0004fd 0144
-0004fe 4124
-0004ff 8400
-000500 6104                      	.db 0b00100000, 0b11010010, 0b01000100, 0b00000001, 0b00100100, 0b01000001, 0b00000000, 0b10000100, 0b00000100, 0b01100001
-000501 de21
-000502 0143
-000503 3124
-000504 6300
-000505 e71c                      	.db 0b00100001, 0b11011110, 0b01000011, 0b00000001, 0b00100100, 0b00110001, 0b00000000, 0b01100011, 0b00011100, 0b11100111
-000506 5222
-000507 8140
-000508 0924
-000509 1000
-00050a 2985                      	.db 0b00100010, 0b01010010, 0b01000000, 0b10000001, 0b00100100, 0b00001001, 0b00000000, 0b00010000, 0b10000101, 0b00101001
-00050b 5222
-00050c 8144
-00050d 4924
-00050e 9400
-00050f 2985                      	.db 0b00100010, 0b01010010, 0b01000100, 0b10000001, 0b00100100, 0b01001001, 0b00000000, 0b10010100, 0b10000101, 0b00101001
-000510 cc79
-000511 00f3
-000512 33cf
-000513 63c0
-000514 e73c                      	.db 0b01111001, 0b11001100, 0b11110011, 0b00000000, 0b11001111, 0b00110011, 0b11000000, 0b01100011, 0b00111100, 0b11100111
+0004f9 5222
+0004fa 0043
+0004fb 30c4
+0004fc 6380
+0004fd 213d                      	.db 0b00100010, 0b01010010, 0b01000011, 0b00000000, 0b11000100, 0b00110000, 0b10000000, 0b01100011, 0b00111101, 0b00100001
+0004fe 5221
+0004ff 8144
+000500 4924
+000501 9440
+000502 a184                      	.db 0b00100001, 0b01010010, 0b01000100, 0b10000001, 0b00100100, 0b01001001, 0b01000000, 0b10010100, 0b10000100, 0b10100001
+000503 d220
+000504 0144
+000505 4124
+000506 8400
+000507 6104                      	.db 0b00100000, 0b11010010, 0b01000100, 0b00000001, 0b00100100, 0b01000001, 0b00000000, 0b10000100, 0b00000100, 0b01100001
+000508 de21
+000509 0143
+00050a 3124
+00050b 6300
+00050c e71c                      	.db 0b00100001, 0b11011110, 0b01000011, 0b00000001, 0b00100100, 0b00110001, 0b00000000, 0b01100011, 0b00011100, 0b11100111
+00050d 5222
+00050e 8140
+00050f 0924
+000510 1000
+000511 2985                      	.db 0b00100010, 0b01010010, 0b01000000, 0b10000001, 0b00100100, 0b00001001, 0b00000000, 0b00010000, 0b10000101, 0b00101001
+000512 5222
+000513 8144
+000514 4924
+000515 9400
+000516 2985                      	.db 0b00100010, 0b01010010, 0b01000100, 0b10000001, 0b00100100, 0b01001001, 0b00000000, 0b10010100, 0b10000101, 0b00101001
+000517 cc79
+000518 00f3
+000519 33cf
+00051a 63c0
+00051b e73c                      	.db 0b01111001, 0b11001100, 0b11110011, 0b00000000, 0b11001111, 0b00110011, 0b11000000, 0b01100011, 0b00111100, 0b11100111
                                  
                                  score_zero:	
-000515 0000
-000516 0003
-000517 0300
-000518 66d2
-000519 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-00051a 0000
-00051b 8004
 00051c 0000
-00051d 914a
-00051e 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-00051f 0000
-000520 8004
+00051d 0003
+00051e 0300
+00051f 66d2
+000520 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000521 0000
-000522 9046
-000523 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-000524 0000
-000525 8004
-000526 0100
-000527 90ce
-000528 0098                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-000529 0000
-00052a 8004
+000522 8004
+000523 0000
+000524 914a
+000525 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+000526 0000
+000527 8004
+000528 0000
+000529 9046
+00052a 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 00052b 0000
-00052c 9052
-00052d 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-00052e 0000
-00052f 8004
+00052c 8004
+00052d 0100
+00052e 90ce
+00052f 0098                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000530 0000
-000531 9152
-000532 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-000533 0000
-000534 0003
-000535 0300
-000536 66ce
-000537 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000531 8004
+000532 0000
+000533 9052
+000534 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+000535 0000
+000536 8004
+000537 0000
+000538 9152
+000539 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+00053a 0000
+00053b 0003
+00053c 0300
+00053d 66ce
+00053e 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_one:
-000538 0000
-000539 0004
-00053a 0300
-00053b 66d2
-00053c 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-00053d 0000
-00053e 0004
 00053f 0000
-000540 914a
-000541 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-000542 0000
-000543 0004
+000540 0004
+000541 0300
+000542 66d2
+000543 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000544 0000
-000545 9046
-000546 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-000547 0000
-000548 0004
-000549 0100
-00054a 90ce
-00054b 0098                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-00054c 0000
-00054d 0005
+000545 0004
+000546 0000
+000547 914a
+000548 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+000549 0000
+00054a 0004
+00054b 0000
+00054c 9046
+00054d 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 00054e 0000
-00054f 9052
-000550 0084                      	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000551 0000
-000552 0006
+00054f 0004
+000550 0100
+000551 90ce
+000552 0098                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000553 0000
-000554 9152
-000555 0024                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-000556 0000
-000557 0004
-000558 0300
-000559 66ce
-00055a 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000554 0005
+000555 0000
+000556 9052
+000557 0084                      	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+000558 0000
+000559 0006
+00055a 0000
+00055b 9152
+00055c 0024                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+00055d 0000
+00055e 0004
+00055f 0300
+000560 66ce
+000561 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_two:
-00055b 0000
-00055c 8007
-00055d 0300
-00055e 66d2
-00055f 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-000560 0000
-000561 8000
 000562 0000
-000563 914a
-000564 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-000565 0000
-000566 0001
+000563 8007
+000564 0300
+000565 66d2
+000566 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000567 0000
-000568 9046
-000569 00a0                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-00056a 0000
-00056b 0002
-00056c 0100
-00056d 90ce
-00056e 0098                      	.db 0b00000000, 0b00000000, 0b00000010, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-00056f 0000
-000570 0004
+000568 8000
+000569 0000
+00056a 914a
+00056b 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+00056c 0000
+00056d 0001
+00056e 0000
+00056f 9046
+000570 00a0                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 000571 0000
-000572 9052
-000573 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000574 0000
-000575 8004
+000572 0002
+000573 0100
+000574 90ce
+000575 0098                      	.db 0b00000000, 0b00000000, 0b00000010, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000576 0000
-000577 9152
-000578 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-000579 0000
-00057a 0003
-00057b 0300
-00057c 66ce
-00057d 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000577 0004
+000578 0000
+000579 9052
+00057a 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+00057b 0000
+00057c 8004
+00057d 0000
+00057e 9152
+00057f 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+000580 0000
+000581 0003
+000582 0300
+000583 66ce
+000584 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_three: 
-00057e 0000
-00057f 0003
-000580 0300
-000581 66d2
-000582 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-000583 0000
-000584 8004
 000585 0000
-000586 914a
-000587 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-000588 0000
-000589 0004
+000586 0003
+000587 0300
+000588 66d2
+000589 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 00058a 0000
-00058b 9046
-00058c 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-00058d 0000
-00058e 0003
-00058f 0100
-000590 90ce
-000591 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-000592 0000
-000593 0004
+00058b 8004
+00058c 0000
+00058d 914a
+00058e 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+00058f 0000
+000590 0004
+000591 0000
+000592 9046
+000593 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 000594 0000
-000595 9052
-000596 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000597 0000
-000598 8004
+000595 0003
+000596 0100
+000597 90ce
+000598 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000599 0000
-00059a 9152
-00059b 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-00059c 0000
-00059d 0003
-00059e 0300
-00059f 66ce
-0005a0 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+00059a 0004
+00059b 0000
+00059c 9052
+00059d 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+00059e 0000
+00059f 8004
+0005a0 0000
+0005a1 9152
+0005a2 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+0005a3 0000
+0005a4 0003
+0005a5 0300
+0005a6 66ce
+0005a7 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_four: 
-0005a1 0000
-0005a2 0004
-0005a3 0300
-0005a4 66d2
-0005a5 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-0005a6 0000
-0005a7 0004
 0005a8 0000
-0005a9 914a
-0005aa 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-0005ab 0000
-0005ac 0004
+0005a9 0004
+0005aa 0300
+0005ab 66d2
+0005ac 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 0005ad 0000
-0005ae 9046
-0005af 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-0005b0 0000
-0005b1 8007
-0005b2 0100
-0005b3 90ce
-0005b4 0098                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-0005b5 0000
-0005b6 8004
+0005ae 0004
+0005af 0000
+0005b0 914a
+0005b1 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+0005b2 0000
+0005b3 0004
+0005b4 0000
+0005b5 9046
+0005b6 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 0005b7 0000
-0005b8 9052
-0005b9 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-0005ba 0000
-0005bb 8004
+0005b8 8007
+0005b9 0100
+0005ba 90ce
+0005bb 0098                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 0005bc 0000
-0005bd 9152
-0005be 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-0005bf 0000
-0005c0 8004
-0005c1 0300
-0005c2 66ce
-0005c3 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+0005bd 8004
+0005be 0000
+0005bf 9052
+0005c0 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+0005c1 0000
+0005c2 8004
+0005c3 0000
+0005c4 9152
+0005c5 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+0005c6 0000
+0005c7 8004
+0005c8 0300
+0005c9 66ce
+0005ca 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_five: 
-0005c4 0000
-0005c5 0003
-0005c6 0300
-0005c7 66d2
-0005c8 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-0005c9 0000
-0005ca 8004
 0005cb 0000
-0005cc 914a
-0005cd 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-0005ce 0000
-0005cf 0004
+0005cc 0003
+0005cd 0300
+0005ce 66d2
+0005cf 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 0005d0 0000
-0005d1 9046
-0005d2 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-0005d3 0000
-0005d4 8003
-0005d5 0100
-0005d6 90ce
-0005d7 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-0005d8 0000
-0005d9 8000
+0005d1 8004
+0005d2 0000
+0005d3 914a
+0005d4 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+0005d5 0000
+0005d6 0004
+0005d7 0000
+0005d8 9046
+0005d9 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 0005da 0000
-0005db 9052
-0005dc 0084                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-0005dd 0000
-0005de 8000
+0005db 8003
+0005dc 0100
+0005dd 90ce
+0005de 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 0005df 0000
-0005e0 9152
-0005e1 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-0005e2 0000
-0005e3 8007
-0005e4 0300
-0005e5 66ce
-0005e6 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+0005e0 8000
+0005e1 0000
+0005e2 9052
+0005e3 0084                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+0005e4 0000
+0005e5 8000
+0005e6 0000
+0005e7 9152
+0005e8 0024                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+0005e9 0000
+0005ea 8007
+0005eb 0300
+0005ec 66ce
+0005ed 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  	
                                  score_six: 	
-0005e7 0000
-0005e8 0003
-0005e9 0300
-0005ea 66d2
-0005eb 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-0005ec 0000
-0005ed 8004
 0005ee 0000
-0005ef 914a
-0005f0 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-0005f1 0000
-0005f2 8004
+0005ef 0003
+0005f0 0300
+0005f1 66d2
+0005f2 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 0005f3 0000
-0005f4 9046
-0005f5 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-0005f6 0000
-0005f7 8003
-0005f8 0100
-0005f9 90ce
-0005fa 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-0005fb 0000
-0005fc 8000
+0005f4 8004
+0005f5 0000
+0005f6 914a
+0005f7 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+0005f8 0000
+0005f9 8004
+0005fa 0000
+0005fb 9046
+0005fc 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 0005fd 0000
-0005fe 9052
-0005ff 0084                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000600 0000
-000601 8004
+0005fe 8003
+0005ff 0100
+000600 90ce
+000601 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000602 0000
-000603 9152
-000604 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-000605 0000
-000606 0003
-000607 0300
-000608 66ce
-000609 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000603 8000
+000604 0000
+000605 9052
+000606 0084                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+000607 0000
+000608 8004
+000609 0000
+00060a 9152
+00060b 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+00060c 0000
+00060d 0003
+00060e 0300
+00060f 66ce
+000610 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  	
                                  score_seven: 
-00060a 0000
-00060b 0004
-00060c 0300
-00060d 66d2
-00060e 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-00060f 0000
-000610 0004
 000611 0000
-000612 914a
-000613 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-000614 0000
-000615 0004
+000612 0004
+000613 0300
+000614 66d2
+000615 0018                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000616 0000
-000617 9046
-000618 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-000619 0000
-00061a 0006
-00061b 0100
-00061c 90ce
-00061d 0098                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-00061e 0000
-00061f 0004
+000617 0004
+000618 0000
+000619 914a
+00061a 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+00061b 0000
+00061c 0004
+00061d 0000
+00061e 9046
+00061f 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 000620 0000
-000621 9052
-000622 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000623 0000
-000624 8004
+000621 0006
+000622 0100
+000623 90ce
+000624 0098                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000625 0000
-000626 9152
-000627 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-000628 0000
-000629 8007
-00062a 0300
-00062b 66ce
-00062c 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000626 0004
+000627 0000
+000628 9052
+000629 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+00062a 0000
+00062b 8004
+00062c 0000
+00062d 9152
+00062e 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+00062f 0000
+000630 8007
+000631 0300
+000632 66ce
+000633 0018                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_eight: 
-00062d 0000
-00062e 0003
-00062f 0300
-000630 66d2
-000631 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-000632 0000
-000633 8004
 000634 0000
-000635 914a
-000636 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-000637 0000
-000638 8004
+000635 0003
+000636 0300
+000637 66d2
+000638 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 000639 0000
-00063a 9046
-00063b 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-00063c 0000
-00063d 0003
-00063e 0100
-00063f 90ce
-000640 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-000641 0000
-000642 8004
+00063a 8004
+00063b 0000
+00063c 914a
+00063d 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+00063e 0000
+00063f 8004
+000640 0000
+000641 9046
+000642 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 000643 0000
-000644 9052
-000645 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000646 0000
-000647 8004
+000644 0003
+000645 0100
+000646 90ce
+000647 0098                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 000648 0000
-000649 9152
-00064a 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-00064b 0000
-00064c 0003
-00064d 0300
-00064e 66ce
-00064f 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+000649 8004
+00064a 0000
+00064b 9052
+00064c 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+00064d 0000
+00064e 8004
+00064f 0000
+000650 9152
+000651 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+000652 0000
+000653 0003
+000654 0300
+000655 66ce
+000656 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  score_nine: 
-000650 0000
-000651 0003
-000652 0300
-000653 66d2
-000654 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
-000655 0000
-000656 8004
 000657 0000
-000658 914a
-000659 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
-00065a 0000
-00065b 0004
+000658 0003
+000659 0300
+00065a 66d2
+00065b 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11010010, 0b01100110, 0b00011000, 0b00000000
 00065c 0000
-00065d 9046
-00065e 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
-00065f 0000
-000660 0007
-000661 0100
-000662 90ce
-000663 0098                      	.db 0b00000000, 0b00000000, 0b00000111, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
-000664 0000
-000665 8004
+00065d 8004
+00065e 0000
+00065f 914a
+000660 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01001010, 0b10010001, 0b00100100, 0b00000000
+000661 0000
+000662 0004
+000663 0000
+000664 9046
+000665 00a0                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b01000110, 0b10010000, 0b10100000, 0b00000000
 000666 0000
-000667 9052
-000668 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
-000669 0000
-00066a 8004
+000667 0007
+000668 0100
+000669 90ce
+00066a 0098                      	.db 0b00000000, 0b00000000, 0b00000111, 0b00000000, 0b00000000, 0b00000001, 0b11001110, 0b10010000, 0b10011000, 0b00000000
 00066b 0000
-00066c 9152
-00066d 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
-00066e 0000
-00066f 0003
-000670 0300
-000671 66ce
-000672 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
+00066c 8004
+00066d 0000
+00066e 9052
+00066f 0084                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010000, 0b10000100, 0b00000000
+000670 0000
+000671 8004
+000672 0000
+000673 9152
+000674 0024                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b01010010, 0b10010001, 0b00100100, 0b00000000
+000675 0000
+000676 0003
+000677 0300
+000678 66ce
+000679 0018                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000011, 0b11001110, 0b01100110, 0b00011000, 0b00000000
                                  
                                  zero:	
-000673 0000
-000674 0060
-000675 0000
-000676 0000
-000677 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-000678 0000
-000679 0090
 00067a 0000
-00067b 0000
-00067c 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00067b 0060
+00067c 0000
 00067d 0000
-00067e 0090
+00067e 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00067f 0000
-000680 0000
-000681 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000680 0090
+000681 0000
 000682 0000
-000683 0090
+000683 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000684 0000
-000685 0000
-000686 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000685 0090
+000686 0000
 000687 0000
-000688 0090
+000688 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000689 0000
-00068a 0000
-00068b 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00068a 0090
+00068b 0000
 00068c 0000
-00068d 0090
+00068d 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00068e 0000
-00068f 0000
-000690 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00068f 0090
+000690 0000
 000691 0000
-000692 0060
+000692 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000693 0000
-000694 0000
-000695 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000694 0090
+000695 0000
+000696 0000
+000697 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000698 0000
+000699 0060
+00069a 0000
+00069b 0000
+00069c 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  one:
-000696 0000
-000697 0040
-000698 0000
-000699 0000
-00069a 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-00069b 0000
-00069c 0040
 00069d 0000
-00069e 0000
-00069f 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00069e 0040
+00069f 0000
 0006a0 0000
-0006a1 0040
+0006a1 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006a2 0000
-0006a3 0000
-0006a4 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006a3 0040
+0006a4 0000
 0006a5 0000
-0006a6 0040
+0006a6 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006a7 0000
-0006a8 0000
-0006a9 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006a8 0040
+0006a9 0000
 0006aa 0000
-0006ab 0050
+0006ab 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006ac 0000
-0006ad 0000
-0006ae 0000                      	.db 0b00000000, 0b00000000, 0b1010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006ad 0040
+0006ae 0000
 0006af 0000
-0006b0 0060
+0006b0 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006b1 0000
-0006b2 0000
-0006b3 0000                      	.db 0b00000000, 0b00000000, 0b1100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006b2 0050
+0006b3 0000
 0006b4 0000
-0006b5 0040
+0006b5 0000                      	.db 0b00000000, 0b00000000, 0b1010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006b6 0000
-0006b7 0000
-0006b8 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006b7 0060
+0006b8 0000
+0006b9 0000
+0006ba 0000                      	.db 0b00000000, 0b00000000, 0b1100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006bb 0000
+0006bc 0040
+0006bd 0000
+0006be 0000
+0006bf 0000                      	.db 0b00000000, 0b00000000, 0b1000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  two:	
-0006b9 0000
-0006ba 00f0
-0006bb 0000
-0006bc 0000
-0006bd 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-0006be 0000
-0006bf 0010
 0006c0 0000
-0006c1 0000
-0006c2 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006c1 00f0
+0006c2 0000
 0006c3 0000
-0006c4 0020
+0006c4 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006c5 0000
-0006c6 0000
-0006c7 0000                      	.db 0b00000000, 0b00000000, 0b00100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006c6 0010
+0006c7 0000
 0006c8 0000
-0006c9 0040
+0006c9 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006ca 0000
-0006cb 0000
-0006cc 0000                      	.db 0b00000000, 0b00000000, 0b01000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006cb 0020
+0006cc 0000
 0006cd 0000
-0006ce 0080
+0006ce 0000                      	.db 0b00000000, 0b00000000, 0b00100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006cf 0000
-0006d0 0000
-0006d1 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006d0 0040
+0006d1 0000
 0006d2 0000
-0006d3 0090
+0006d3 0000                      	.db 0b00000000, 0b00000000, 0b01000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006d4 0000
-0006d5 0000
-0006d6 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006d5 0080
+0006d6 0000
 0006d7 0000
-0006d8 0060
+0006d8 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006d9 0000
-0006da 0000
-0006db 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006da 0090
+0006db 0000
+0006dc 0000
+0006dd 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006de 0000
+0006df 0060
+0006e0 0000
+0006e1 0000
+0006e2 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  three:	
-0006dc 0000
-0006dd 0060
-0006de 0000
-0006df 0000
-0006e0 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-0006e1 0000
-0006e2 0090
 0006e3 0000
-0006e4 0000
-0006e5 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006e4 0060
+0006e5 0000
 0006e6 0000
-0006e7 0080
+0006e7 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006e8 0000
-0006e9 0000
-0006ea 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006e9 0090
+0006ea 0000
 0006eb 0000
-0006ec 0060
+0006ec 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006ed 0000
-0006ee 0000
-0006ef 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006ee 0080
+0006ef 0000
 0006f0 0000
-0006f1 0080
+0006f1 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006f2 0000
-0006f3 0000
-0006f4 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006f3 0060
+0006f4 0000
 0006f5 0000
-0006f6 0090
+0006f6 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006f7 0000
-0006f8 0000
-0006f9 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006f8 0080
+0006f9 0000
 0006fa 0000
-0006fb 0060
+0006fb 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0006fc 0000
-0006fd 0000
-0006fe 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0006fd 0090
+0006fe 0000
+0006ff 0000
+000700 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000701 0000
+000702 0060
+000703 0000
+000704 0000
+000705 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  four:	
-0006ff 0000
-000700 0080
-000701 0000
-000702 0000
-000703 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-000704 0000
-000705 0080
 000706 0000
-000707 0000
-000708 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000707 0080
+000708 0000
 000709 0000
-00070a 0080
+00070a 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00070b 0000
-00070c 0000
-00070d 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00070c 0080
+00070d 0000
 00070e 0000
-00070f 00f0
+00070f 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000710 0000
-000711 0000
-000712 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000711 0080
+000712 0000
 000713 0000
-000714 0090
+000714 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000715 0000
-000716 0000
-000717 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000716 00f0
+000717 0000
 000718 0000
-000719 0090
+000719 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00071a 0000
-00071b 0000
-00071c 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00071b 0090
+00071c 0000
 00071d 0000
-00071e 0090
+00071e 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00071f 0000
-000720 0000
-000721 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000720 0090
+000721 0000
+000722 0000
+000723 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000724 0000
+000725 0090
+000726 0000
+000727 0000
+000728 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  five:	
-000722 0000
-000723 0060
-000724 0000
-000725 0000
-000726 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-000727 0000
-000728 0090
 000729 0000
-00072a 0000
-00072b 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00072a 0060
+00072b 0000
 00072c 0000
-00072d 0080
+00072d 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00072e 0000
-00072f 0000
-000730 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00072f 0090
+000730 0000
 000731 0000
-000732 0070
+000732 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000733 0000
-000734 0000
-000735 0000                      	.db 0b00000000, 0b00000000, 0b01110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000734 0080
+000735 0000
 000736 0000
-000737 0010
+000737 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000738 0000
-000739 0000
-00073a 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000739 0070
+00073a 0000
 00073b 0000
-00073c 0010
+00073c 0000                      	.db 0b00000000, 0b00000000, 0b01110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00073d 0000
-00073e 0000
-00073f 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00073e 0010
+00073f 0000
 000740 0000
-000741 00f0
+000741 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000742 0000
-000743 0000
-000744 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000743 0010
+000744 0000
+000745 0000
+000746 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000747 0000
+000748 00f0
+000749 0000
+00074a 0000
+00074b 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  six:	
-000745 0000
-000746 0060
-000747 0000
-000748 0000
-000749 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-00074a 0000
-00074b 0090
 00074c 0000
-00074d 0000
-00074e 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00074d 0060
+00074e 0000
 00074f 0000
-000750 0090
+000750 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000751 0000
-000752 0000
-000753 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000752 0090
+000753 0000
 000754 0000
-000755 0070
+000755 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000756 0000
-000757 0000
-000758 0000                      	.db 0b00000000, 0b00000000, 0b01110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000757 0090
+000758 0000
 000759 0000
-00075a 0010
+00075a 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00075b 0000
-00075c 0000
-00075d 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00075c 0070
+00075d 0000
 00075e 0000
-00075f 0090
+00075f 0000                      	.db 0b00000000, 0b00000000, 0b01110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000760 0000
-000761 0000
-000762 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000761 0010
+000762 0000
 000763 0000
-000764 0060
+000764 0000                      	.db 0b00000000, 0b00000000, 0b00010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000765 0000
-000766 0000
-000767 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000766 0090
+000767 0000
+000768 0000
+000769 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00076a 0000
+00076b 0060
+00076c 0000
+00076d 0000
+00076e 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  seven:
-000768 0000
-000769 0080
-00076a 0000
-00076b 0000
-00076c 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-00076d 0000
-00076e 0080
 00076f 0000
-000770 0000
-000771 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000770 0080
+000771 0000
 000772 0000
-000773 0080
+000773 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000774 0000
-000775 0000
-000776 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000775 0080
+000776 0000
 000777 0000
-000778 00c0
+000778 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000779 0000
-00077a 0000
-00077b 0000                      	.db 0b00000000, 0b00000000, 0b11000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00077a 0080
+00077b 0000
 00077c 0000
-00077d 0080
+00077d 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00077e 0000
-00077f 0000
-000780 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00077f 00c0
+000780 0000
 000781 0000
-000782 0090
+000782 0000                      	.db 0b00000000, 0b00000000, 0b11000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000783 0000
-000784 0000
-000785 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000784 0080
+000785 0000
 000786 0000
-000787 00f0
+000787 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000788 0000
-000789 0000
-00078a 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000789 0090
+00078a 0000
+00078b 0000
+00078c 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00078d 0000
+00078e 00f0
+00078f 0000
+000790 0000
+000791 0000                      	.db 0b00000000, 0b00000000, 0b11110000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  eight:	
-00078b 0000
-00078c 0060
-00078d 0000
-00078e 0000
-00078f 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-000790 0000
-000791 0090
 000792 0000
-000793 0000
-000794 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000793 0060
+000794 0000
 000795 0000
-000796 0090
+000796 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 000797 0000
-000798 0000
-000799 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+000798 0090
+000799 0000
 00079a 0000
-00079b 0060
+00079b 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 00079c 0000
-00079d 0000
-00079e 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+00079d 0090
+00079e 0000
 00079f 0000
-0007a0 0090
+0007a0 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007a1 0000
-0007a2 0000
-0007a3 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007a2 0060
+0007a3 0000
 0007a4 0000
-0007a5 0090
+0007a5 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007a6 0000
-0007a7 0000
-0007a8 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007a7 0090
+0007a8 0000
 0007a9 0000
-0007aa 0060
+0007aa 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007ab 0000
-0007ac 0000
-0007ad 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007ac 0090
+0007ad 0000
+0007ae 0000
+0007af 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007b0 0000
+0007b1 0060
+0007b2 0000
+0007b3 0000
+0007b4 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  nine:	
-0007ae 0000
-0007af 0060
-0007b0 0000
-0007b1 0000
-0007b2 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
-0007b3 0000
-0007b4 0090
 0007b5 0000
-0007b6 0000
-0007b7 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007b6 0060
+0007b7 0000
 0007b8 0000
-0007b9 0080
+0007b9 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007ba 0000
-0007bb 0000
-0007bc 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007bb 0090
+0007bc 0000
 0007bd 0000
-0007be 00e0
+0007be 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007bf 0000
-0007c0 0000
-0007c1 0000                      	.db 0b00000000, 0b00000000, 0b11100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007c0 0080
+0007c1 0000
 0007c2 0000
-0007c3 0090
+0007c3 0000                      	.db 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007c4 0000
-0007c5 0000
-0007c6 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007c5 00e0
+0007c6 0000
 0007c7 0000
-0007c8 0090
+0007c8 0000                      	.db 0b00000000, 0b00000000, 0b11100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007c9 0000
-0007ca 0000
-0007cb 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007ca 0090
+0007cb 0000
 0007cc 0000
-0007cd 0060
+0007cd 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
 0007ce 0000
-0007cf 0000
-0007d0 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007cf 0090
+0007d0 0000
+0007d1 0000
+0007d2 0000                      	.db 0b00000000, 0b00000000, 0b10010000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
+0007d3 0000
+0007d4 0060
+0007d5 0000
+0007d6 0000
+0007d7 0000                      	.db 0b00000000, 0b00000000, 0b01100000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000
                                  
                                  best_zero:	
-0007d1 0000
-0007d2 0003
-0007d3 0000
-0007d4 6708
-0007d5 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-0007d6 0000
-0007d7 8004
 0007d8 0000
-0007d9 9008
-0007da 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0007db 0000
-0007dc 8004
+0007d9 0003
+0007da 0000
+0007db 6708
+0007dc 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 0007dd 0000
-0007de 8008
-0007df 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-0007e0 0000
-0007e1 8004
+0007de 8004
+0007df 0000
+0007e0 9008
+0007e1 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 0007e2 0000
-0007e3 6308
-0007e4 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-0007e5 0000
-0007e6 8004
+0007e3 8004
+0007e4 0000
+0007e5 8008
+0007e6 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 0007e7 0000
-0007e8 1008
-0007e9 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-0007ea 0000
-0007eb 8004
+0007e8 8004
+0007e9 0000
+0007ea 6308
+0007eb 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 0007ec 0000
-0007ed 9008
-0007ee 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0007ef 0000
-0007f0 0003
+0007ed 8004
+0007ee 0000
+0007ef 1008
+0007f0 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 0007f1 0000
-0007f2 671e
-0007f3 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+0007f2 8004
+0007f3 0000
+0007f4 9008
+0007f5 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+0007f6 0000
+0007f7 0003
+0007f8 0000
+0007f9 671e
+0007fa 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_one:
-0007f4 0000
-0007f5 0004
-0007f6 0000
-0007f7 6708
-0007f8 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-0007f9 0000
-0007fa 0004
 0007fb 0000
-0007fc 9008
-0007fd 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0007fe 0000
-0007ff 0004
+0007fc 0004
+0007fd 0000
+0007fe 6708
+0007ff 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 000800 0000
-000801 8008
-000802 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-000803 0000
-000804 0004
+000801 0004
+000802 0000
+000803 9008
+000804 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 000805 0000
-000806 6308
-000807 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-000808 0000
-000809 0005
+000806 0004
+000807 0000
+000808 8008
+000809 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 00080a 0000
-00080b 1008
-00080c 00a4                      	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-00080d 0000
-00080e 0006
+00080b 0004
+00080c 0000
+00080d 6308
+00080e 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 00080f 0000
-000810 9008
-000811 00a4                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000812 0000
-000813 0004
+000810 0005
+000811 0000
+000812 1008
+000813 00a4                      	.db 0b00000000, 0b00000000, 0b00000101, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 000814 0000
-000815 671e
-000816 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+000815 0006
+000816 0000
+000817 9008
+000818 00a4                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+000819 0000
+00081a 0004
+00081b 0000
+00081c 671e
+00081d 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_two:
-000817 0000
-000818 8007
-000819 0000
-00081a 6708
-00081b 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-00081c 0000
-00081d 8000
 00081e 0000
-00081f 9008
-000820 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000821 0000
-000822 0001
+00081f 8007
+000820 0000
+000821 6708
+000822 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 000823 0000
-000824 8008
-000825 00a4                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-000826 0000
-000827 0002
+000824 8000
+000825 0000
+000826 9008
+000827 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 000828 0000
-000829 6308
-00082a 009c                      	.db 0b00000000, 0b00000000, 0b00000010, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-00082b 0000
-00082c 0004
+000829 0001
+00082a 0000
+00082b 8008
+00082c 00a4                      	.db 0b00000000, 0b00000000, 0b00000001, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 00082d 0000
-00082e 1008
-00082f 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000830 0000
-000831 8004
+00082e 0002
+00082f 0000
+000830 6308
+000831 009c                      	.db 0b00000000, 0b00000000, 0b00000010, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 000832 0000
-000833 9008
-000834 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000835 0000
-000836 0003
+000833 0004
+000834 0000
+000835 1008
+000836 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 000837 0000
-000838 671e
-000839 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+000838 8004
+000839 0000
+00083a 9008
+00083b 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+00083c 0000
+00083d 0003
+00083e 0000
+00083f 671e
+000840 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_three:
-00083a 0000
-00083b 0003
-00083c 0000
-00083d 6708
-00083e 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-00083f 0000
-000840 8004
 000841 0000
-000842 9008
-000843 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000844 0000
-000845 0004
+000842 0003
+000843 0000
+000844 6708
+000845 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 000846 0000
-000847 8008
-000848 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-000849 0000
-00084a 0003
+000847 8004
+000848 0000
+000849 9008
+00084a 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 00084b 0000
-00084c 6308
-00084d 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-00084e 0000
-00084f 0004
+00084c 0004
+00084d 0000
+00084e 8008
+00084f 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 000850 0000
-000851 1008
-000852 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000853 0000
-000854 8004
+000851 0003
+000852 0000
+000853 6308
+000854 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 000855 0000
-000856 9008
-000857 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000858 0000
-000859 0003
+000856 0004
+000857 0000
+000858 1008
+000859 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 00085a 0000
-00085b 671e
-00085c 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+00085b 8004
+00085c 0000
+00085d 9008
+00085e 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+00085f 0000
+000860 0003
+000861 0000
+000862 671e
+000863 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_four:
-00085d 0000
-00085e 0004
-00085f 0000
-000860 6708
-000861 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-000862 0000
-000863 0004
 000864 0000
-000865 9008
-000866 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000867 0000
-000868 0004
+000865 0004
+000866 0000
+000867 6708
+000868 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 000869 0000
-00086a 8008
-00086b 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-00086c 0000
-00086d 8007
+00086a 0004
+00086b 0000
+00086c 9008
+00086d 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 00086e 0000
-00086f 6308
-000870 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-000871 0000
-000872 8004
+00086f 0004
+000870 0000
+000871 8008
+000872 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 000873 0000
-000874 1008
-000875 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000876 0000
-000877 8004
+000874 8007
+000875 0000
+000876 6308
+000877 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 000878 0000
-000879 9008
-00087a 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-00087b 0000
-00087c 8004
+000879 8004
+00087a 0000
+00087b 1008
+00087c 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 00087d 0000
-00087e 671e
-00087f 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+00087e 8004
+00087f 0000
+000880 9008
+000881 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+000882 0000
+000883 8004
+000884 0000
+000885 671e
+000886 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_five:	
-000880 0000
-000881 0003
-000882 0000
-000883 6708
-000884 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-000885 0000
-000886 8004
 000887 0000
-000888 9008
-000889 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-00088a 0000
-00088b 0004
+000888 0003
+000889 0000
+00088a 6708
+00088b 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 00088c 0000
-00088d 8008
-00088e 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-00088f 0000
-000890 8003
+00088d 8004
+00088e 0000
+00088f 9008
+000890 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 000891 0000
-000892 6308
-000893 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-000894 0000
-000895 8000
+000892 0004
+000893 0000
+000894 8008
+000895 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 000896 0000
-000897 1008
-000898 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000899 0000
-00089a 8000
+000897 8003
+000898 0000
+000899 6308
+00089a 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 00089b 0000
-00089c 9008
-00089d 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-00089e 0000
-00089f 8007
+00089c 8000
+00089d 0000
+00089e 1008
+00089f 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 0008a0 0000
-0008a1 671e
-0008a2 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+0008a1 8000
+0008a2 0000
+0008a3 9008
+0008a4 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+0008a5 0000
+0008a6 8007
+0008a7 0000
+0008a8 671e
+0008a9 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_six:	
-0008a3 0000
-0008a4 0003
-0008a5 0000
-0008a6 6708
-0008a7 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-0008a8 0000
-0008a9 8004
 0008aa 0000
-0008ab 9008
-0008ac 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0008ad 0000
-0008ae 8004
+0008ab 0003
+0008ac 0000
+0008ad 6708
+0008ae 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 0008af 0000
-0008b0 8008
-0008b1 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-0008b2 0000
-0008b3 8003
+0008b0 8004
+0008b1 0000
+0008b2 9008
+0008b3 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 0008b4 0000
-0008b5 6308
-0008b6 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-0008b7 0000
-0008b8 8000
+0008b5 8004
+0008b6 0000
+0008b7 8008
+0008b8 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 0008b9 0000
-0008ba 1008
-0008bb 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-0008bc 0000
-0008bd 8004
+0008ba 8003
+0008bb 0000
+0008bc 6308
+0008bd 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 0008be 0000
-0008bf 9008
-0008c0 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0008c1 0000
-0008c2 0003
+0008bf 8000
+0008c0 0000
+0008c1 1008
+0008c2 00a4                      	.db 0b00000000, 0b00000000, 0b00000000, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 0008c3 0000
-0008c4 671e
-0008c5 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+0008c4 8004
+0008c5 0000
+0008c6 9008
+0008c7 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+0008c8 0000
+0008c9 0003
+0008ca 0000
+0008cb 671e
+0008cc 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_seven:
-0008c6 0000
-0008c7 0004
-0008c8 0000
-0008c9 6708
-0008ca 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-0008cb 0000
-0008cc 0004
 0008cd 0000
-0008ce 9008
-0008cf 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0008d0 0000
-0008d1 0004
+0008ce 0004
+0008cf 0000
+0008d0 6708
+0008d1 009c                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 0008d2 0000
-0008d3 8008
-0008d4 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-0008d5 0000
-0008d6 0006
+0008d3 0004
+0008d4 0000
+0008d5 9008
+0008d6 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 0008d7 0000
-0008d8 6308
-0008d9 009c                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-0008da 0000
-0008db 0004
+0008d8 0004
+0008d9 0000
+0008da 8008
+0008db 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 0008dc 0000
-0008dd 1008
-0008de 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-0008df 0000
-0008e0 8004
+0008dd 0006
+0008de 0000
+0008df 6308
+0008e0 009c                      	.db 0b00000000, 0b00000000, 0b00000110, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 0008e1 0000
-0008e2 9008
-0008e3 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0008e4 0000
-0008e5 8007
+0008e2 0004
+0008e3 0000
+0008e4 1008
+0008e5 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 0008e6 0000
-0008e7 671e
-0008e8 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+0008e7 8004
+0008e8 0000
+0008e9 9008
+0008ea 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+0008eb 0000
+0008ec 8007
+0008ed 0000
+0008ee 671e
+0008ef 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b10000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_eight:
-0008e9 0000
-0008ea 0003
-0008eb 0000
-0008ec 6708
-0008ed 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-0008ee 0000
-0008ef 8004
 0008f0 0000
-0008f1 9008
-0008f2 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-0008f3 0000
-0008f4 8004
+0008f1 0003
+0008f2 0000
+0008f3 6708
+0008f4 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 0008f5 0000
-0008f6 8008
-0008f7 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-0008f8 0000
-0008f9 0003
+0008f6 8004
+0008f7 0000
+0008f8 9008
+0008f9 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 0008fa 0000
-0008fb 6308
-0008fc 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-0008fd 0000
-0008fe 8004
+0008fb 8004
+0008fc 0000
+0008fd 8008
+0008fe 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 0008ff 0000
-000900 1008
-000901 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000902 0000
-000903 8004
+000900 0003
+000901 0000
+000902 6308
+000903 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 000904 0000
-000905 9008
-000906 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000907 0000
-000908 0003
+000905 8004
+000906 0000
+000907 1008
+000908 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 000909 0000
-00090a 671e
-00090b 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+00090a 8004
+00090b 0000
+00090c 9008
+00090d 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+00090e 0000
+00090f 0003
+000910 0000
+000911 671e
+000912 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  best_nine:	
-00090c 0000
-00090d 0003
-00090e 0000
-00090f 6708
-000910 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
-000911 0000
-000912 8004
 000913 0000
-000914 9008
-000915 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-000916 0000
-000917 0004
+000914 0003
+000915 0000
+000916 6708
+000917 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100111, 0b10011100, 0b00000000
 000918 0000
-000919 8008
-00091a 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
-00091b 0000
-00091c 0007
+000919 8004
+00091a 0000
+00091b 9008
+00091c 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
 00091d 0000
-00091e 6308
-00091f 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
-000920 0000
-000921 8004
+00091e 0004
+00091f 0000
+000920 8008
+000921 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b10000000, 0b10100100, 0b00000000
 000922 0000
-000923 1008
-000924 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
-000925 0000
-000926 8004
+000923 0007
+000924 0000
+000925 6308
+000926 009c                      	.db 0b00000000, 0b00000000, 0b00000111, 0b00000000, 0b00000000, 0b00000000, 0b00001000, 0b01100011, 0b10011100, 0b00000000
 000927 0000
-000928 9008
-000929 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
-00092a 0000
-00092b 0003
+000928 8004
+000929 0000
+00092a 1008
+00092b 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00010000, 0b10100100, 0b00000000
 00092c 0000
-00092d 671e
-00092e 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
+00092d 8004
+00092e 0000
+00092f 9008
+000930 00a4                      	.db 0b00000000, 0b00000000, 0b00000100, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b10010000, 0b10100100, 0b00000000
+000931 0000
+000932 0003
+000933 0000
+000934 671e
+000935 009c                      	.db 0b00000000, 0b00000000, 0b00000011, 0b00000000, 0b00000000, 0b00000000, 0b00011110, 0b01100111, 0b10011100, 0b00000000
                                  
                                  switch_sound:
-00092f 4c1a
-000930 0063
-000931 02c9
-000932 f04c
-000933 c024                      	.db 0b00011010, 0b01001100, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b11110000, 0b00100100, 0b11000000
-000934 522a
-000935 8194
-000936 0329
-000937 10d2
-000938 203d                      	.db 0b00101010, 0b01010010, 0b10010100, 0b10000001, 0b00101001, 0b00000011, 0b11010010, 0b00010000, 0b00111101, 0b00100000
-000939 524a
-00093a 0194
-00093b 0229
-00093c 1052
-00093d 0025                      	.db 0b01001010, 0b01010010, 0b10010100, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00000000
-00093e 524a
-00093f 0193
-000940 0229
-000941 1052
-000942 c024                      	.db 0b01001010, 0b01010010, 0b10010011, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b11000000
-000943 524b
-000944 8190
-000945 022d
-000946 1052
-000947 2024                      	.db 0b01001011, 0b01010010, 0b10010000, 0b10000001, 0b00101101, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b00100000
-000948 d22a
-000949 8194
-00094a 022b
-00094b 1052
-00094c 2025                      	.db 0b00101010, 0b11010010, 0b10010100, 0b10000001, 0b00101011, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00100000
-00094d 521a
-00094e 0063
-00094f 02c9
-000950 104c
-000951 c024                      	.db 0b00011010, 0b01010010, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b00010000, 0b00100100, 0b11000000
+000936 4c1a
+000937 0063
+000938 02c9
+000939 f04c
+00093a c024                      	.db 0b00011010, 0b01001100, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b11110000, 0b00100100, 0b11000000
+00093b 522a
+00093c 8194
+00093d 0329
+00093e 10d2
+00093f 203d                      	.db 0b00101010, 0b01010010, 0b10010100, 0b10000001, 0b00101001, 0b00000011, 0b11010010, 0b00010000, 0b00111101, 0b00100000
+000940 524a
+000941 0194
+000942 0229
+000943 1052
+000944 0025                      	.db 0b01001010, 0b01010010, 0b10010100, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00000000
+000945 524a
+000946 0193
+000947 0229
+000948 1052
+000949 c024                      	.db 0b01001010, 0b01010010, 0b10010011, 0b00000001, 0b00101001, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b11000000
+00094a 524b
+00094b 8190
+00094c 022d
+00094d 1052
+00094e 2024                      	.db 0b01001011, 0b01010010, 0b10010000, 0b10000001, 0b00101101, 0b00000010, 0b01010010, 0b00010000, 0b00100100, 0b00100000
+00094f d22a
+000950 8194
+000951 022b
+000952 1052
+000953 2025                      	.db 0b00101010, 0b11010010, 0b10010100, 0b10000001, 0b00101011, 0b00000010, 0b01010010, 0b00010000, 0b00100101, 0b00100000
+000954 521a
+000955 0063
+000956 02c9
+000957 104c
+000958 c024                      	.db 0b00011010, 0b01010010, 0b01100011, 0b00000000, 0b11001001, 0b00000010, 0b01001100, 0b00010000, 0b00100100, 0b11000000
                                  
 
 
@@ -3849,39 +3853,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   1 r0 :   1 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   1 r0 :   1 r1 :   6 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  74 r17:  15 r18:  22 r19:   8 r20:  19 
-r21:  39 r22:  10 r23:  43 r24:   7 r25:  21 r26: 118 r27:  76 r28:  61 
+r13:   0 r14:   0 r15:   0 r16:  78 r17:  17 r18:  22 r19:   8 r20:  16 
+r21:  39 r22:  11 r23:  38 r24:   7 r25:  23 r26: 118 r27:  76 r28:  60 
 r29:   9 r30:  72 r31:  61 
-Registers used: 18 out of 35 (51.4%)
+Registers used: 19 out of 35 (54.3%)
 
 "ATmega328P" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   0 add   :   3 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   4 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   3 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
 brne  :  93 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 call  :  93 cbi   :  18 cbr   :   2 
+brvs  :   0 bset  :   0 bst   :   0 call  :  94 cbi   :  18 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   4 cln   :   0 clr   :   0 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   5 cpc   :   0 
 cpi   :   0 cpse  :  45 dec   :  92 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   9 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   : 358 lds   :   2 lpm   :   1 lsl   :   1 
-lsr   :   4 mov   :  15 movw  :   1 mul   :   1 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   4 or    :   0 ori   :   0 out   :   9 pop   :   7 
-push  :   5 rcall :  20 ret   :  20 reti  :   4 rjmp  : 190 rol   :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :  10 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   : 361 lds   :   2 lpm   :   1 lsl   :   1 
+lsr   :   1 mov   :  14 movw  :   1 mul   :   1 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   4 or    :   0 ori   :   0 out   :  13 pop   :   6 
+push  :   5 rcall :  19 ret   :  20 reti  :   4 rjmp  : 190 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :  44 sbic  :  30 sbis  :  16 
-sbiw  :   0 sbr   :   0 sbrc  :   1 sbrs  :   0 sec   :   0 seh   :   0 
+sbiw  :   0 sbr   :   0 sbrc  :   3 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   5 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :  14 
 sub   :   5 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 36 out of 113 (31.9%)
+Instructions used: 35 out of 113 (31.0%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0012a4   2472   2240   4712   32768  14.4%
+[.cseg] 0x000000 0x0012b2   2486   2240   4726   32768  14.4%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

@@ -175,7 +175,7 @@ RJMP Timer0OverflowInterrupt
 
 
 init1:
-	LDI R16,0x01
+	LDI R28,0x01
 
 /* WARNING : BEFORE BEGINNING THE GAME FOR THE FIRST TIME, TAKE CARE THE EEPROM IS SET TO ZERO AT ADDRESS 0x0000
 	;CLI
@@ -256,11 +256,10 @@ start_screen:
 	
 	Joy_start:
 		CLI							; Stop timer (Global Interrupt Disable)
-		LDS R22,TCNT0				; Seed for generation of random numbers 
-		ADD R22,R28
+		LDS R22,TCNT1H				; Seed for generation of random numbers 
 		SEI							; (random as we use the time at which the user presses the joystick)
 		LDI R26,0x01
-		CPSE R16,R26
+		CPSE R28,R26
 		MOV R22,R18
 		LDI R25,0x00
 		STS TIMSK0,R25
@@ -358,7 +357,6 @@ end_screen:
 
 	
 Joy:
-	LDI R16,0x00
 	LDI R25,0x00
 	STS TIMSK0,R25				; Disable interrupt for timer 0
 	RJMP init

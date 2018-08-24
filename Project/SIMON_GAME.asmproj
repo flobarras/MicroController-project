@@ -40,6 +40,7 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
+    <avrtoolinterface />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
